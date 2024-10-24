@@ -61,11 +61,11 @@ const Profile = () => {
               <ul>
                 {boards.map((board) => (
                   <li key={board.id} className="mb-2">
-                    <Link href={`/appointment/${board.id}`}>
+                    
                       <div className="text-blue-600 hover:underline">
                         {board.name}
                       </div>
-                    </Link>
+                    
                   </li>
                 ))}
               </ul>

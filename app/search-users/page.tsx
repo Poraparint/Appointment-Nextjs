@@ -48,11 +48,11 @@ const SearchUsers = () => {
             <ul>
               {searchResults.map((user) => (
                 <li key={user.id} className="mb-2">
-                  <Link href={`/profile/${user.username}`}>
+                  
                     <div className="text-blue-600 hover:underline">
                       {user.username}
                     </div>
-                  </Link>
+                  
                 </li>
               ))}
             </ul>
