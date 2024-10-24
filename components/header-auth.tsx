@@ -12,6 +12,18 @@ export default async function AuthButton() {
     data: { user },
   } = await supabase.auth.getUser();
 
+  // Fetch the user's profile data (assuming there's a 'users' table with profile pictures)
+  const { data, error } = await supabase
+    .from("users")
+    .select("username")
+    .eq("id", user?.id)
+    .single();
+
+  if (error) {
+    console.error("Error fetching user profile:", error);
+    return null;
+  }
+
   if (!hasEnvVars) {
     return (
       <>
@@ -50,9 +62,9 @@ export default async function AuthButton() {
   }
   return user ? (
     <div className="flex items-center gap-4">
-      Hey, {user.email}!
+      <Link href="/Profile">{data.username}</Link>
       <form action={signOutAction}>
-        <Button type="submit" variant={"outline"}>
+        <Button type="submit" variant={"outline"} >
           Sign out
         </Button>
       </form>

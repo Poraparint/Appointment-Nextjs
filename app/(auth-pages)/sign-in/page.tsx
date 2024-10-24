@@ -104,6 +104,30 @@ function SignInPage({ searchParams }: { searchParams: { message: string } }) {
               สมัครสมาชิก <i className="fa-solid fa-arrow-right ml-1"></i>
             </Link>
           </div>
+
+          {/* Divider */}
+          <div className="flex flex-col py-2 items-center">
+            <span className="mx-4 text-third">หรือ</span>
+          </div>
+
+          {/* Google Sign-In */}
+          <div className="flex justify-center">
+            <button
+              onClick={signInWithGoogle}
+              className="flex items-center text-secondary gap-3 px-6 py-3 bg-white border rounded-full shadow-sm hover:bg-gray-100 transition"
+            >
+              <div className="relative w-7 h-7 rounded-full">
+                <Image
+                  className="rounded-full"
+                  src="/google.png"
+                  alt="Avatar"
+                  layout="fill"
+                  objectFit="cover"
+                />
+              </div>
+              <span className="font-semibold text-sm">Sign in with Google</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

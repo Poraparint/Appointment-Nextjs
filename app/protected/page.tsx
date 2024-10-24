@@ -21,8 +21,8 @@ export default async function ProtectedPage() {
 
       {/* ปุ่ม Next ที่จะไปหน้า Calendar */}
       <Link href="/Appointment">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-          Next
+        <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 text-3xl">
+          Calendar
         </button>
       </Link>
     </div>

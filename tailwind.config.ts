@@ -19,17 +19,17 @@ const config = {
     },
     extend: {
       colors: {
-        pri: "#1F3A93",
-        sec: "#3D3D3D",
-        third: "#5F5F5F",
+        ice: "#a0d2eb",
+        pain: "#8458B3",
+        text: "#494D5F",
         baht: "#238326",
-        bg: "#FFFFFF",
+        bg: "#ffffff", // แก้ไขสีพื้นหลังเป็นสีขาว
         light: "#D9D9D9",
         danger: "#BB2124",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
+        background: "#E5EAF5", // แก้ไขสี background ให้เป็นสีขาว
         foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "hsl(var(--primary))",

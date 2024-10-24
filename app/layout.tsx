@@ -15,9 +15,10 @@ const defaultUrl = process.env.VERCEL_URL
   : "http://localhost:3000";
 
 export const metadata = {
-  metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
+  // metadataBase: new URL(defaultUrl),
+  title: "DL_Appointment",
+  description: "Calendar?",
+  icons: [{ url: "/favicon/favicon.ico", href: "/favicon/favicon.ico" }],
 };
 
 export default function RootLayout({
@@ -36,22 +37,20 @@ export default function RootLayout({
         >
           <main className="flex flex-col items-center w-full">
             <div className="flex-1 w-full flex flex-col gap-10 items-center">
-              <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-                <div className="w-full flex justify-between items-center p-3 px-5 text-sm">
+              <nav className="w-full flex justify-center h-24 text-pain text-lg">
+                <div className="w-full flex justify-between items-center p-3 px-5">
                   <div className="flex gap-5 items-center font-semibold">
-                    <Link href={"/"}>Next.js Supabase Starter</Link>
-                    <div className="flex items-center gap-2">
-                      <DeployButton />
-                    </div>
+                    <Link href={"/"}>Dental-Lab</Link>
                   </div>
                   {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
                 </div>
               </nav>
-              <div className="w-full">
-                {children}
-              </div>
+              <div className="w-full">{children}</div>
 
-              <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
+              <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-5 mt-[40rem]">
+                <div className="flex items-center gap-2">
+                  <DeployButton />
+                </div>
                 <p>
                   Powered by{" "}
                   <a

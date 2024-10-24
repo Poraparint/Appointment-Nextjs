@@ -114,13 +114,13 @@ export default function Signup() {
   };
 
   return (
-    <div className="w-full">
-      <div className="flex justify-center w-5/6 grow bg-white backdrop-blur-sm rounded-3xl py-16 px-10 shadow-lg mx-auto">
+    <div className="Page w-full">
+      <div className="flex justify-center w-5/6 grow bg-bg backdrop-blur-sm rounded-3xl py-16 px-10 shadow-lg mx-auto">
         <Authimg />
         {/* Sign-Up Form Container */}
         <div className="flex flex-col items-center w-full">
           <div className="mb-6">
-            <h2 className="text-3xl font-bold text-sec">สมัครสมาชิก</h2>
+            <h2 className="text-3xl font-bold text-secondary">สมัครสมาชิก</h2>
           </div>
           <form
             onSubmit={handleSubmit}
@@ -129,7 +129,7 @@ export default function Signup() {
             {/* Email */}
             <label className="block w-full">
               <span className="text-gray-700">อีเมล</span>
-              <div className="mt-1 flex items-center border border-light text-third rounded-md overflow-hidden focus-within:border-pri focus-within:text-pri focus-within:shadow-sm focus-within:shadow-pri">
+              <div className="mt-1 flex items-center border border-light text-third rounded-md overflow-hidden focus-within:border-primary focus-within:text-primary focus-within:shadow-sm focus-within:shadow-primary">
                 <i className="fa-solid fa-envelope px-3"></i>
                 <input
                   type="email"

@@ -1,0 +1,6 @@
+This favicon was generated using the following font:
+
+- Font Title: Inknut Antiqua
+- Font Author: Copyright (c) 2014 by Claus Eggers Srensen (es@forthehearts.net).
+- Font Source: https://fonts.gstatic.com/s/inknutantiqua/v14/Y4GSYax7VC4ot_qNB4nYpBdaKXUD6pzxRwYB.ttf
+- Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL))

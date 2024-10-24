@@ -64,40 +64,41 @@ const Calendar = () => {
   };
 
   return (
-    <div className="calendar-container w-full mx-auto">
-      <div className="calendar-header flex justify-between items-center p-8 bg-blue-600 rounded-md mb-2 text-white text-2xl shadow-md">
-        <button
-          onClick={handlePrevMonth}
-          className="hover:bg-blue-700 px-4 py-2 rounded-md"
-        >
-          Previous
-        </button>
-        <span>{displayMonth}</span> {/* Display the month here */}
-        <button
-          onClick={handleNextMonth}
-          className="hover:bg-blue-700 px-4 py-2 rounded-md"
-        >
-          Next
-        </button>
-      </div>
-      <div className="dates-grid flex overflow-x-auto whitespace-nowrap p-4 bg-blue-600 rounded-md shadow-md">
-        {dates.map(({ dayOfWeek, day, date }) => (
-          <div
-            key={day}
-            className={`date-item text-white p-4 mx-2 rounded-md text-center cursor-pointer transition-all duration-300 ${
-              date.toDateString() === today.toDateString()
-                ? "border-2 border-white"
-                : ""
-            }`}
-            onClick={() => handleDateClick(date)}
-          >
-            <div>
-              {dayOfWeek} {day}
-            </div>
+    <div className="calendar-container text-sec flex flex-col items-center px-10 ">
+      <div className="w-full text-pain bg-bg rounded-md">
+        <div className="">
+          <div className="calendar-header flex justify-between items-center p-8 text-2xl">
+            <button onClick={handlePrevMonth} className="px-4 py-2 text-xl">
+              <i className="fas fa-arrow-left mx-1"></i>Previous
+            </button>
+            <span>{displayMonth}</span> {/* Display the month here */}
+            <button onClick={handleNextMonth} className="px-4 py-2 text-xl">
+              Next<i className="fas fa-arrow-right mx-1"></i>
+            </button>
           </div>
-        ))}
+          <hr className="m-3" />
+          <div className="dates-grid flex overflow-x-auto whitespace-nowrap p-3">
+            {dates.map(({ dayOfWeek, day, date }) => (
+              <div
+                key={day}
+                className={`date-item p-4 mx-2 rounded-md text-center cursor-pointer transition-all duration-300 ${
+                  date.toDateString() === today.toDateString()
+                    ? "border-2 border-pain"
+                    : ""
+                }`}
+                onClick={() => handleDateClick(date)}
+              >
+                <div>
+                  {dayOfWeek} {day}
+                </div>
+              </div>
+            ))}
+          </div>
+          <hr className="m-3" />
+        </div>
+
+        {selectedDate && <EventManager selectedDate={selectedDate} />}
       </div>
-      {selectedDate && <EventManager selectedDate={selectedDate} />}
     </div>
   );
 };
