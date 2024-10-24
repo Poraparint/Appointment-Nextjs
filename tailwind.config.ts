@@ -19,6 +19,13 @@ const config = {
     },
     extend: {
       colors: {
+        pri: "#1F3A93",
+        sec: "#3D3D3D",
+        third: "#5F5F5F",
+        baht: "#238326",
+        bg: "#FFFFFF",
+        light: "#D9D9D9",
+        danger: "#BB2124",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -31,6 +38,10 @@ const config = {
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+        },
+        btn: {
+          background: "hsl(var(--btn-background))",
+          "background-hover": "hsl(var(--btn-background-hover))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -53,11 +64,6 @@ const config = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
@@ -74,7 +80,7 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("daisyui")],
 } satisfies Config;
 
 export default config;
