@@ -3,7 +3,7 @@ import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation"; // Use from next/navigation in App Router
 
-const CreateBoard = () => {
+export default async function CreateBoard() {
   const [boardName, setBoardName] = useState("");
   const [description, setDescription] = useState("");
   const supabase = createClient();
@@ -72,4 +72,4 @@ const CreateBoard = () => {
   );
 };
 
-export default CreateBoard;
+

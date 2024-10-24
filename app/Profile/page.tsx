@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 
-const Profile = () => {
+export default async function Profile() {
   const [userData, setUserData] = useState<any>(null);
   const [boards, setBoards] = useState<any[]>([]);
   const supabase = createClient();
@@ -81,4 +81,6 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+  
+
+

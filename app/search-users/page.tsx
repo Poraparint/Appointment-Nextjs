@@ -3,7 +3,7 @@ import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 
-const SearchUsers = () => {
+export default async function SearchUsers() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const supabase = createClient();
@@ -65,4 +65,4 @@ const SearchUsers = () => {
   );
 };
 
-export default SearchUsers;
+
