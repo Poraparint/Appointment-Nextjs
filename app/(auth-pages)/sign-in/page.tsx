@@ -11,10 +11,14 @@ import { SubmitButton } from "@/components/submit-button";
 function SignInPage({ searchParams }: { searchParams: { message: string } }) {
   const signInWithGoogle = async () => {
     const supabase = createClient();
+    const isProduction = process.env.NODE_ENV === "production";
+    const redirectURL = isProduction
+      ? "https://your-production-url.com/auth/callback"
+      : "http://localhost:3000/auth/callback";
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: redirectURL,
         queryParams: {
           access_type: "offline",
           prompt: "consent",
