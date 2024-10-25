@@ -7,9 +7,10 @@ export const createClient = async () => {
   // ตรวจสอบว่าได้ค่า environment variables ถูกต้องไหมในฝั่ง Server
   console.log("Supabase URL (Server):", process.env.NEXT_PUBLIC_SUPABASE_URL);
   console.log(
-    "Supabase ANON KEY (Server):",
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    "Supabase ANON KEY:",
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.substring(0, 4) + "..."
   );
+
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
