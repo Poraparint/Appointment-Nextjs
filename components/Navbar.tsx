@@ -27,7 +27,7 @@ export default function Navbar() {
           </Link>
         </div>
         <div className="flex gap-5 items-center p-3 text-sm">
-          <Link href="/User/Jobboard">
+          <Link href="/Appointment">
             <button className="py-2 px-4 rounded-md bg-pain hover:bg-[#620e80] text-bg mr-5 duration-300 max-lg:text-xs">
               บอร์ด
             </button>
