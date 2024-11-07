@@ -1,30 +1,29 @@
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
-import Link from "next/link"; // สำหรับการทำลิงก์ไปหน้าอื่น
+"use client"
+import { useEffect, useState } from "react";
+import { createClient } from "@/utils/supabase/client";
 
-export default async function ProtectedPage() {
-  const supabase = createClient();
+export default function ProtectedPage() {
+  const [loading, setLoading] = useState(true);
 
-  // ตรวจสอบว่าผู้ใช้ล็อกอินหรือยัง
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  useEffect(() => {
+    const checkAuth = async () => {
+      const supabase = createClient();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
 
-  // ถ้ายังไม่ได้ล็อกอิน จะเปลี่ยนเส้นทางไปหน้า sign-in
-  if (!user) {
-    return redirect("/sign-in");
+      if (!session) {
+        window.location.href = "/sign-in";
+      } else {
+        setLoading(false); // แสดงเนื้อหาเมื่อมี session
+      }
+    };
+    checkAuth();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>; // แสดงสถานะการโหลดระหว่างการตรวจสอบ
   }
 
-  return (
-    <div className="flex-1 w-full flex flex-col items-center justify-center gap-12">
-      <h1 className="text-2xl font-bold">Welcome to the Protected Page</h1>
-
-      {/* ปุ่ม Next ที่จะไปหน้า Calendar */}
-      <Link href="/Appointment">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 text-3xl">
-          Calendar
-        </button>
-      </Link>
-    </div>
-  );
+  return <div>Protected Content</div>; // แสดงเนื้อหาหลังจากตรวจสอบเสร็จสิ้น
 }

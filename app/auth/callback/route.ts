@@ -7,7 +7,7 @@ export async function GET(request: Request) {
   const next = "/protected"; // Redirect to protected path after login
 
   if (code) {
-    const supabase = await createClient();
+    const supabase = createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {

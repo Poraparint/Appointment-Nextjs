@@ -1,4 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
+import { log } from "console";
 import { redirect } from "next/navigation";
 
 export default async function ProtectedLayout({
@@ -14,7 +15,10 @@ export default async function ProtectedLayout({
 
   if (!user) {
     return redirect("/sign-in");
+
   }
+  console.log(user);
 
   return <>{children}</>;
+  
 }
