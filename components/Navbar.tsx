@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { createClient } from "@/utils/supabase/server";
 import AuthButton from "./AuthButton";
 

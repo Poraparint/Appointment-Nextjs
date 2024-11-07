@@ -1,7 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 export default async function AuthButton() {
   const supabase = createClient();

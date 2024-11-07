@@ -58,8 +58,8 @@ export default function ConnectSupabaseSteps() {
     //     </p>
     //   </TutorialStep>
     // </ol>
-    <>
-    <div>Step</div>
-    </>
+    (<>
+      <div>Step</div>
+    </>)
   );
 }

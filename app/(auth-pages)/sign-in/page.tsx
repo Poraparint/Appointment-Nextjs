@@ -4,8 +4,6 @@ import { signIn } from "./action";
 import Image from "next/image";
 import Link from "next/link";
 import Authimg from "@/components/Authimg";
-
-// Components
 import { SubmitButton } from "@/components/submit-button";
 
 function getURL() {
@@ -24,7 +22,7 @@ function SignInPage({ searchParams }: { searchParams: { message: string } }) {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${getURL()}protected`,
+        redirectTo: `${getURL()}auth/callback`,
         queryParams: {
           access_type: "offline",
           prompt: "consent",
@@ -40,17 +38,12 @@ function SignInPage({ searchParams }: { searchParams: { message: string } }) {
   return (
     <div className="Page w-full">
       <div className="flex justify-center w-5/6 grow bg-white backdrop-blur-sm rounded-3xl py-16 px-10 shadow-lg mx-auto">
-        {/* Back to Sign-Up Link */}
-
         <Authimg />
-        {/* Sign-In Form Container */}
         <div className="flex flex-col items-center w-full">
           <h2 className="text-3xl font-bold text-secondary mb-10 text-center">
             เข้าสู่ระบบ
           </h2>
-
           <form className="flex flex-col gap-6 text-third w-full">
-            {/* Email */}
             <label className="block w-full">
               <span className="text-gray-700">อีเมล</span>
               <div className="mt-1 flex items-center text-third border border-light rounded-md overflow-hidden focus-within:border-primary focus-within:text-primary focus-within:shadow-sm focus-within:shadow-primary">
@@ -64,8 +57,6 @@ function SignInPage({ searchParams }: { searchParams: { message: string } }) {
                 />
               </div>
             </label>
-
-            {/* Password */}
             <label className="block w-full">
               <span className="text-gray-700">รหัสผ่าน</span>
               <div className="mt-1 flex items-center text-third border border-light rounded-md overflow-hidden focus-within:border-primary focus-within:text-primary focus-within:shadow-sm focus-within:shadow-primary">
@@ -79,15 +70,11 @@ function SignInPage({ searchParams }: { searchParams: { message: string } }) {
                 />
               </div>
             </label>
-
-            {/* Error Message (if any) */}
             {searchParams?.message && (
               <p className="text-red-500 text-xs px-2 pt-2">
                 {searchParams.message}
               </p>
             )}
-
-            {/* Forgot Password & Submit Button */}
             <div className="flex flex-col gap-5">
               <Link
                 href="/forgot-password"
@@ -104,8 +91,6 @@ function SignInPage({ searchParams }: { searchParams: { message: string } }) {
               </SubmitButton>
             </div>
           </form>
-
-          {/* Create Account */}
           <div className="">
             <Link
               href="/sign-up"
@@ -114,13 +99,9 @@ function SignInPage({ searchParams }: { searchParams: { message: string } }) {
               สมัครสมาชิก <i className="fa-solid fa-arrow-right ml-1"></i>
             </Link>
           </div>
-
-          {/* Divider */}
           <div className="flex flex-col py-2 items-center">
             <span className="mx-4 text-third">หรือ</span>
           </div>
-
-          {/* Google Sign-In */}
           <div className="flex justify-center">
             <button
               onClick={signInWithGoogle}
