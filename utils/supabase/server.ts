@@ -1,16 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
-export const createClient = async () => {
-  const cookieStore = await cookies();
-
-  // ตรวจสอบว่าได้ค่า environment variables ถูกต้องไหมในฝั่ง Server
-  console.log("Supabase URL (Server):", process.env.NEXT_PUBLIC_SUPABASE_URL);
-  console.log(
-    "Supabase ANON KEY:",
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.substring(0, 4) + "..."
-  );
-
+export const createClient = () => {
+  const cookieStore = cookies();
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -26,7 +18,9 @@ export const createClient = async () => {
               cookieStore.set(name, value, options);
             });
           } catch (error) {
-            // ignore error for setting cookies
+            // The `set` method was called from a Server Component.
+            // This can be ignored if you have middleware refreshing
+            // user sessions.
           }
         },
       },

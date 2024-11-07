@@ -1,16 +1,13 @@
 import { createBrowserClient } from "@supabase/ssr";
 
-export const createClient = () => {
-  // ตรวจสอบว่าได้ค่า environment variables มาถูกต้องไหม
-  console.log("Supabase URL:", process.env.NEXT_PUBLIC_SUPABASE_URL);
-  console.log(
-    "Supabase ANON KEY:",
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.substring(0, 4) + "..."
-  );
-
-
-  return createBrowserClient(
+export const createClient = () =>
+  createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      auth: {
+        persistSession: true, // Ensure sessions persist
+        storage: localStorage, // Or use another storage mechanism if needed
+      },
+    }
   );
-};
