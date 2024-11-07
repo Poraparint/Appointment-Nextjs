@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import Image from "next/image";
 
 export default async function AuthButton() {
-  const supabase = await createClient();
+  const supabase = createClient();
 
   // Fetch the user data
   const {
@@ -14,7 +14,7 @@ export default async function AuthButton() {
   // Function to handle the sign-out
   const signOut = async () => {
     "use server";
-    const supabase = await createClient();
+    const supabase = createClient();
     await supabase.auth.signOut();
     return redirect("/sign-in");
   };
@@ -66,7 +66,7 @@ export default async function AuthButton() {
       </summary>
       <ul className="menu dropdown-content shadow bg-base-100 w-72 mt-3 text-secondary rounded-lg rounded-tr-none p-0">
         <li className="hover:bg-gray-100 duration-200 py-2 rounded-t-lg">
-          <Link href="/Customer/C_Pro_Edit" className="flex gap-5">
+          <div className="flex gap-5">
             <div className="relative w-7 h-7 rounded-full">
               <Image
                 src={profileImageUrl}
@@ -78,20 +78,20 @@ export default async function AuthButton() {
             </div>
 
             <h1>{profileData.username}</h1>
-          </Link>
+          </div>
         </li>
         <hr className="border-[0.5px] border-light rounded-full" />
         <li className="hover:bg-gray-100 duration-200 py-2">
-          <Link href="/Customer/FreeAddwork" className="flex gap-5">
+          <div className="flex gap-5">
             <i className="fa-solid fa-suitcase text-xl "></i>
             <h1>เพิ่มงานของคุณ</h1>
-          </Link>
+          </div>
         </li>
         <li className="hover:bg-gray-100 duration-200 py-2">
-          <Link href="/Customer/CusAddwork" className="flex gap-5">
+          <div className="flex gap-5">
             <i className="fa-solid fa-building text-xl "></i>
             <h1>ประกาศหาฟรีแลนซ์</h1>
-          </Link>
+          </div>
         </li>
         <li className="">
           <form
