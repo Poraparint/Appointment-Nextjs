@@ -1,29 +1,21 @@
-"use client"
-import { useEffect, useState } from "react";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
 
-export default function ProtectedPage() {
-  const [loading, setLoading] = useState(true);
+export default async function ProtectedPage() {
+  const supabase = createClient(); // สร้าง Supabase client
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const supabase = createClient();
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser(); // ตรวจสอบผู้ใช้
 
-      if (!session) {
-        window.location.href = "/sign-in";
-      } else {
-        setLoading(false); // แสดงเนื้อหาเมื่อมี session
-      }
-    };
-    checkAuth();
-  }, []);
-
-  if (loading) {
-    return <div>Loading...</div>; // แสดงสถานะการโหลดระหว่างการตรวจสอบ
+  // ถ้าไม่มีผู้ใช้ ให้ redirect ไปยังหน้า login
+  if (!user) {
+    return redirect("/sign-in");
   }
 
-  return <div>Protected Content</div>; // แสดงเนื้อหาหลังจากตรวจสอบเสร็จสิ้น
+  return (
+    <div>
+      <h1>Welcome to the Protected Page</h1>
+    </div>
+  );
 }

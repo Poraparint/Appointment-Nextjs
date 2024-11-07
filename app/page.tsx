@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import ConnectSupabaseSteps from "@/components/tutorial/connect-supabase-steps";
-import ProtectedPage from "./protected/page";
+import Header from "@/components/hero";
 import Footer from "@/components/Footer";
 
 export default async function Index() {
@@ -20,7 +20,7 @@ export default async function Index() {
   return (
     <div className="w-full">
       <div className="Page w-full flex flex-col gap-20">
-        {isSupabaseConnected ? <ProtectedPage /> : <ConnectSupabaseSteps />}
+        {isSupabaseConnected ? <Header /> : <ConnectSupabaseSteps />}
       </div>
       <Footer />
     </div>

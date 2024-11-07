@@ -1,4 +1,3 @@
-import React from "react";
 import Image from "next/image";
 
 function Authimg() {
@@ -7,9 +6,9 @@ function Authimg() {
       <Image
         src="/Cat.jpeg"
         alt="Profile"
-        className=""
-        layout="fill"
-        objectFit="cover"
+        width={500} // Add width
+        height={300} // Add height
+        style={{ objectFit: "cover" }} // Use style for objectFit
       />
     </div>
   );
