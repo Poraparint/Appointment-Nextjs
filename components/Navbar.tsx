@@ -21,14 +21,14 @@ export default function Navbar() {
   return (
     <div>
       <nav className="BoxShadow w-full bg-bg text-text drop-shadow-xl items-center flex justify-between px-5 fixed left-0 top-0 z-50">
-        <div className="Nav-one h-[100%] flex">
+        <div className="flex">
           <Link href="/">
-            <Image src="/A-dental-white.png" width={150} height={100} alt="Logo" />
+            <Image src="/A-dental-white.png" width={160} height={60} alt="Logo" />
           </Link>
         </div>
-        <div className="flex gap-5 items-center p-3 text-sm">
+        <div className="flex gap-8 items-center p-3 text-base">
           <Link href="/Appointment">
-            <button className="py-2 px-4 rounded-md bg-pain hover:bg-[#5e1778] text-bg mr-5 duration-300 max-lg:text-sm">
+            <button className="py-2 px-5 rounded-md bg-pain hover:bg-[#5e1778] text-bg duration-300">
               Board
             </button>
           </Link>

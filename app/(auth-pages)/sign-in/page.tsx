@@ -4,6 +4,7 @@ import { signIn } from "./action";
 import Image from "next/image";
 import Link from "next/link";
 import Authimg from "@/components/Authimg";
+import React from "react";
 
 // Components
 import { SubmitButton } from "@/components/submit-button";
@@ -34,7 +35,7 @@ function SignInPage({ searchParams }: { searchParams: { message: string } }) {
 
     console.log("OAuth sign-in response data:", data);
     if (error) {
-      console.error("Error during sign-in with Google:", error);
+      console.log("Error during sign-in with Google:", error);
     } else {
       console.log("Sign-in successful, redirecting...");
     }
