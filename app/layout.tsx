@@ -1,12 +1,9 @@
-import DeployButton from "@/components/deploy-button";
-import { EnvVarWarning } from "@/components/env-var-warning";
-import HeaderAuth from "@/components/header-auth";
-import { ThemeSwitcher } from "@/components/theme-switcher";
-import { hasEnvVars } from "@/utils/supabase/check-env-vars";
-import { GeistSans } from "geist/font/sans";
-import { ThemeProvider } from "next-themes";
-import Link from "next/link";
+import { Kanit } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import "./globals.css";
+
 // การเรียกใช้ใน Javascript library & framework (React, Vue ฯลฯ)
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
@@ -21,52 +18,24 @@ export const metadata = {
   icons: [{ url: "/favicon/favicon.ico", href: "/favicon/favicon.ico" }],
 };
 
+const kanit = Kanit({
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  subsets: ["latin"],
+  variable: "--font-prompt",
+});
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={GeistSans.className} suppressHydrationWarning>
+    <html lang="en" className={kanit.variable} data-theme="mytheme">
       <body className="bg-background text-foreground">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <main className="flex flex-col items-center w-full">
-            <div className="flex-1 w-full flex flex-col gap-10 items-center">
-              <nav className="w-full flex justify-center h-24 text-pain text-lg">
-                <div className="w-full flex justify-between items-center p-3 px-5">
-                  <div className="flex gap-5 items-center font-semibold">
-                    <Link href={"/"}>Dental-Lab</Link>
-                  </div>
-                  {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
-                </div>
-              </nav>
-              <div className="w-full">{children}</div>
-
-              <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-5 mt-[40rem]">
-                <div className="flex items-center gap-2">
-                  <DeployButton />
-                </div>
-                <p>
-                  Powered by{" "}
-                  <a
-                    href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-                    target="_blank"
-                    className="font-bold hover:underline"
-                    rel="noreferrer"
-                  >
-                    Supabase
-                  </a>
-                </p>
-                <ThemeSwitcher />
-              </footer>
-            </div>
-          </main>
-        </ThemeProvider>
+        <main className="min-h-screen flex flex-col items-center">
+          <Navbar />
+          <div className="mt-24">{children}</div>
+        </main>
       </body>
     </html>
   );

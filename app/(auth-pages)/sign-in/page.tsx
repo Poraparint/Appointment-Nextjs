@@ -8,17 +8,23 @@ import Authimg from "@/components/Authimg";
 // Components
 import { SubmitButton } from "@/components/submit-button";
 
+function getURL() {
+  let url =
+    process?.env?.NEXT_PUBLIC_SITE_URL ?? // Set this to your site URL in production env.
+    process?.env?.NEXT_PUBLIC_VERCEL_URL ?? // Automatically set by Vercel.
+    "http://localhost:3000/";
+  url = url.startsWith("http") ? url : `https://${url}`;
+  url = url.endsWith("/") ? url : `${url}/`;
+  return url;
+}
+
 function SignInPage({ searchParams }: { searchParams: { message: string } }) {
   const signInWithGoogle = async () => {
     const supabase = createClient();
-    const isProduction = process.env.NODE_ENV === "production";
-    const redirectURL = isProduction
-      ? "https://your-production-url.com/auth/callback"
-      : "http://localhost:3000/auth/callback";
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: redirectURL,
+        redirectTo: `${getURL()}protected`,
         queryParams: {
           access_type: "offline",
           prompt: "consent",
