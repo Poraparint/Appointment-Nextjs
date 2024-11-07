@@ -34,7 +34,11 @@ export default function RootLayout({
       <body className="bg-background text-foreground">
         <main className="min-h-screen flex flex-col items-center">
           <Navbar />
-          <div className="mt-24">{children}</div>
+          <div className="mt-24 w-full">
+            {children}
+          </div>
+          
+          
         </main>
       </body>
     </html>

@@ -114,7 +114,7 @@ export default function Signup() {
   };
 
   return (
-    <div className="Page w-full">
+    <div className="w-full">
       <div className="flex justify-center w-5/6 grow bg-bg backdrop-blur-sm rounded-3xl py-16 px-10 shadow-lg mx-auto">
         <Authimg />
         {/* Sign-Up Form Container */}
