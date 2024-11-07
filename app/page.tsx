@@ -1,16 +1,28 @@
-import Hero from "@/components/hero";
+import { createClient } from "@/utils/supabase/server";
 import ConnectSupabaseSteps from "@/components/tutorial/connect-supabase-steps";
-import SignUpUserSteps from "@/components/tutorial/sign-up-user-steps";
-import { hasEnvVars } from "@/utils/supabase/check-env-vars";
+import ProtectedPage from "./protected/page";
+import Footer from "@/components/Footer";
 
 export default async function Index() {
+  const canInitSupabaseClient = () => {
+    // This function is just for the interactive tutorial.
+    // Feel free to remove it once you have Supabase connected.
+    try {
+      createClient();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
+
+  const isSupabaseConnected = canInitSupabaseClient();
+
   return (
-    <>
-      <Hero />
-      <main className="w-full">
-        <h2 className="font-medium text-xl mb-4">Next steps</h2>
-        {hasEnvVars ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
-      </main>
-    </>
+    <div className="w-full">
+      <div className="Page w-full flex flex-col gap-20">
+        {isSupabaseConnected ? <ProtectedPage /> : <ConnectSupabaseSteps />}
+      </div>
+      <Footer />
+    </div>
   );
 }
