@@ -21,7 +21,7 @@ function getURL() {
 function SignInPage({ searchParams }: { searchParams: { message: string } }) {
   const signInWithGoogle = async () => {
     const supabase = createClient();
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
         redirectTo: `${getURL()}auth/callback`,
@@ -32,8 +32,11 @@ function SignInPage({ searchParams }: { searchParams: { message: string } }) {
       },
     });
 
+    console.log("OAuth sign-in response data:", data);
     if (error) {
-      console.error(error);
+      console.error("Error during sign-in with Google:", error);
+    } else {
+      console.log("Sign-in successful, redirecting...");
     }
   };
 
