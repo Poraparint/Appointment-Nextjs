@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link"; // สำหรับการทำลิงก์ไปหน้าอื่น
 
 export default async function ProtectedPage() {
-  const supabase = await createClient();
+  const supabase = createClient();
 
   // ตรวจสอบว่าผู้ใช้ล็อกอินหรือยัง
   const {
