@@ -110,7 +110,7 @@ export default function WorkDetail({ params }: { params: { id: string } }) {
         title: "ลบงานสำเร็จ",
       }).then(() => {
         // Redirect หลังจากแสดง toast
-        router.push("/Customer/C_Pro_Edit");
+        router.push("/User/User_Profile");
       });
     } else {
       console.error("Error deleting work:", error);
