@@ -1,27 +1,30 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import Image from "next/image";
 import { useUser } from "@/hooks/useUser";
 import Link from "next/link";
+import Swal from "sweetalert2";
 import ShowWork from "@/components/ShowWork";
 import Footer from "@/components/Footer";
-import EditProfileForm from "./Edit/EditProfileForm"; // เรียกใช้ component ใหม่
 
 export default function User_Profile() {
   const supabase = createClient();
-  const useuserData = useUser(); // ไม่ destructure ทันที
+  const useuserData = useUser();
 
   const [userData, setUserData] = useState<any>(null);
   const [works, setWorks] = useState<any[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [profileImage, setProfileImage] = useState("/De_Profile.jpeg");
+  const [username, setUsername] = useState("");
+  const [newImage, setNewImage] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const useuser = useuserData?.user;
   const isUserLoading = useuserData?.isLoading;
   const userError = useuserData?.error;
 
-  // ฟังก์ชันสำหรับดึงข้อมูลผู้ใช้
   const fetchUserData = async () => {
     try {
       const { data: userData, error } = await supabase
@@ -29,30 +32,72 @@ export default function User_Profile() {
         .select("username, avatar_url")
         .eq("id", useuser.id)
         .limit(1)
-        .single(); // ดึงข้อมูลผู้ใช้หนึ่งคน
-
+        .single();
       if (error) throw error;
       if (userData) {
-        setUserData(userData); // บันทึกข้อมูลผู้ใช้
+        setUserData(userData);
+        setUsername(userData.username);
+        setProfileImage(userData.avatar_url || "/De_Profile.jpeg");
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
   };
 
-  // ฟังก์ชันสำหรับดึงข้อมูลงาน
   const fetchWorks = async () => {
     try {
       const { data: works, error } = await supabase
         .from("boards")
         .select("*, users (username, avatar_url)")
-        .eq("user_id", useuser.id) // ดึงข้อมูลงานที่สัมพันธ์กับ user_id ของผู้ใช้
+        .eq("user_id", useuser.id)
         .order("created_at", { ascending: false });
-
       if (error) throw error;
-      setWorks(works || []); // บันทึกข้อมูลงาน
+      setWorks(works || []);
     } catch (error) {
       console.error("Error fetching works:", error);
+    }
+  };
+
+  const handleProfileUpdate = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    const formData = new FormData();
+    formData.append("username", username);
+    if (newImage) {
+      formData.append("profile", newImage);
+    }
+
+    try {
+      const response = await supabase
+        .from("users")
+        .update({
+          username,
+          avatar_url: newImage
+            ? URL.createObjectURL(newImage)
+            : userData.avatar_url,
+        })
+        .eq("id", useuser.id);
+
+      if (response.error) {
+        setError(response.error.message);
+      } else {
+        Swal.fire({
+          icon: "success",
+          title: "อัปเดตโปรไฟล์สำเร็จ",
+          showConfirmButton: false,
+          timer: 1000,
+        }).then(() => {
+          window.location.reload();
+        });
+      }
+    } catch (err) {
+      setError("Error updating profile: " + (err as Error).message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -63,21 +108,13 @@ export default function User_Profile() {
     }
   }, [useuser, isUserLoading]);
 
-  // แสดงสถานะการโหลดหากข้อมูลยังไม่พร้อม
   if (isUserLoading || !useuser) {
     return <div>Loading...</div>;
   }
 
-  // ถ้ามี error ในการดึงข้อมูล user
   if (userError) {
     return <div>Error fetching user: </div>;
   }
-
-  if (!useuser) {
-    return <div>User not logged in</div>;
-  }
-
-  console.log(userData);
 
   return (
     <div className="w-full mt-14">
@@ -119,7 +156,7 @@ export default function User_Profile() {
                 </button>
                 <button
                   className="btn bg-white border-pain text-pain px-8 hover:bg-gray-200"
-                  onClick={() => setIsModalOpen(true)} // Open modal
+                  onClick={() => setIsModalOpen(true)}
                 >
                   แก้ไขโปรไฟล์
                 </button>
@@ -151,9 +188,58 @@ export default function User_Profile() {
 
       {/* Modal for Edit Profile */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-8 rounded-md shadow-lg w-5/6">
-            <EditProfileForm user={userData} />
+        <div
+          className="modal modal-open"
+          onClick={() => setIsModalOpen(false)} // Close on background click
+        >
+          <div
+            className="modal-box"
+            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
+          >
+            <form onSubmit={handleProfileUpdate}>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  Username
+                </label>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="input input-bordered w-full"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700">
+                  Profile Image
+                </label>
+                <div className="relative w-24 h-24 rounded-full hover:opacity-90 hover:scale-105 duration-150">
+                  <Image
+                    className="rounded-full"
+                    src={profileImage}
+                    alt="Profile"
+                    layout="fill"
+                    objectFit="cover"
+                  />
+                  <input
+                    type="file"
+                    className="absolute top-0 left-0 w-full h-full cursor-pointer opacity-0"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0] || null;
+                      setNewImage(file);
+                      if (file) {
+                        setProfileImage(URL.createObjectURL(file));
+                      }
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="flex justify-end mt-4">
+                <button type="submit" className="btn bg-pain text-white">
+                  บันทึก
+                </button>
+              </div>
+            </form>
             <div className="flex justify-end mt-4">
               <button
                 className="btn bg-bg text-text p-4"
