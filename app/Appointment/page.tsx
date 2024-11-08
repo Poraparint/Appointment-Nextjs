@@ -21,7 +21,15 @@ const Calendar = () => {
 
   useEffect(() => {
     const generateDates = () => {
-      const daysInWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      const daysInWeek = [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+      ];
       const numberOfDays = new Date(currentYear, currentMonth + 1, 0).getDate();
       const datesArray: DateObject[] = [];
 
@@ -65,25 +73,33 @@ const Calendar = () => {
 
   return (
     <div className="calendar-container text-sec flex flex-col items-center px-10 ">
-      <div className="w-full text-pain bg-bg rounded-md">
+      <div className="w-full text-text bg-bg rounded-md">
         <div className="">
           <div className="calendar-header flex justify-between items-center p-8 text-2xl">
-            <button onClick={handlePrevMonth} className="px-4 py-2 text-xl">
-              <i className="fas fa-arrow-left mx-1"></i>Previous
+            <button
+              onClick={handlePrevMonth}
+              className="px-4 py-2 text-xl flex gap-3 items-center"
+            >
+              <i className="fas fa-caret-left"></i>
+              <p>Previous</p>
             </button>
             <span>{displayMonth}</span> {/* Display the month here */}
-            <button onClick={handleNextMonth} className="px-4 py-2 text-xl">
-              Next<i className="fas fa-arrow-right mx-1"></i>
+            <button
+              onClick={handleNextMonth}
+              className="px-4 py-2 text-xl flex gap-3 items-center"
+            >
+              <p>Next</p>
+              <i className="fas fa-caret-right"></i>
             </button>
           </div>
-          <hr className="m-3" />
+          <hr className="m-5 border-light" />
           <div className="dates-grid flex overflow-x-auto whitespace-nowrap p-3">
             {dates.map(({ dayOfWeek, day, date }) => (
               <div
                 key={day}
-                className={`date-item p-4 mx-2 rounded-md text-center cursor-pointer transition-all duration-300 ${
+                className={`date-item p-4 mx-2 text-xl rounded-md text-center cursor-pointer transition-all duration-300 ${
                   date.toDateString() === today.toDateString()
-                    ? "border-2 border-pain"
+                    ? "border-2 border-text"
                     : ""
                 }`}
                 onClick={() => handleDateClick(date)}
@@ -94,7 +110,7 @@ const Calendar = () => {
               </div>
             ))}
           </div>
-          <hr className="m-3" />
+          <hr className="m-5 border-light" />
         </div>
 
         {selectedDate && <EventManager selectedDate={selectedDate} />}

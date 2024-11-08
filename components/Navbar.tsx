@@ -20,8 +20,8 @@ export default function Navbar() {
 
   return (
     <div>
-      <nav className="BoxShadow w-full bg-bg text-text drop-shadow-xl items-center flex justify-between px-5 fixed left-0 top-0 z-50">
-        <div className="flex">
+      <nav className="w-full bg-bg text-text drop-shadow-xl items-center flex justify-between px-5 fixed left-0 top-0 z-50">
+        <div className="">
           <Link href="/">
             <Image src="/A-dental-white.png" width={160} height={60} alt="Logo" />
           </Link>

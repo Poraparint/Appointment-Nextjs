@@ -19,7 +19,7 @@ const config = {
     },
     extend: {
       colors: {
-        ice: "#a0d2eb",
+        ice: "#E5EAF5",
         pain: "#8458B3",
         text: "#494D5F",
         baht: "#238326",
@@ -41,7 +41,7 @@ const config = {
         },
         btn: {
           background: "hsl(var(--btn-background))",
-          "background-hover": "hsl(var(--btn-background-hover))",
+          "background-hover": "hsl(var(--btn-pain-hover))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",

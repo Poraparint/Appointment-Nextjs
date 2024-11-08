@@ -55,7 +55,7 @@ export default async function AuthButton() {
 
   return (
     <details className="dropdown dropdown-bottom dropdown-end">
-      <summary className="relative rounded-full w-14 h-14 cursor-pointer self-center flex">
+      <summary className="relative rounded-full w-12 h-12 cursor-pointer self-center flex">
         <Image
           src={profileImageUrl}
           alt="Profile"
@@ -65,8 +65,8 @@ export default async function AuthButton() {
         />
       </summary>
       <ul className="menu dropdown-content shadow-md bg-bg w-72 mt-3 text-secondary rounded-lg rounded-tr-none p-0">
-        <li className="hover:bg-gray-100 duration-200 py-2 rounded-t-lg ">
-          <div className="flex gap-5 text-pain">
+        <li className="hover:bg-gray-100 duration-200 rounded-t-lg ">
+          <Link href="/User/User_Profile" className="flex gap-5 text-pain py-4">
             <div className="relative w-7 h-7 rounded-full">
               <Image
                 src={profileImageUrl}
@@ -78,20 +78,14 @@ export default async function AuthButton() {
             </div>
 
             <h1>{profileData.username}</h1>
-          </div>
+          </Link>
         </li>
         <hr className="border-[0.5px] border-light rounded-full" />
-        <li className="hover:bg-gray-100 duration-200 py-2 ">
-          <div className="flex gap-5 text-pain">
-            <i className="fa-solid fa-suitcase text-xl "></i>
-            <h1>เพิ่มงานของคุณ</h1>
-          </div>
-        </li>
-        <li className="hover:bg-gray-100 duration-200 py-2">
-          <div className="flex gap-5 text-pain">
-            <i className="fa-solid fa-building text-xl "></i>
-            <h1>ประกาศหาฟรีแลนซ์</h1>
-          </div>
+        <li className="hover:bg-gray-100 duration-200 ">
+          <Link href="/User/Article" className="flex gap-5 text-pain py-4">
+            <i className="fa-solid fa-book text-xl"></i>
+            <h1>เพิ่มบทความ</h1>
+          </Link>
         </li>
         <li className="">
           <form

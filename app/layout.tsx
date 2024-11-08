@@ -1,8 +1,6 @@
 import { Kanit } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import "@fortawesome/fontawesome-free/css/all.min.css";
-import "./globals.css";
 
 // การเรียกใช้ใน Javascript library & framework (React, Vue ฯลฯ)
 import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -13,7 +11,7 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   // metadataBase: new URL(defaultUrl),
-  title: "DL_Appointment",
+  title: "A-Dental",
   description: "Calendar?",
   icons: [{ url: "/favicon/favicon.ico", href: "/favicon/favicon.ico" }],
 };

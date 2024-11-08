@@ -4,7 +4,7 @@ import DeployButton from "./deploy-button"
 export default function Footer() {
   return (
     
-    <footer className='bg-primary mt-[40rem] max-md:hidden items-center flex justify-between text-white tracking-wide w-full'>
+    <footer className='bg-pain mt-[40rem] max-md:hidden items-center flex justify-between text-white tracking-wide w-full'>
       <DeployButton/>
         <div className='upper-footer w-[70%] py-10 gap-[5rem] justify-end flex'>
           <div>

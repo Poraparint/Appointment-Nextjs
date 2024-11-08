@@ -1,21 +1,23 @@
 "use client";
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
+import Swal from "sweetalert2";
 
 const EventManager = ({ selectedDate }: { selectedDate: Date }) => {
   const [events, setEvents] = useState<any>({});
   const [eventTexts, setEventTexts] = useState<any>({});
-  const [userId, setUserId] = useState<string | null>(null); // เก็บ user_id
+  const [userId, setUserId] = useState<string | null>(null);
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const supabase = createClient();
 
-  // ดึง user_id ของผู้ใช้ที่ล็อกอินอยู่
   useEffect(() => {
     const getUser = async () => {
       const {
         data: { user },
       } = await supabase.auth.getUser();
       if (user) {
-        setUserId(user.id); // เก็บ user_id
+        setUserId(user.id);
       }
     };
 
@@ -23,7 +25,7 @@ const EventManager = ({ selectedDate }: { selectedDate: Date }) => {
   }, []);
 
   useEffect(() => {
-    if (!userId) return; // ตรวจสอบว่ามี userId ก่อน
+    if (!userId) return;
 
     const fetchEvents = async () => {
       try {
@@ -31,14 +33,14 @@ const EventManager = ({ selectedDate }: { selectedDate: Date }) => {
           .from("APM")
           .select("*")
           .eq("date", selectedDate.toLocaleDateString("sv-SE"))
-          .eq("user_id", userId); // กรองข้อมูลเฉพาะของผู้ใช้ที่ล็อกอิน
+          .eq("user_id", userId);
 
         const eventsData = data?.reduce((acc: any, event: any) => {
           acc[event.time] = {
             id: event.id,
             name: event.name,
             transaction: event.transaction,
-            user_id: event.user_id, // เก็บ user_id ใน event
+            user_id: event.user_id,
           };
           return acc;
         }, {});
@@ -63,7 +65,7 @@ const EventManager = ({ selectedDate }: { selectedDate: Date }) => {
 
       const { error } = await supabase
         .from("APM")
-        .insert({ name, date, time, transaction, user_id: userId }); // เก็บ date ในรูปแบบ local
+        .insert({ name, date, time, transaction, user_id: userId });
 
       if (error) throw error;
 
@@ -76,6 +78,8 @@ const EventManager = ({ selectedDate }: { selectedDate: Date }) => {
         ...prevTexts,
         [time]: { name: "", transaction: "" },
       }));
+
+      setShowModal(false);
     } catch (error) {
       console.error("Error saving event", error);
     }
@@ -85,17 +89,54 @@ const EventManager = ({ selectedDate }: { selectedDate: Date }) => {
     const event = events[time];
     if (!event) return;
 
-    try {
-      const { error } = await supabase.from("APM").delete().eq("id", event.id);
-      if (error) throw error;
+    // Display a confirmation dialog
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you really want to delete this event?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    });
 
-      setEvents((prevEvents: any) => {
-        const updatedEvents = { ...prevEvents };
-        delete updatedEvents[time];
-        return updatedEvents;
-      });
-    } catch (error) {
-      console.error("Error deleting event", error);
+    if (result.isConfirmed) {
+      try {
+        const { error } = await supabase
+          .from("APM")
+          .delete()
+          .eq("id", event.id);
+        if (error) throw error;
+
+        setEvents((prevEvents: any) => {
+          const updatedEvents = { ...prevEvents };
+          delete updatedEvents[time];
+          return updatedEvents;
+        });
+
+        // Create a custom SweetAlert2 mixin for consistent styling
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 2000, // Set the timer for 2 seconds
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+
+        // Show success alert
+        Toast.fire({
+          icon: "success",
+          title: "ลบข้อมูลสำเร็จแล้ว",
+        });
+      } catch (error) {
+        console.error("Error deleting event", error);
+        // Show error alert
+        Swal.fire("Error", "There was an error deleting the event.", "error");
+      }
     }
   };
 
@@ -120,87 +161,120 @@ const EventManager = ({ selectedDate }: { selectedDate: Date }) => {
       "17:00",
     ];
 
-    return times.map((time) => (
-      <div key={time} className="box-event mb-4">
-        <div className="flex items-center">
-          <div className="text-2xl tracking-wide mr-4 px-5">{time}:</div>
-          <div className="calendar-box-input flex items-center w-full border p-4 rounded-md bg-gray-50">
-            <div className="flex flex-col w-full gap-2">
-              {events[time] ? (
+    return times.map((time) => {
+      const hasEvent = !!events[time];
+      return (
+        <div
+          key={time}
+          className={`border flex items-center tracking-wider gap-1 text-xl mb-5 rounded-md ${
+            hasEvent ? "border-white text-white bg-pain" : "border-text text-text"
+          }`}
+        >
+          <div className="border-r px-5 py-5 my-1 text-2xl">{time}</div>
+          <div className="w-full">
+            <div className="flex w-full gap-2 justify-between">
+              {hasEvent ? (
                 <>
-                  <div className="text-xl border border-gray-300 rounded-md p-2 w-full bg-bg">
-                    {events[time]?.name}
-                  </div>
-                  <div className="text-xl border border-gray-300 rounded-md p-2 w-full bg-bg">
-                    {events[time]?.transaction}
+                  <div className="flex flex-col w-full px-4 gap-4 my-5">
+                    <div className="text-3xl">{events[time]?.name}</div>
+                    <div className="text-2xl font-light">
+                      : {events[time]?.transaction}
+                    </div>
                   </div>
                   <button
                     onClick={() => handleDeleteEvent(time)}
-                    className="bg-danger text-white rounded-md px-4 py-2"
+                    className="border-l px-3 border-light"
                   >
-                    Delete
+                    <i className="fa-solid fa-trash"></i>
                   </button>
                 </>
               ) : (
-                <div className="flex gap-3">
-                  <div className="flex flex-col items-center gap-2 w-full">
-                    <input
-                      type="text"
-                      placeholder="ชื่อ"
-                      className="border border-gray-300 rounded-md p-2 w-full bg-bg text-xl"
-                      value={eventTexts[time]?.name || ""}
-                      onChange={(e) =>
-                        setEventTexts({
-                          ...eventTexts,
-                          [time]: { ...eventTexts[time], name: e.target.value },
-                        })
-                      }
-                    />
-                    <input
-                      type="text"
-                      placeholder="Transaction"
-                      className="border border-gray-300 rounded-md p-2 w-full bg-bg text-xl"
-                      value={eventTexts[time]?.transaction || ""}
-                      onChange={(e) =>
-                        setEventTexts({
-                          ...eventTexts,
-                          [time]: {
-                            ...eventTexts[time],
-                            transaction: e.target.value,
-                          },
-                        })
-                      }
-                    />
-                  </div>
-
-                  <button
-                    onClick={() =>
-                      handleEventSubmit(
-                        time,
-                        eventTexts[time]?.name || "",
-                        eventTexts[time]?.transaction || ""
-                      )
-                    }
-                    className="bg-pain text-white rounded-md px-4 py-2"
-                  >
-                    Add
-                  </button>
-                </div>
+                <button
+                  onClick={() => {
+                    setSelectedTime(time);
+                    setShowModal(true);
+                  }}
+                  className="py-6 rounded-md hover:bg-slate-100 duration-75 w-full"
+                >
+                  Add Event
+                </button>
               )}
             </div>
           </div>
         </div>
-        <hr className="my-3 border-gray-300" />
-      </div>
-    ));
+      );
+    });
   };
 
   return (
-    <div className="event-manager py-20 px-5 bg-bg rounded-b-md shadow-md text-text">
-      <h3 className="text-2xl mb-5 font-medium">
+    <div className="event-manager pb-20 px-5 bg-bg rounded-b-md shadow-md text-text">
+      <div className="border border-text rounded-md text-2xl text-text w-max px-6 py-3">
         {selectedDate.toDateString()}
-      </h3>
+      </div>
+      <hr className="border-light my-5" />
       {renderEventInputs()}
+
+      {showModal && selectedTime && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="modal modal-open">
+            <div className="modal-box bg-bg text-text">
+              <h2 className="text-3xl mb-7 text-pain mt-2">เพิ่มกิจกรรม</h2>
+              <div className="flex flex-col gap-5">
+                <input
+                  type="text"
+                  placeholder="กรอกชื่ออีเว้นท์..."
+                  className="border border-text rounded-md p-2 w-full bg-bg text-xl"
+                  value={eventTexts[selectedTime]?.name || ""}
+                  onChange={(e) =>
+                    setEventTexts({
+                      ...eventTexts,
+                      [selectedTime]: {
+                        ...eventTexts[selectedTime],
+                        name: e.target.value,
+                      },
+                    })
+                  }
+                />
+                <input
+                  type="text"
+                  placeholder="กรอกรายละเอียด..."
+                  className="border border-text rounded-md p-2 w-full bg-bg text-xl"
+                  value={eventTexts[selectedTime]?.transaction || ""}
+                  onChange={(e) =>
+                    setEventTexts({
+                      ...eventTexts,
+                      [selectedTime]: {
+                        ...eventTexts[selectedTime],
+                        transaction: e.target.value,
+                      },
+                    })
+                  }
+                />
+              </div>
+              <div className="modal-action ">
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="btn bg-bg text-text border-text hover:bg-slate-100"
+                >
+                  ยกเลิก
+                </button>
+                <button
+                  onClick={() =>
+                    handleEventSubmit(
+                      selectedTime,
+                      eventTexts[selectedTime]?.name || "",
+                      eventTexts[selectedTime]?.transaction || ""
+                    )
+                  }
+                  className="btn bg-pain text-white border-white"
+                >
+                  บันทึก
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
