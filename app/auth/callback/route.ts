@@ -2,33 +2,25 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 
 export async function GET(request: Request) {
-  console.log("GET request received:", request.url); // Log URL ที่ได้รับ
-
-  const { searchParams, origin } = new URL(request.url);
+  const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
-  console.log("OAuth code received:", code); // Log code ที่ได้รับจาก OAuth
-
-  const next = "/protected"; // Redirect to protected path after login
+  const next = searchParams.get("next") ?? "/protected";
 
   if (code) {
     const supabase = createClient();
-    console.log("Attempting to exchange code for session..."); // Log ก่อนแลกเปลี่ยน code
-
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
-      console.log(
-        "Session exchange successful, redirecting to:",
-        `${origin}${next}`
-      );
-      return NextResponse.redirect(`${origin}${next}`);
-    } else {
-      console.error("Error during session exchange:", error); // Log ข้อผิดพลาดหากมี
+      const isLocalEnv = process.env.NODE_ENV === "development";
+      const redirectUrl = isLocalEnv
+        ? `http://localhost:3000${next}`
+        : `https://appointment-dental.vercel.app${next}`;
+
+      return NextResponse.redirect(redirectUrl);
     }
-  } else {
-    console.warn("No code found in the request."); // Log หากไม่มี code ในคำขอ
   }
 
+  // ถ้าไม่สามารถเปลี่ยนเส้นทางได้ให้แสดงข้อผิดพลาด
   return NextResponse.json(
     { message: "Something went wrong" },
     { status: 500 }
