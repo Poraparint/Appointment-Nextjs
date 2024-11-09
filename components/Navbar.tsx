@@ -36,7 +36,7 @@ export default function Navbar() {
         <div className="flex gap-8 items-center p-3 text-base">
           <Link href="/Appointment">
             <button className="py-2 px-5 rounded-md bg-pain hover:bg-[#5e1778] text-bg duration-300 max-sm:text-sm">
-              Board
+              ปฏิทิน
             </button>
           </Link>
           {isSupabaseConnected && <AuthButton />}

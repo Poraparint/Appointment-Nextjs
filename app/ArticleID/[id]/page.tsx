@@ -141,7 +141,7 @@ export default function WorkDetail({ params }: { params: { id: string } }) {
     <div className="w-full">
       {work && (
         <div className="flex justify-center">
-          <div className="w-[95%] flex flex-row-reverse p-8 gap-4 max-lg:flex-col">
+          <div className="w-full flex flex-row-reverse px-5 gap-4 max-lg:flex-col max-sm:px-3">
             <div className="flex flex-col gap-5 w-4/12 max-lg:w-full">
               <div className="w-full bg-bg rounded-md shadow-md p-5 flex flex-col gap-7 tracking-wider min-[1024px]:sticky top-20">
                 <div className="w-full flex flex-col gap-4 bg-transparent ">
@@ -159,7 +159,7 @@ export default function WorkDetail({ params }: { params: { id: string } }) {
                   {Array.isArray(work.extra_img) &&
                     work.extra_img.length > 0 && (
                       <div>
-                        <div className="relative flex w-full gap-7 transition-transform duration-500 ease-in-out">
+                        <div className="relative flex w-full gap-2 transition-transform duration-500 ease-in-out">
                           {work.extra_img
                             .slice(currentImageIndex, currentImageIndex + 3) // แสดง 3 ภาพในแต่ละรอบ
                             .map((img: string, index: number) => (
@@ -226,7 +226,7 @@ export default function WorkDetail({ params }: { params: { id: string } }) {
               </div>
             </div>
             <div className="w-8/12 max-lg:w-full flex flex-col gap-5 tracking-wider text-text px-5 py-10 bg-bg rounded-md shadow-md">
-              <h1 className="text-text text-4xl font-semibold ">
+              <h1 className="text-text text-4xl font-semibold max-sm:text-2xl">
                 {work.title}
               </h1>
               <hr className="border-light my-3" />

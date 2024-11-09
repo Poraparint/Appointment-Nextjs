@@ -15,7 +15,7 @@ const ProfileButton: React.FC<ProfileButtonProps> = ({
   userDetails,
 }) => {
   return (
-    <div className="py-3 px-6">
+    <div className="py-2">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-5 my-5">
           <div className="relative w-14 h-14 max-sm:w-8 max-sm:h-8 rounded-full">
@@ -30,8 +30,8 @@ const ProfileButton: React.FC<ProfileButtonProps> = ({
           <h1 className="text-lg font-semibold text-text max-sm:text-sm">{username}</h1>
         </div>
         <Link href={`/UserView/${username}`}>
-          <button className="btn bg-white text-text border-text hover:bg-gray-50">
-            ดูโปรไฟล์ <i className="fa-solid fa-up-right-from-square ml-3"></i>
+          <button className="btn bg-white text-text border-text hover:bg-gray-50 ">
+            <p className="max-sm:hidden">ดูโปรไฟล์</p> <i className="fa-solid fa-up-right-from-square ml-3"></i>
           </button>
         </Link>
       </div>
