@@ -82,16 +82,16 @@ export default async function AuthButton() {
         </li>
         <hr className="border-[0.5px] border-light rounded-full" />
         <li className="hover:bg-gray-100 duration-200 ">
-          <Link href="/User/Article" className="flex gap-5 text-pain py-4">
+          <Link href="/User/Article" className="flex gap-5 text-text py-4">
             <i className="fa-solid fa-book text-xl"></i>
             <h1>เพิ่มบทความ</h1>
           </Link>
         </li>
-        <li className="">
+        <li className="text-text">
           <form
             action={signOut}
             method="post"
-            className="flex gap-5 hover:bg-gray-100 duration-200 py-4 rounded-b-lg text-pain"
+            className="flex gap-5 hover:bg-gray-100 duration-200 py-4 rounded-b-lg "
           >
             <i className="fa-solid fa-right-from-bracket text-xl"></i>
             <button type="submit" className="w-full text-left">
