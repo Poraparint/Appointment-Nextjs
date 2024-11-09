@@ -43,7 +43,7 @@ function SignInPage({ searchParams }: { searchParams: { message: string } }) {
 
   return (
     <div className="Page w-full">
-      <div className="flex justify-center w-4/6 grow bg-white backdrop-blur-sm rounded-3xl py-16 px-10 shadow-lg mx-auto">
+      <div className="flex justify-center w-3/6 max-lg:w-5/6 grow bg-white backdrop-blur-sm rounded-3xl py-16 px-10 shadow-lg mx-auto">
         {/* Back to Sign-Up Link */}
 
         {/* Sign-In Form Container */}
@@ -103,7 +103,7 @@ function SignInPage({ searchParams }: { searchParams: { message: string } }) {
                 pendingText="Signing In..."
                 className="w-full mt-4 "
               >
-                เข้าสู่ระบบ
+                กำลังพัฒนาไม่สามารถใช้งานได้ (Sign-in ด้วย Google แทน)
               </SubmitButton>
             </div>
           </form>

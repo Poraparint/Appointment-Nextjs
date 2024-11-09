@@ -114,7 +114,7 @@ export default function Signup() {
 
   return (
     <div className="w-full">
-      <div className="flex justify-center w-5/6 grow bg-bg backdrop-blur-sm rounded-3xl py-16 px-10 shadow-lg mx-auto">
+      <div className="flex justify-center w-3/6 grow bg-bg backdrop-blur-sm rounded-3xl py-16 px-10 shadow-lg mx-auto max-lg:w-5/6">
         {/* Sign-Up Form Container */}
         <div className="flex flex-col items-center w-full text-text">
           <div className="mb-6">
@@ -281,7 +281,7 @@ export default function Signup() {
               isDisabled={!isPasswordValid || !!error}
               pendingText="สมัครสมาชิก..."
             >
-              สมัครสมาชิก
+              กำลังพัฒนาไม่สามารถใช้งานได้
             </SubmitButton>
           </form>
 
