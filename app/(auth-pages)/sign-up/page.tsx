@@ -118,23 +118,23 @@ export default function Signup() {
       <div className="flex justify-center w-5/6 grow bg-bg backdrop-blur-sm rounded-3xl py-16 px-10 shadow-lg mx-auto">
         <Authimg />
         {/* Sign-Up Form Container */}
-        <div className="flex flex-col items-center w-full">
+        <div className="flex flex-col items-center w-full text-text">
           <div className="mb-6">
-            <h2 className="text-3xl font-bold text-secondary">สมัครสมาชิก</h2>
+            <h2 className="text-3xl font-bold ">สมัครสมาชิก</h2>
           </div>
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col gap-4 text-third w-full"
+            className="flex flex-col gap-4 w-full"
           >
             {/* Email */}
             <label className="block w-full">
               <span className="text-gray-700">อีเมล</span>
-              <div className="mt-1 flex items-center border border-light text-third rounded-md overflow-hidden focus-within:border-primary focus-within:text-primary focus-within:shadow-sm focus-within:shadow-primary">
+              <div className="mt-1 flex items-center border border-text rounded-md overflow-hidden focus-within:border-primary focus-within:text-pain focus-within:shadow-sm focus-within:shadow-text">
                 <i className="fa-solid fa-envelope px-3"></i>
                 <input
                   type="email"
                   name="email"
-                  className="w-full py-2 px-4 outline-none placeholder:text-light"
+                  className="w-full py-2 px-4 outline-none placeholder:text-light bg-bg border-l border-text"
                   placeholder="Enter your email"
                   required
                 />
@@ -144,12 +144,12 @@ export default function Signup() {
             {/* Username */}
             <label className="block w-full">
               <span className="text-gray-700">ชื่อที่แสดงในระบบ</span>
-              <div className="mt-1 flex items-center text-third border border-light rounded-md overflow-hidden focus-within:border-primary focus-within:text-primary focus-within:shadow-sm focus-within:shadow-primary">
+              <div className="mt-1 flex items-center border border-text rounded-md overflow-hidden focus-within:border-primary focus-within:text-pain focus-within:shadow-sm focus-within:shadow-text">
                 <i className="fa-solid fa-user px-3"></i>
                 <input
                   type="text"
                   name="username"
-                  className="w-full py-2 px-4 outline-none placeholder:text-light"
+                  className="w-full py-2 px-4 outline-none placeholder:text-light bg-bg border-l border-text"
                   placeholder="Enter your username"
                   required
                 />
@@ -159,12 +159,12 @@ export default function Signup() {
             {/* Password */}
             <label className="block w-full">
               <span className="text-gray-700">รหัสผ่าน</span>
-              <div className="mt-1 flex items-center border text-third border-light rounded-md overflow-hidden focus-within:border-primary focus-within:text-primary focus-within:shadow-sm focus-within:shadow-primary">
+              <div className="mt-1 flex items-center border border-text rounded-md overflow-hidden focus-within:border-primary focus-within:text-pain focus-within:shadow-sm focus-within:shadow-text">
                 <i className="fa-solid fa-lock px-3"></i>
                 <input
                   type={open ? "text" : "password"}
                   name="password"
-                  className="w-full py-2 px-4 outline-none placeholder:text-light"
+                  className="w-full py-2 px-4 outline-none placeholder:text-light bg-bg border-l border-text"
                   placeholder="Enter your password"
                   onChange={handlePasswordChange}
                   onFocus={handlePasswordFocus}
@@ -253,11 +253,11 @@ export default function Signup() {
             {/* Confirm Password */}
             <label className="block w-full">
               <span className="text-gray-700">ยืนยันรหัสผ่าน</span>
-              <div className="mt-1 flex items-center border text-third border-light rounded-md overflow-hidden focus-within:border-primary focus-within:text-primary focus-within:shadow-sm focus-within:shadow-primary">
+              <div className="mt-1 flex items-center border border-text rounded-md overflow-hidden focus-within:border-primary focus-within:text-pain focus-within:shadow-sm focus-within:shadow-text">
                 <i className="fa-solid fa-key px-3"></i>
                 <input
                   type={open ? "text" : "password"}
-                  className="w-full py-2 px-4 outline-none placeholder:text-light"
+                  className="w-full py-2 px-4 outline-none placeholder:text-light bg-bg border-l border-text"
                   placeholder="Confirm your password"
                   onChange={handleConfirmChange}
                   required

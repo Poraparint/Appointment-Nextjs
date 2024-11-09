@@ -22,11 +22,11 @@ export function SubmitButton({
   return (
     <button
       {...props}
-      className={`text-white w-full my-5 rounded-lg p-3  
+      className={`text-white w-full my-5 rounded-lg p-3 border-pain 
         ${
           isPending || isDisabled
             ? "btn bg-gray-200 text-gray-500 cursor-not-allowed"
-            : "btn bg-pri"
+            : "btn bg-pain hover:bg-purple-900 duration-75 hover:border-bg"
         }`}
       type="submit"
       aria-disabled={isPending || isDisabled} // ปรับ aria-disabled ให้สัมพันธ์กับทั้งสองสถานะ

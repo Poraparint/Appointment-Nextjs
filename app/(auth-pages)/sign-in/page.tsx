@@ -3,9 +3,7 @@ import { createClient } from "@/utils/supabase/client";
 import { signIn } from "./action";
 import Image from "next/image";
 import Link from "next/link";
-import Authimg from "@/components/Authimg";
 import React from "react";
-import Swal from "sweetalert2";
 
 // Components
 import { SubmitButton } from "@/components/submit-button";
@@ -45,26 +43,25 @@ function SignInPage({ searchParams }: { searchParams: { message: string } }) {
 
   return (
     <div className="Page w-full">
-      <div className="flex justify-center w-5/6 grow bg-white backdrop-blur-sm rounded-3xl py-16 px-10 shadow-lg mx-auto">
+      <div className="flex justify-center w-4/6 grow bg-white backdrop-blur-sm rounded-3xl py-16 px-10 shadow-lg mx-auto">
         {/* Back to Sign-Up Link */}
 
-        <Authimg />
         {/* Sign-In Form Container */}
         <div className="flex flex-col items-center w-full">
-          <h2 className="text-3xl font-bold text-secondary mb-10 text-center">
+          <h2 className="text-3xl font-bold text-text mb-10 text-center">
             เข้าสู่ระบบ
           </h2>
 
-          <form className="flex flex-col gap-6 text-third w-full">
+          <form className="flex flex-col gap-6 text-text w-full">
             {/* Email */}
             <label className="block w-full">
-              <span className="text-gray-700">อีเมล</span>
-              <div className="mt-1 flex items-center text-third border border-light rounded-md overflow-hidden focus-within:border-primary focus-within:text-primary focus-within:shadow-sm focus-within:shadow-primary">
+              <span>อีเมล</span>
+              <div className="mt-1 flex items-center border border-text rounded-md overflow-hidden focus-within:border-primary focus-within:text-pain focus-within:shadow-sm focus-within:shadow-text">
                 <i className="fa-solid fa-envelope px-3"></i>
                 <input
                   type="email"
                   name="email"
-                  className="w-full py-2 px-4 outline-none placeholder:text-light"
+                  className="w-full py-2 px-4 outline-none placeholder:text-light bg-bg border-l border-text"
                   placeholder="Enter your email"
                   required
                 />
@@ -74,12 +71,12 @@ function SignInPage({ searchParams }: { searchParams: { message: string } }) {
             {/* Password */}
             <label className="block w-full">
               <span className="text-gray-700">รหัสผ่าน</span>
-              <div className="mt-1 flex items-center text-third border border-light rounded-md overflow-hidden focus-within:border-primary focus-within:text-primary focus-within:shadow-sm focus-within:shadow-primary">
+              <div className="mt-1 flex items-center border border-text rounded-md overflow-hidden focus-within:border-primary focus-within:text-pain focus-within:shadow-sm focus-within:shadow-text">
                 <i className="fa-solid fa-lock px-3 "></i>
                 <input
                   type="password"
                   name="password"
-                  className="w-full py-2 px-4 outline-none placeholder:text-light"
+                  className="w-full py-2 px-4 outline-none placeholder:text-light bg-bg border-l border-text"
                   placeholder="Enter your password"
                   required
                 />
@@ -104,7 +101,7 @@ function SignInPage({ searchParams }: { searchParams: { message: string } }) {
               <SubmitButton
                 formAction={signIn}
                 pendingText="Signing In..."
-                className="w-full mt-4"
+                className="w-full mt-4 "
               >
                 เข้าสู่ระบบ
               </SubmitButton>
@@ -115,7 +112,7 @@ function SignInPage({ searchParams }: { searchParams: { message: string } }) {
           <div className="">
             <Link
               href="/sign-up"
-              className="text-sm text-secondary font-bold hover:underline"
+              className="text-sm text-text font-bold hover:underline"
             >
               สมัครสมาชิก <i className="fa-solid fa-arrow-right ml-1"></i>
             </Link>
@@ -130,7 +127,7 @@ function SignInPage({ searchParams }: { searchParams: { message: string } }) {
           <div className="flex justify-center">
             <button
               onClick={signInWithGoogle}
-              className="flex items-center text-secondary gap-3 px-6 py-3 bg-white border rounded-full shadow-sm hover:bg-gray-100 transition"
+              className="flex items-center text-text gap-3 px-6 py-3 bg-white border rounded-full shadow-sm hover:bg-gray-200 transition"
             >
               <div className="relative w-7 h-7 rounded-full">
                 <Image
