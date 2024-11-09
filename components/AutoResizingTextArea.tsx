@@ -11,6 +11,9 @@ const AutoResizingTextarea = ({ detail }: { detail: string }) => {
     }
   }, [detail]); // ทำงานเมื่อเนื้อหามีการเปลี่ยนแปลง
 
+  // ถ้า detail เป็น null หรือค่าว่าง, ไม่แสดง textarea
+  if (!detail) return null;
+  
   return (
     <textarea
       ref={textareaRef}

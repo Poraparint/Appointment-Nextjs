@@ -142,9 +142,9 @@ export default function WorkDetail({ params }: { params: { id: string } }) {
       {work && (
         <div className="flex justify-center">
           <div className="w-[95%] flex flex-row-reverse p-8 gap-4 max-lg:flex-col">
-            <div className="flex flex-col gap-5 w-2/6 max-lg:w-full">
+            <div className="flex flex-col gap-5 w-4/12 max-lg:w-full">
               <div className="w-full bg-bg rounded-md shadow-md p-5 flex flex-col gap-7 tracking-wider min-[1024px]:sticky top-20">
-                <div className="w-full flex flex-col gap-4 bg-transparent">
+                <div className="w-full flex flex-col gap-4 bg-transparent ">
                   <div className="relative w-full h-[27rem] rounded-md max-lg:h-80">
                     <Image
                       src={work.main_img}
@@ -159,13 +159,13 @@ export default function WorkDetail({ params }: { params: { id: string } }) {
                   {Array.isArray(work.extra_img) &&
                     work.extra_img.length > 0 && (
                       <div>
-                        <div className="relative flex w-full gap-7 transition-transform duration-500 ease-in-out min-[1024px]:flex-col">
+                        <div className="relative flex w-full gap-7 transition-transform duration-500 ease-in-out">
                           {work.extra_img
                             .slice(currentImageIndex, currentImageIndex + 3) // แสดง 3 ภาพในแต่ละรอบ
                             .map((img: string, index: number) => (
                               <div
                                 key={index}
-                                className="relative w-full h-[24rem] max-lg:h-32 cursor-pointer"
+                                className="relative w-full h-44 max-lg:h-32 cursor-pointer"
                                 onClick={() => openModal(img)}
                               >
                                 <Image
@@ -178,27 +178,24 @@ export default function WorkDetail({ params }: { params: { id: string } }) {
                               </div>
                             ))}
                           {/* Navigation Buttons */}
-                          {window.innerWidth < 1024 && (
-                            <>
-                              <button
-                                className="absolute left-2 top-1/2 transform -translate-y-1/2 h-full bg-gray-800 bg-opacity-50 text-white p-2 rounded-full opacity-75 hover:opacity-100 transition-opacity duration-300 min-[1024px]:hidden"
-                                onClick={prevImage}
-                                disabled={currentImageIndex === 0}
-                              >
-                                &lt;
-                              </button>
 
-                              <button
-                                className="absolute right-2 top-1/2 transform -translate-y-1/2 h-full bg-gray-800 bg-opacity-50 text-white p-2 rounded-full opacity-75 hover:opacity-100 transition-opacity duration-300 min-[1024px]:hidden"
-                                onClick={nextImage}
-                                disabled={
-                                  currentImageIndex >= work.extra_img.length - 3
-                                }
-                              >
-                                &gt;
-                              </button>
-                            </>
-                          )}
+                          <button
+                            className="absolute left-2 top-1/2 transform -translate-y-1/2 h-full bg-gray-800 bg-opacity-50 text-white p-2 rounded-full opacity-75 hover:opacity-100 transition-opacity duration-300"
+                            onClick={prevImage}
+                            disabled={currentImageIndex === 0}
+                          >
+                            &lt;
+                          </button>
+
+                          <button
+                            className="absolute right-2 top-1/2 transform -translate-y-1/2 h-full bg-gray-800 bg-opacity-50 text-white p-2 rounded-full opacity-75 hover:opacity-100 transition-opacity duration-300"
+                            onClick={nextImage}
+                            disabled={
+                              currentImageIndex >= work.extra_img.length - 3
+                            }
+                          >
+                            &gt;
+                          </button>
                         </div>
                       </div>
                     )}
@@ -206,7 +203,7 @@ export default function WorkDetail({ params }: { params: { id: string } }) {
                   {/* Modal for displaying the selected image */}
                   {isModalOpen && (
                     <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-                      <div className="relative w-4/6 rounded-lg bg-bg h-[45rem] max-lg:w-5/6 max-lg:h-[40rem] mt-9">
+                      <div className="relative w-3/6 rounded-lg bg-bg max-lg:w-5/6 h-[40rem] mt-9">
                         <button
                           className="absolute text-bg text-4xl z-[1] top-2 right-6 hover:text-primary duration-300"
                           onClick={closeModal}
@@ -228,7 +225,7 @@ export default function WorkDetail({ params }: { params: { id: string } }) {
                 </div>
               </div>
             </div>
-            <div className="w-5/6 max-lg:w-full flex flex-col gap-5 tracking-wider text-text px-5 py-10 bg-bg rounded-md shadow-md">
+            <div className="w-8/12 max-lg:w-full flex flex-col gap-5 tracking-wider text-text px-5 py-10 bg-bg rounded-md shadow-md">
               <h1 className="text-text text-4xl font-semibold ">
                 {work.title}
               </h1>
@@ -247,6 +244,12 @@ export default function WorkDetail({ params }: { params: { id: string } }) {
               </h1>
 
               <AutoResizingTextarea detail={work.detail2} />
+              <hr className="border-light my-3" />
+              <h1 className="text-primary text-2xl font-semibold ">
+                {work.title3}
+              </h1>
+
+              <AutoResizingTextarea detail={work.detail3} />
 
               <ProfileButton
                 username={work.users.username}

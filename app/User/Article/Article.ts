@@ -16,6 +16,8 @@ export const addWork = async (formData: FormData) => {
   const detail1 = formData.get("detail1") as string;
   const title2 = formData.get("title2") as string;
   const detail2 = formData.get("detail2") as string;
+  const title3 = formData.get("title2") as string;
+  const detail3 = formData.get("detail2") as string;
   const supabase = createClient();
 
   // รับข้อมูลผู้ใช้
@@ -100,6 +102,8 @@ export const addWork = async (formData: FormData) => {
         detail1,
         title2,
         detail2,
+        title3,
+        detail3,
         user_id: user.id,
       },
     ])

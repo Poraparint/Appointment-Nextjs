@@ -75,10 +75,10 @@ function FreeAddwork() {
 
   return (
     <div className="flex justify-center w-full">
-      <form className="w-full border p-8" onSubmit={handleSubmit}>
+      <form className="w-full p-8" onSubmit={handleSubmit}>
         <div className="flex flex-row gap-4 max-lg:flex-col">
           <div className="w-4/6 max-lg:w-full">
-            <div className="bg-bg flex flex-col gap-7 tracking-wider p-5">
+            <div className="bg-bg flex flex-col gap-7 tracking-wider p-5 rounded-md">
               <h1 className="ml-5 text-text text-xl">หัวข้อเรื่อง</h1>
               <input
                 name="title"
@@ -101,7 +101,7 @@ function FreeAddwork() {
                 type="text"
                 placeholder="หัวข้อย่อยที่ 1"
                 className="w-full text-text bg-ice border border-light rounded-md p-2 text-lg outline-none"
-                required
+                
               />
               <hr className="border-light" />
               <h1 className="ml-5 text-text text-xl">รายละเอียดย่อยที่ 1</h1>
@@ -109,7 +109,7 @@ function FreeAddwork() {
                 name="detail1"
                 placeholder="รายละเอียดย่อยที่ 1"
                 className="h-[10rem] w-full outline-none border border-light rounded-md p-3 text-lg text-text bg-ice"
-                required
+               
               ></textarea>
               <h1 className="ml-5 text-text text-xl">หัวข้อย่อยที่ 2</h1>
               <input
@@ -117,7 +117,7 @@ function FreeAddwork() {
                 type="text"
                 placeholder="หัวข้อย่อยที่ 2"
                 className="w-full text-text bg-ice border border-light rounded-md p-2 text-lg outline-none"
-                required
+                
               />
               <hr className="border-light" />
               <h1 className="ml-5 text-text text-xl">รายละเอียดย่อยที่ 2</h1>
@@ -125,7 +125,23 @@ function FreeAddwork() {
                 name="detail2"
                 placeholder="รายละเอียดย่อยที่ 2"
                 className="h-[10rem] w-full outline-none border border-light rounded-md p-3 text-lg text-text bg-ice"
-                required
+                
+              ></textarea>
+              <h1 className="ml-5 text-text text-xl">หัวข้อย่อยที่ 3</h1>
+              <input
+                name="title3"
+                type="text"
+                placeholder="หัวข้อย่อยที่ 1"
+                className="w-full text-text bg-ice border border-light rounded-md p-2 text-lg outline-none"
+                
+              />
+              <hr className="border-light" />
+              <h1 className="ml-5 text-text text-xl">รายละเอียดย่อยที่ 3</h1>
+              <textarea
+                name="detail3"
+                placeholder="รายละเอียดย่อยที่ 1"
+                className="h-[10rem] w-full outline-none border border-light rounded-md p-3 text-lg text-text bg-ice"
+               
               ></textarea>
             </div>
           </div>
