@@ -167,17 +167,23 @@ const EventManager = ({ selectedDate }: { selectedDate: Date }) => {
         <div
           key={time}
           className={`border flex items-center tracking-wider gap-1 text-xl mb-5 rounded-md ${
-            hasEvent ? "bg-gray-100 border-pain text-pain" : "border-text text-text"
+            hasEvent
+              ? "bg-gray-100 border-pain text-pain"
+              : "border-text text-text"
           }`}
         >
-          <div className="border-r px-5 py-5 my-1 text-2xl">{time}</div>
+          <div className="border-r px-5 py-5 my-1 text-2xl max-sm:text-xl">
+            {time}
+          </div>
           <div className="w-full">
             <div className="flex w-full gap-2 justify-between">
               {hasEvent ? (
                 <>
                   <div className="flex flex-col w-full px-4 gap-4 my-5">
-                    <div className="text-3xl">{events[time]?.name}</div>
-                    <div className="text-2xl font-light">
+                    <div className="text-3xl max-sm:text-xl">
+                      {events[time]?.name}
+                    </div>
+                    <div className="text-2xl font-light max-sm:text-lg">
                       : {events[time]?.transaction}
                     </div>
                   </div>
