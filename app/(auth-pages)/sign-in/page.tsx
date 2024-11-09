@@ -34,18 +34,10 @@ function SignInPage({ searchParams }: { searchParams: { message: string } }) {
       },
     });
     if (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Sign-In Failed",
-        text: error.message,
-      });
+      
       console.log("Error during sign-in with Google:", error);
     } else {
-      Swal.fire({
-        icon: "success",
-        title: "Sign-In Successful",
-        text: "You have successfully signed in with Google!",
-      });
+      
       console.log("Sign-in successful, redirecting...", data);
     }
   
