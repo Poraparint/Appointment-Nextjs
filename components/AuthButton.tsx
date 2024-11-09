@@ -25,13 +25,13 @@ export default async function AuthButton() {
       <div className="flex gap-3 text-pain ">
         <Link
           href="/sign-in"
-          className="py-2 px-5 flex items-center max-sm:text-[0.6rem] rounded-md border border-pain hover:bg-pain hover:text-bg duration-300"
+          className="py-2 px-5 flex items-center max-sm:text-[0.6rem] max-sm:px-2 rounded-md border border-pain hover:bg-pain hover:text-bg duration-300"
         >
           Login
         </Link>
         <Link
           href="/sign-up"
-          className="py-2 px-5 flex items-center max-sm:text-[0.6rem] rounded-md border border-pain hover:bg-pain hover:text-bg duration-300"
+          className="py-2 px-5 flex items-center max-sm:text-[0.6rem] max-sm:px-2 rounded-md border border-pain hover:bg-pain hover:text-bg duration-300"
         >
           Sign Up
         </Link>
