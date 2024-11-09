@@ -81,7 +81,7 @@ const Calendar = () => {
               className="px-4 py-2 text-xl flex gap-3 items-center max-sm:text-base"
             >
               <i className="fas fa-caret-left"></i>
-              <p>Previous</p>
+              <p className="max-sm:hidden">Previous</p>
             </button>
             <span className="max-sm:text-base">{displayMonth}</span>{" "}
             {/* Display the month here */}
@@ -89,7 +89,7 @@ const Calendar = () => {
               onClick={handleNextMonth}
               className="px-4 py-2 text-xl flex gap-3 items-center max-sm:text-base"
             >
-              <p>Next</p>
+              <p className="max-sm:hidden">Next</p>
               <i className="fas fa-caret-right"></i>
             </button>
           </div>
