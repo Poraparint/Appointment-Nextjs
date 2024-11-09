@@ -1,6 +1,7 @@
 "use server"
 
 import { createClient } from "@/utils/supabase/server";
+import { isAuthApiError } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
 
 export const signIn = async (formData: FormData) => {
@@ -12,7 +13,30 @@ export const signIn = async (formData: FormData) => {
 
   if (error) {
     console.error(error);
-    return redirect("/sign-in?message=Could not authenticate user");
+
+    if (isAuthApiError(error)) {
+      return redirect(`/sign-in?message=${encodeURIComponent(error.message)}&type=warning`);
+    }
+
+    switch (error.code) {
+      case "email_not_confirmed":
+        return redirect(
+          `/sign-in?message=${encodeURIComponent("This email address has not been verified. Please Check your email")}&type=warning`
+        );
+      case "user_banned":
+        return redirect(
+          `/sign-in?message=${encodeURIComponent("This user has been banned. Please contact support if you think this is an error.")}&type=warning`
+        );
+      case "user_not_found":
+        return redirect(
+          `/sign-in?message=${encodeURIComponent("The user was not found. Please sign up for an account first.")}&type=warning`
+        );
+      default:
+        return redirect(
+          `/sign-in?message=${encodeURIComponent("An unknown error occurred. Please try again.")}&type=danger`
+        );
+    }
+    
   }
 
   return redirect("/protected");
