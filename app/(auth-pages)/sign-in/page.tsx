@@ -23,33 +23,23 @@ function getURL() {
 function SignInPage({ searchParams }: { searchParams: { message: string } }) {
   const signInWithGoogle = async () => {
     const supabase = createClient();
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${getURL()}auth/callback`,
+        redirectTo: `${getURL()}protected`,
         queryParams: {
           access_type: "offline",
           prompt: "consent",
         },
       },
     });
+
     if (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Sign-In Failed",
-        text: error.message,
-      });
-      console.log("Error during sign-in with Google:", error);
-    } else {
-      Swal.fire({
-        icon: "success",
-        title: "Sign-In Successful",
-        text: "You have successfully signed in with Google!",
-      });
-      console.log("Sign-in successful, redirecting...", data);
+      console.error(error);
     }
-  
   };
+  
+  
 
   return (
     <div className="Page w-full">
