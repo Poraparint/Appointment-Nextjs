@@ -260,7 +260,7 @@ export default function WorkDetail({ params }: { params: { id: string } }) {
               {isOwner && (
                 <div className="flex justify-end">
                   <button
-                    className="btn bg-danger text-white w-1/4 hover:bg-red-900"
+                    className="btn bg-danger text-white w-2/4 hover:bg-red-900 border-bg"
                     onClick={() => setShowDeleteModal(true)} // เปิด modal เมื่อคลิก
                   >
                     ลบงานนี้

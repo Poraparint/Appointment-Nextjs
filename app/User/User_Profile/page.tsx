@@ -122,7 +122,7 @@ export default function User_Profile() {
         <div className="">
           <div className="bg-bg flex p-10 gap-5 rounded-md">
             {userData?.avatar_url ? (
-              <div className="relative w-24 h-24 rounded-full">
+              <div className="relative w-24 h-24 max-sm:w-12 max-sm:h-12 rounded-full">
                 <Image
                   className="rounded-full"
                   src={userData.avatar_url}
@@ -132,7 +132,7 @@ export default function User_Profile() {
                 />
               </div>
             ) : (
-              <div className="relative w-24 h-24 rounded-full">
+              <div className="relative w-24 h-24 max-sm:w-12 max-sm:h-12 rounded-full">
                 <Image
                   className="rounded-full"
                   src="/De_Profile.jpeg"
@@ -144,18 +144,20 @@ export default function User_Profile() {
             )}
             <div className="flex flex-col justify-between tracking-wide">
               {userData?.username ? (
-                <p className="text-text text-2xl flex text-center">
+                <p className="text-text text-2xl flex text-center max-sm:text-lg">
                   {userData.username}
                 </p>
               ) : (
-                <p>ไม่มีชื่อ</p>
+                <p className="text-text text-2xl flex text-center max-sm:text-lg">
+                  ไม่มีชื่อ
+                </p>
               )}
               <div className="flex gap-5 ">
-                <button className="btn bg-pain border-white text-white px-8 hover:bg-purple-800">
+                <button className="btn bg-pain border-white text-white px-8 hover:bg-purple-800 max-sm:text-sm max-sm:px-2">
                   <Link href="/User/Article">เพิ่มบทความ</Link>
                 </button>
                 <button
-                  className="btn bg-white border-pain text-pain px-8 hover:bg-gray-200"
+                  className="btn bg-white border-pain text-pain px-8 hover:bg-gray-200 max-sm:text-sm max-sm:px-2"
                   onClick={() => setIsModalOpen(true)}
                 >
                   แก้ไขโปรไฟล์
@@ -193,24 +195,22 @@ export default function User_Profile() {
           onClick={() => setIsModalOpen(false)} // Close on background click
         >
           <div
-            className="modal-box"
+            className="modal-box bg-bg text-text"
             onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
           >
             <form onSubmit={handleProfileUpdate}>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">
-                  Username
-                </label>
+              <div className="flex flex-col gap-3">
+                <label className="block text-sm font-medium">Username</label>
                 <input
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="input input-bordered w-full"
+                  className="input w-full bg-bg border-text"
                   required
                 />
               </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">
+              <div className="flex flex-col gap-3 mt-5">
+                <label className="block text-sm font-medium ">
                   Profile Image
                 </label>
                 <div className="relative w-24 h-24 rounded-full hover:opacity-90 hover:scale-105 duration-150">
@@ -234,8 +234,8 @@ export default function User_Profile() {
                   />
                 </div>
               </div>
-              <div className="flex justify-end mt-4">
-                <button type="submit" className="btn bg-pain text-white">
+              <div className="flex justify-end mt-5">
+                <button type="submit" className="btn bg-pain text-bg border-bg">
                   บันทึก
                 </button>
               </div>
