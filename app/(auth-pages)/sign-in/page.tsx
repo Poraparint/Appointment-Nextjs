@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Authimg from "@/components/Authimg";
 import React from "react";
+import Swal from "sweetalert2";
 
 // Components
 import { SubmitButton } from "@/components/submit-button";
@@ -32,13 +33,22 @@ function SignInPage({ searchParams }: { searchParams: { message: string } }) {
         },
       },
     });
-
-    console.log("OAuth sign-in response data:", data);
     if (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Sign-In Failed",
+        text: error.message,
+      });
       console.log("Error during sign-in with Google:", error);
     } else {
-      console.log("Sign-in successful, redirecting...");
+      Swal.fire({
+        icon: "success",
+        title: "Sign-In Successful",
+        text: "You have successfully signed in with Google!",
+      });
+      console.log("Sign-in successful, redirecting...", data);
     }
+  
   };
 
   return (
