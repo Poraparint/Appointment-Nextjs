@@ -23,12 +23,19 @@ export default function Navbar() {
       <nav className="w-full bg-bg text-text drop-shadow-xl items-center flex justify-between px-5 fixed left-0 top-0 z-50">
         <div className="">
           <Link href="/">
-            <Image src="/A-dental-white.png" width={160} height={60} alt="Logo" />
+            <div className="relative w-40 h-12 max-sm:w-24 max-sm:h-8">
+              <Image
+                src="/A-dental-white.png" // URL ของรูปภาพงาน
+                alt="Profile"
+                layout="fill" // ใช้ layout fill เพื่อให้รูปภาพเต็มพื้นที่
+                objectFit="cover" // ให้รูปภาพเต็มขนาดและครอบคลุม
+              />
+            </div>
           </Link>
         </div>
         <div className="flex gap-8 items-center p-3 text-base">
           <Link href="/Appointment">
-            <button className="py-2 px-5 rounded-md bg-pain hover:bg-[#5e1778] text-bg duration-300">
+            <button className="py-2 px-5 rounded-md bg-pain hover:bg-[#5e1778] text-bg duration-300 max-sm:text-sm">
               Board
             </button>
           </Link>

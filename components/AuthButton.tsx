@@ -25,13 +25,13 @@ export default async function AuthButton() {
       <div className="flex gap-3 text-pain ">
         <Link
           href="/sign-in"
-          className="py-2 px-5 flex rounded-md border border-pain hover:bg-pain hover:text-bg duration-300"
+          className="py-2 px-5 flex max-sm:text-sm rounded-md border border-pain hover:bg-pain hover:text-bg duration-300"
         >
           Login
         </Link>
         <Link
           href="/sign-up"
-          className="py-2 px-5 flex rounded-md border border-pain hover:bg-pain hover:text-bg duration-300"
+          className="py-2 px-5 flex max-sm:text-sm rounded-md border border-pain hover:bg-pain hover:text-bg duration-300"
         >
           Sign Up
         </Link>
@@ -55,11 +55,11 @@ export default async function AuthButton() {
 
   return (
     <details className="dropdown dropdown-bottom dropdown-end">
-      <summary className="relative rounded-full w-12 h-12 cursor-pointer self-center flex">
+      <summary className="relative rounded-full w-12 h-12 max-sm:w-8 max-sm:h-8 cursor-pointer self-center flex">
         <Image
           src={profileImageUrl}
           alt="Profile"
-          className="border-[0.5px] rounded-full border-white duration-300"
+          className="rounded-full duration-300"
           layout="fill"
           objectFit="cover"
         />

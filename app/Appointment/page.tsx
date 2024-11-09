@@ -78,15 +78,16 @@ const Calendar = () => {
           <div className="calendar-header flex justify-between items-center p-8 text-2xl">
             <button
               onClick={handlePrevMonth}
-              className="px-4 py-2 text-xl flex gap-3 items-center"
+              className="px-4 py-2 text-xl flex gap-3 items-center max-sm:text-base"
             >
               <i className="fas fa-caret-left"></i>
               <p>Previous</p>
             </button>
-            <span>{displayMonth}</span> {/* Display the month here */}
+            <span className="max-sm:text-base">{displayMonth}</span>{" "}
+            {/* Display the month here */}
             <button
               onClick={handleNextMonth}
-              className="px-4 py-2 text-xl flex gap-3 items-center"
+              className="px-4 py-2 text-xl flex gap-3 items-center max-sm:text-base"
             >
               <p>Next</p>
               <i className="fas fa-caret-right"></i>
@@ -97,7 +98,7 @@ const Calendar = () => {
             {dates.map(({ dayOfWeek, day, date }) => (
               <div
                 key={day}
-                className={`date-item p-4 mx-2 text-xl rounded-md text-center cursor-pointer transition-all duration-300 ${
+                className={`date-item p-4 mx-1 text-xl max-sm:text-base rounded-md text-center cursor-pointer transition-all duration-300 ${
                   date.toDateString() === today.toDateString()
                     ? "border-2 border-text"
                     : ""
