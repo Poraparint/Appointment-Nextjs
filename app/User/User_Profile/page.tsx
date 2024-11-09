@@ -119,10 +119,9 @@ export default function User_Profile() {
   return (
     <div className="w-full mt-14">
       <div className="px-10 flex flex-col gap-5 max-sm:px-3">
-        <div className="">
-          <div className="bg-bg flex p-10 gap-5 rounded-md">
+          <div className="bg-bg flex p-10 gap-5 rounded-md max-sm:flex-col items-center">
             {userData?.avatar_url ? (
-              <div className="relative w-24 h-24 max-sm:w-12 max-sm:h-12 rounded-full">
+              <div className="relative w-24 h-24 max-sm:w-16 max-sm:h-16 rounded-full">
                 <Image
                   className="rounded-full"
                   src={userData.avatar_url}
@@ -132,7 +131,7 @@ export default function User_Profile() {
                 />
               </div>
             ) : (
-              <div className="relative w-24 h-24 max-sm:w-12 max-sm:h-12 rounded-full">
+              <div className="relative w-24 h-24 max-sm:w-16 max-sm:h-16 rounded-full">
                 <Image
                   className="rounded-full"
                   src="/De_Profile.jpeg"
@@ -142,7 +141,7 @@ export default function User_Profile() {
                 />
               </div>
             )}
-            <div className="flex flex-col justify-between tracking-wide">
+            <div className="flex flex-col justify-between tracking-wide max-sm:items-center max-sm:gap-5">
               {userData?.username ? (
                 <p className="text-text text-2xl flex text-center max-sm:text-lg">
                   {userData.username}
@@ -165,7 +164,6 @@ export default function User_Profile() {
               </div>
             </div>
           </div>
-        </div>
         <div className="flex gap-5 max-xl:flex-col h-[50rem]">
           <div className="bg-bg w-3/4 rounded-md max-xl:w-full h-full p-5">
             <h1 className="text-text text-xl">บทความของคุณ</h1>
