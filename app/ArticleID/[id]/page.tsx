@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, SetStateAction } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { useRouter } from "next/navigation"; // นำเข้า useRouter
+import { useRouter } from "next/navigation";
 
 import Image from "next/image";
 import Footer from "@/components/Footer";
@@ -15,11 +15,11 @@ export default function WorkDetail({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [showDeleteModal, setShowDeleteModal] = useState(false); // State สำหรับ modal
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
   const supabase = createClient();
-  const router = useRouter(); // สร้าง router
+  const router = useRouter();
 
   const fetchWorkDetails = async (id: string) => {
     const { data, error } = await supabase
@@ -30,11 +30,27 @@ export default function WorkDetail({ params }: { params: { id: string } }) {
 
     if (data) {
       if (typeof data.extra_img === "string") {
-        data.extra_img = JSON.parse(data.extra_img);
+        try {
+          data.extra_img = JSON.parse(data.extra_img);
+        } catch (error) {
+          console.error("Error parsing extra_img JSON", error);
+          data.extra_img = []; // กำหนดให้เป็นอาร์เรย์ว่างหากเกิดข้อผิดพลาด
+        }
       }
-      setWork(data);
+
+      // กรองข้อมูล extra_img ให้อยู่ในรูปแบบของ URL ที่ถูกต้อง
+      const validImages = Array.isArray(data.extra_img)
+        ? data.extra_img.filter(
+            (img: string) => typeof img === "string" && img.trim() !== ""
+          )
+        : [];
+
+      setWork({
+        ...data,
+        extra_img: validImages, // ใช้เฉพาะภาพที่มีอยู่จริง
+      });
     } else {
-      console.error("Error fetching Article details:", error);
+      console.error("Error fetching work details:", error);
     }
     setLoading(false);
   };
@@ -81,18 +97,13 @@ export default function WorkDetail({ params }: { params: { id: string } }) {
     setSelectedImage("");
   };
 
-
   // ตรวจสอบว่าเป็นเจ้าของงานหรือไม่
   const isOwner = work?.users?.id === userId;
 
   const handleDelete = async () => {
-    const { error } = await supabase
-      .from("boards")
-      .delete()
-      .eq("id", work.id);
+    const { error } = await supabase.from("boards").delete().eq("id", work.id);
 
     if (!error) {
-      // ใช้ Swal.mixin() เพื่อสร้างการแจ้งเตือน
       const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -109,7 +120,6 @@ export default function WorkDetail({ params }: { params: { id: string } }) {
         icon: "success",
         title: "ลบงานสำเร็จ",
       }).then(() => {
-        // Redirect หลังจากแสดง toast
         router.push("/User/User_Profile");
       });
     } else {
@@ -124,7 +134,7 @@ export default function WorkDetail({ params }: { params: { id: string } }) {
 
   const confirmDelete = () => {
     handleDelete();
-    setShowDeleteModal(false); // ปิด modal หลังจากลบ
+    setShowDeleteModal(false);
   };
 
   return (
@@ -151,17 +161,12 @@ export default function WorkDetail({ params }: { params: { id: string } }) {
                       <div>
                         <div className="relative flex w-full gap-7 transition-transform duration-500 ease-in-out min-[1024px]:flex-col">
                           {work.extra_img
-                            .slice(
-                              currentImageIndex,
-                              window.innerWidth >= 1024
-                                ? work.extra_img.length // Load all images for min-[1024px]
-                                : currentImageIndex + 3 // Load 3 images for smaller screens
-                            )
+                            .slice(currentImageIndex, currentImageIndex + 3) // แสดง 3 ภาพในแต่ละรอบ
                             .map((img: string, index: number) => (
                               <div
                                 key={index}
                                 className="relative w-full h-[24rem] max-lg:h-32 cursor-pointer"
-                                onClick={() => openModal(img)} // Open modal on image click
+                                onClick={() => openModal(img)}
                               >
                                 <Image
                                   src={img}
@@ -173,7 +178,7 @@ export default function WorkDetail({ params }: { params: { id: string } }) {
                               </div>
                             ))}
                           {/* Navigation Buttons */}
-                          {window.innerWidth < 1024 && ( // Hide navigation buttons for larger screens
+                          {window.innerWidth < 1024 && (
                             <>
                               <button
                                 className="absolute left-2 top-1/2 transform -translate-y-1/2 h-full bg-gray-800 bg-opacity-50 text-white p-2 rounded-full opacity-75 hover:opacity-100 transition-opacity duration-300 min-[1024px]:hidden"
@@ -228,27 +233,21 @@ export default function WorkDetail({ params }: { params: { id: string } }) {
                 {work.title}
               </h1>
               <hr className="border-light my-3" />
-              
+
               <AutoResizingTextarea detail={work.detail} />
-<hr className="border-light my-3" />
+              <hr className="border-light my-3" />
               <h1 className="text-text text-2xl font-semibold ">
                 {work.title1}
               </h1>
-              
 
               <AutoResizingTextarea detail={work.detail1} />
-<hr className="border-light my-3" />
+              <hr className="border-light my-3" />
               <h1 className="text-primary text-2xl font-semibold ">
                 {work.title2}
               </h1>
-              
 
               <AutoResizingTextarea detail={work.detail2} />
 
-              <hr className="border-light my-3" />
-              <button className="btn bg-pain border-white hover:bg-purple-900 text-white">
-                คัดลอกลิ้งค์
-              </button>
               <ProfileButton
                 username={work.users.username}
                 avatarUrl={work.users.avatar_url}
@@ -269,7 +268,6 @@ export default function WorkDetail({ params }: { params: { id: string } }) {
           </div>
         </div>
       )}
-
       {/* Modal สำหรับยืนยันการลบ */}
       {showDeleteModal && (
         <div className="modal modal-open fixed inset-0 flex items-center justify-center z-50">
@@ -298,6 +296,7 @@ export default function WorkDetail({ params }: { params: { id: string } }) {
           </div>
         </div>
       )}
+
       <Footer />
     </div>
   );

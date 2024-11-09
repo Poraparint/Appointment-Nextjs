@@ -167,7 +167,7 @@ const EventManager = ({ selectedDate }: { selectedDate: Date }) => {
         <div
           key={time}
           className={`border flex items-center tracking-wider gap-1 text-xl mb-5 rounded-md ${
-            hasEvent ? "border-white text-white bg-pain" : "border-text text-text"
+            hasEvent ? "bg-gray-100 border-pain text-pain" : "border-text text-text"
           }`}
         >
           <div className="border-r px-5 py-5 my-1 text-2xl">{time}</div>
@@ -183,7 +183,7 @@ const EventManager = ({ selectedDate }: { selectedDate: Date }) => {
                   </div>
                   <button
                     onClick={() => handleDeleteEvent(time)}
-                    className="border-l px-3 border-light"
+                    className="border-l px-3 border-pain"
                   >
                     <i className="fa-solid fa-trash"></i>
                   </button>
