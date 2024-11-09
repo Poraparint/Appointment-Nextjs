@@ -118,7 +118,7 @@ export default function User_Profile() {
 
   return (
     <div className="w-full mt-14">
-      <div className="px-10 flex flex-col gap-5">
+      <div className="px-10 flex flex-col gap-5 max-sm:px-3">
         <div className="">
           <div className="bg-bg flex p-10 gap-5 rounded-md">
             {userData?.avatar_url ? (
