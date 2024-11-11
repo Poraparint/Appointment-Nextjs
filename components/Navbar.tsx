@@ -34,11 +34,7 @@ export default function Navbar() {
           </Link>
         </div>
         <div className="flex gap-8 items-center p-3 text-base">
-          <Link href="/Createboard">
-            <div className="py-2 px-5 rounded-md bg-pain hover:bg-[#5e1778] text-bg duration-300 max-sm:text-sm">
-              สร้างบอร์ด
-            </div>
-          </Link>
+          
           {isSupabaseConnected && <AuthButton />}
         </div>
       </nav>

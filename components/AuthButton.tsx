@@ -54,52 +54,61 @@ export default async function AuthButton() {
   const profileImageUrl = profileData?.avatar_url || "/De_Profile.jpeg"; // Default image if none exists
 
   return (
-    <details className="dropdown dropdown-bottom dropdown-end">
-      <summary className="relative rounded-full w-12 h-12 max-sm:w-8 max-sm:h-8 cursor-pointer self-center flex">
-        <Image
-          src={profileImageUrl}
-          alt="Profile"
-          className="rounded-full duration-300"
-          layout="fill"
-          objectFit="cover"
-        />
-      </summary>
-      <ul className="menu dropdown-content shadow-md bg-bg w-72 mt-3 text-secondary rounded-lg rounded-tr-none p-0">
-        <li className="hover:bg-gray-100 duration-200 rounded-t-lg ">
-          <Link href="/User/User_Profile" className="flex gap-5 text-pain py-4">
-            <div className="relative w-7 h-7 rounded-full">
-              <Image
-                src={profileImageUrl}
-                alt="Profile"
-                className=" rounded-full"
-                layout="fill"
-                objectFit="cover"
-              />
-            </div>
+    <div className="flex items-center gap-10">
+      <Link href="/Createboard">
+        <div className="py-2 px-5 rounded-md bg-pain hover:bg-[#5e1778] text-bg duration-300 max-sm:text-sm">
+          สร้างบอร์ด
+        </div>
+      </Link>
+      <details className="dropdown dropdown-bottom dropdown-end">
+        <summary className="relative rounded-full w-12 h-12 max-sm:w-8 max-sm:h-8 cursor-pointer self-center flex">
+          <Image
+            src={profileImageUrl}
+            alt="Profile"
+            className="rounded-full duration-300"
+            layout="fill"
+            objectFit="cover"
+          />
+        </summary>
+        <ul className="menu dropdown-content shadow-md bg-bg w-72 mt-3 text-secondary rounded-lg rounded-tr-none p-0">
+          <li className="hover:bg-gray-100 duration-200 rounded-t-lg ">
+            <Link
+              href="/User/User_Profile"
+              className="flex gap-5 text-pain py-4"
+            >
+              <div className="relative w-7 h-7 rounded-full">
+                <Image
+                  src={profileImageUrl}
+                  alt="Profile"
+                  className=" rounded-full"
+                  layout="fill"
+                  objectFit="cover"
+                />
+              </div>
 
-            <h1>{profileData.username}</h1>
-          </Link>
-        </li>
-        <hr className="border-[0.5px] border-light rounded-full" />
-        <li className="hover:bg-gray-100 duration-200 ">
-          <Link href="/User/Article" className="flex gap-5 text-text py-4">
-            <i className="fa-solid fa-book text-xl"></i>
-            <h1>เพิ่มบทความ</h1>
-          </Link>
-        </li>
-        <li className="text-text">
-          <form
-            action={signOut}
-           
-            className="flex gap-5 hover:bg-gray-100 duration-200 py-4 rounded-b-lg "
-          >
-            <i className="fa-solid fa-right-from-bracket text-xl"></i>
-            <button type="submit" className="w-full text-left">
-              ออกจากระบบ
-            </button>
-          </form>
-        </li>
-      </ul>
-    </details>
+              <h1>{profileData.username}</h1>
+            </Link>
+          </li>
+          <hr className="border-[0.5px] border-light rounded-full" />
+          <li className="hover:bg-gray-100 duration-200 ">
+            <Link href="/User/Article" className="flex gap-5 text-text py-4">
+              <i className="fa-solid fa-book text-xl"></i>
+              <h1>เพิ่มบทความ</h1>
+            </Link>
+          </li>
+          <li className="text-text">
+            <form
+              action={signOut}
+              className="flex gap-5 hover:bg-gray-100 duration-200 py-4 rounded-b-lg "
+            >
+              <i className="fa-solid fa-right-from-bracket text-xl"></i>
+              <button type="submit" className="w-full text-left">
+                ออกจากระบบ
+              </button>
+            </form>
+          </li>
+        </ul>
+      </details>
+    </div>
   );
 }
