@@ -133,6 +133,14 @@ const AppointmentBoard = ({ params }: PageProps) => {
     <div className="appointment-board px-10 max-sm:px-3 flex flex-col gap-5">
       <div className="bg-bg rounded-md p-5 flex flex-col gap-2 text-text">
         <h1 className="font-semibold text-3xl my-3">{boardData.board_name}</h1>
+        {boardData?.description ? (
+          <p className="text-gray-500 text-lg flex text-center max-sm:text-sm">
+            {boardData.description}
+          </p>
+        ) : (
+          <p className="text-gray-500 text-lg flex text-center max-sm:text-sm"></p>
+        )}
+        <hr className="border-light my-3"/>
         <BoardMemberInfo
           creatorUsername={boardData.users?.username}
           members={members}

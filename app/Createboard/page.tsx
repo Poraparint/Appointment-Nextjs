@@ -23,7 +23,7 @@ const CreateBoard = () => {
     const supabase = createClient();
     const { data, error } = await supabase
       .from("users")
-      .select("id, username")
+      .select("id, username, avatar_url")
       .ilike("username", `%${query}%`); // ค้นหาผู้ใช้โดยใช้ ilike เพื่อค้นหาจากคำที่พิมพ์
 
     if (error) {
@@ -40,7 +40,7 @@ const CreateBoard = () => {
     const supabase = createClient();
     const { data, error } = await supabase
       .from("users")
-      .select("id, username")
+      .select("id, username, avatar_url")
       .in("id", userIds);
 
     if (error) {
@@ -72,7 +72,7 @@ const CreateBoard = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!boardName || !description) {
+    if (!boardName) {
       Swal.fire("กรุณากรอกข้อมูลให้ครบถ้วน");
       return;
     }
@@ -110,10 +110,11 @@ const CreateBoard = () => {
   return (
     <div className="flex justify-center w-full">
       <form className="w-full p-8 max-sm:px-3" onSubmit={handleSubmit}>
-        <div className="bg-bg p-5 rounded-md">
-          <h2 className="text-xl mb-4">สร้างบอร์ดใหม่</h2>
+        <div className="bg-bg p-5 rounded-md flex flex-col gap-5 text-text">
+          <h2 className="text-xl">สร้างบอร์ดใหม่</h2>
+          <hr className="border-light" />
 
-          <div className="text-text">
+          <div className="flex flex-col gap-3">
             <label htmlFor="board_name" className="text-lg">
               ชื่อบอร์ด
             </label>
@@ -122,24 +123,24 @@ const CreateBoard = () => {
               type="text"
               value={boardName}
               onChange={(e) => setBoardName(e.target.value)}
-              className="w-full p-2 mb-4 border rounded-md bg-bg"
+              className="w-full p-2 rounded-md bg-ice"
               required
             />
           </div>
 
-          <div className="text-text">
+          <div className="flex flex-col gap-3">
             <label htmlFor="description" className="text-lg">
-              รายละเอียดบอร์ด
+              รายละเอียดบอร์ด (ไม่จำเป็นต้องกรอก)
             </label>
             <textarea
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full p-2 mb-4 border rounded-md bg-bg"
+              className="w-full p-2 rounded-md bg-ice"
             />
           </div>
 
-          <div className="text-text">
+          <div className="flex flex-col gap-3">
             <label htmlFor="users" className="text-lg">
               เชิญผู้ใช้เข้าบอร์ด
             </label>
@@ -150,35 +151,31 @@ const CreateBoard = () => {
                 setSearchQuery(e.target.value);
                 searchUsers(e.target.value);
               }}
-              className="w-full p-2 mb-4 border rounded-md bg-bg"
-              placeholder="ค้นหาโดยพิมพ์ชื่อผู้ใช้"
+              className="w-full p-2 rounded-md bg-ice"
+              placeholder="ค้นหา..."
             />
 
             {searchResults.length > 0 && (
               <div className="border border-gray-300 rounded-lg p-4 mt-4 bg-white shadow-sm">
                 <ul className="space-y-3">
                   {searchResults.map((user) => (
-                    <li
-                      key={user.id}
-                      className="flex justify-between items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all"
-                    >
-                      <div className="flex items-center gap-3">
-                        {/* Avatar */}
-                        <img
-                          src={user.avatar_url || "/De_Profile.jpeg"}
-                          alt={`${user.username}'s avatar`}
-                          className="w-8 h-8 rounded-full object-cover"
-                        />
-                        <span className="text-lg font-medium text-gray-700">
-                          {user.username}
-                        </span>
-                      </div>
+                    <li key={user.id}>
                       <button
                         type="button"
                         onClick={() => handleAddUser(user.id)}
-                        className="text-blue-500 hover:text-blue-700 transition-colors"
+                        className="flex justify-between items-center p-3 bg-gray-200 rounded-lg hover:bg-gray-400 transition-all w-full"
                       >
-                        เพิ่ม
+                        <div className="flex items-center gap-3">
+                          {/* Avatar */}
+                          <img
+                            src={user.avatar_url || "/De_Profile.jpeg"}
+                            alt={`${user.username}'s avatar`}
+                            className="w-8 h-8 rounded-full object-cover"
+                          />
+                          <span className="text-lg font-medium text-gray-700">
+                            {user.username}
+                          </span>
+                        </div>
                       </button>
                     </li>
                   ))}
@@ -187,33 +184,36 @@ const CreateBoard = () => {
             )}
 
             <div className="invited-users">
-              <h3 className="font-semibold text-xl mb-3">ผู้ใช้ที่เชิญ</h3>
-              <ul className="space-y-4">
+              <hr className="border-light my-5" />
+              <h3 className="text-xl my-5">ผู้ใช้ที่เชิญ</h3>
+              <ul>
                 {invitedUsers.map((userId) => (
-                  <li
-                    key={userId}
-                    className="flex items-center justify-between p-3 bg-white shadow-md rounded-lg hover:shadow-xl transition-all"
-                  >
-                    <div className="flex items-center gap-3">
+                  <li key={userId} className="">
+                    <div className="flex items-center gap-3 justify-between">
                       {/* Avatar image or default image */}
-                      <img
-                        src={
-                          usernames[userId]?.avatar_url || "/De_Profile.jpeg"
-                        }
-                        alt={`${usernames[userId]?.username}'s avatar`}
-                        className="w-10 h-10 rounded-full object-cover"
-                      />
-                      <span className="text-lg font-medium text-text">
-                        {usernames[userId]}
-                      </span>
+                      <div className="flex items-center gap-3">
+                        <img
+                          src={
+                            usernames[userId]?.avatar_url || "/De_Profile.jpeg"
+                          }
+                          alt={`${usernames[userId]?.username}'s avatar`}
+                          className="w-10 h-10 rounded-full object-cover"
+                        />
+                        <span className="text-lg font-medium text-text">
+                          {usernames[userId]}
+                        </span>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveUser(userId)}
+                        className="text-red-500 hover:text-red-700 transition-colors"
+                      >
+                        ลบ
+                      </button>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveUser(userId)}
-                      className="text-red-500 hover:text-red-700 transition-colors"
-                    >
-                      ลบ
-                    </button>
+
+                    <hr className="border-light my-5" />
                   </li>
                 ))}
               </ul>
