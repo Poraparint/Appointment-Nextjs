@@ -111,7 +111,7 @@ export default function WorkDetail({ params }: PageProps) {
   const isOwner = work?.users?.id === userId;
 
   const handleDelete = async () => {
-    const { error } = await supabase.from("boards").delete().eq("id", work.id);
+    const { error } = await supabase.from("article").delete().eq("id", work.id);
 
     if (!error) {
       const Toast = Swal.mixin({
