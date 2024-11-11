@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import Image from "next/legacy/image";
 
 export default async function AuthButton() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   // Fetch the user data
   const {
@@ -14,7 +14,7 @@ export default async function AuthButton() {
   // Function to handle the sign-out
   const signOut = async () => {
     "use server";
-    const supabase = createClient();
+    const supabase = await createClient();
     await supabase.auth.signOut();
     return redirect("/sign-in");
   };
@@ -90,7 +90,7 @@ export default async function AuthButton() {
         <li className="text-text">
           <form
             action={signOut}
-            method="post"
+           
             className="flex gap-5 hover:bg-gray-100 duration-200 py-4 rounded-b-lg "
           >
             <i className="fa-solid fa-right-from-bracket text-xl"></i>

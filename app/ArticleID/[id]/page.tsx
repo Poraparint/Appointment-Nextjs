@@ -1,16 +1,20 @@
 "use client";
 
-import { useState, useEffect, useRef, SetStateAction } from "react";
+import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-
 import Image from "next/image";
 import Footer from "@/components/Footer";
 import AutoResizingTextarea from "@/components/AutoResizingTextArea";
 import Swal from "sweetalert2";
 import ProfileButton from "@/components/ProfileButtonProps";
 
-export default function WorkDetail({ params }: { params: { id: string } }) {
+// Correct the type definition for PageProps
+type PageProps = {
+  params: Promise<{ id: string }>;
+};
+
+export default function WorkDetail({ params }: PageProps) {
   const [work, setWork] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
@@ -23,7 +27,7 @@ export default function WorkDetail({ params }: { params: { id: string } }) {
 
   const fetchWorkDetails = async (id: string) => {
     const { data, error } = await supabase
-      .from("boards")
+      .from("article")
       .select("*, users (username, avatar_url, id)")
       .eq("id", id)
       .single();
@@ -67,9 +71,15 @@ export default function WorkDetail({ params }: { params: { id: string } }) {
   };
 
   useEffect(() => {
-    fetchWorkDetails(params.id);
-    fetchUser();
-  }, [params.id]);
+    const fetchParams = async () => {
+      const resolvedParams = await params; // Ensure params is resolved
+      if (resolvedParams?.id) {
+        fetchWorkDetails(resolvedParams.id);
+        fetchUser();
+      }
+    };
+    fetchParams();
+  }, [params]);
 
   if (loading) {
     return <div>Loading...</div>;

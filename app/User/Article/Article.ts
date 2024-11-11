@@ -16,9 +16,9 @@ export const addWork = async (formData: FormData) => {
   const detail1 = formData.get("detail1") as string;
   const title2 = formData.get("title2") as string;
   const detail2 = formData.get("detail2") as string;
-  const title3 = formData.get("title2") as string;
-  const detail3 = formData.get("detail2") as string;
-  const supabase = createClient();
+  const title3 = formData.get("title3") as string;
+  const detail3 = formData.get("detail3") as string;
+  const supabase = await createClient();
 
   // รับข้อมูลผู้ใช้
   const {
@@ -91,7 +91,7 @@ export const addWork = async (formData: FormData) => {
 
   // Insert work into database
   const { data, error } = await supabase
-    .from("boards")
+    .from("article")
     .insert([
       {
         title,

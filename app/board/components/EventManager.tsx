@@ -1,9 +1,18 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import Swal from "sweetalert2";
 
-const EventManager = ({ selectedDate }: { selectedDate: Date }) => {
+interface EventManagerProps {
+  selectedDate: Date;
+  boardId: string; // ค่าที่รับมาจะเป็น string
+}
+
+const EventManager: React.FC<EventManagerProps> = ({
+  selectedDate,
+  boardId,
+}) => {
   const [events, setEvents] = useState<any>({});
   const [eventTexts, setEventTexts] = useState<any>({});
   const [userId, setUserId] = useState<string | null>(null);
@@ -25,7 +34,7 @@ const EventManager = ({ selectedDate }: { selectedDate: Date }) => {
   }, []);
 
   useEffect(() => {
-    if (!userId) return;
+    if (!userId || !boardId || !selectedDate) return;
 
     const fetchEvents = async () => {
       try {
@@ -33,7 +42,7 @@ const EventManager = ({ selectedDate }: { selectedDate: Date }) => {
           .from("APM")
           .select("*")
           .eq("date", selectedDate.toLocaleDateString("sv-SE"))
-          .eq("user_id", userId);
+          .eq("board_id", boardId) // Filter by boardId
 
         const eventsData = data?.reduce((acc: any, event: any) => {
           acc[event.time] = {
@@ -51,21 +60,26 @@ const EventManager = ({ selectedDate }: { selectedDate: Date }) => {
     };
 
     fetchEvents();
-  }, [selectedDate, userId]);
+  }, [selectedDate, userId, boardId]);
 
   const handleEventSubmit = async (
     time: string,
     name: string,
     transaction: string
   ) => {
-    if (!name.trim() || !transaction.trim() || !userId) return;
+    if (!name.trim() || !transaction.trim() || !userId || !boardId) return;
 
     try {
       const date = selectedDate.toLocaleDateString("sv-SE");
 
-      const { error } = await supabase
-        .from("APM")
-        .insert({ name, date, time, transaction, user_id: userId });
+      const { error } = await supabase.from("APM").insert({
+        name,
+        date,
+        time,
+        transaction,
+        user_id: userId,
+        board_id: boardId, // Add board_id when inserting
+      });
 
       if (error) throw error;
 
@@ -89,7 +103,6 @@ const EventManager = ({ selectedDate }: { selectedDate: Date }) => {
     const event = events[time];
     if (!event) return;
 
-    // Display a confirmation dialog
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "Do you really want to delete this event?",
@@ -105,7 +118,8 @@ const EventManager = ({ selectedDate }: { selectedDate: Date }) => {
         const { error } = await supabase
           .from("APM")
           .delete()
-          .eq("id", event.id);
+          .eq("id", event.id)
+          .eq("board_id", boardId); // Make sure we are deleting only from the correct board
         if (error) throw error;
 
         setEvents((prevEvents: any) => {
@@ -114,12 +128,11 @@ const EventManager = ({ selectedDate }: { selectedDate: Date }) => {
           return updatedEvents;
         });
 
-        // Create a custom SweetAlert2 mixin for consistent styling
         const Toast = Swal.mixin({
           toast: true,
           position: "top-end",
           showConfirmButton: false,
-          timer: 2000, // Set the timer for 2 seconds
+          timer: 2000,
           timerProgressBar: true,
           didOpen: (toast) => {
             toast.addEventListener("mouseenter", Swal.stopTimer);
@@ -127,14 +140,12 @@ const EventManager = ({ selectedDate }: { selectedDate: Date }) => {
           },
         });
 
-        // Show success alert
         Toast.fire({
           icon: "success",
-          title: "ลบข้อมูลสำเร็จแล้ว",
+          title: "Event deleted successfully",
         });
       } catch (error) {
         console.error("Error deleting event", error);
-        // Show error alert
         Swal.fire("Error", "There was an error deleting the event.", "error");
       }
     }
@@ -257,13 +268,7 @@ const EventManager = ({ selectedDate }: { selectedDate: Date }) => {
                   }
                 />
               </div>
-              <div className="modal-action ">
-                <button
-                  onClick={() => setShowModal(false)}
-                  className="btn bg-bg text-text border-text hover:bg-slate-100"
-                >
-                  ยกเลิก
-                </button>
+              <div className="modal-action">
                 <button
                   onClick={() =>
                     handleEventSubmit(
@@ -272,9 +277,15 @@ const EventManager = ({ selectedDate }: { selectedDate: Date }) => {
                       eventTexts[selectedTime]?.transaction || ""
                     )
                   }
-                  className="btn bg-pain text-white border-white"
+                  className="btn btn-primary"
                 >
-                  บันทึก
+                  เพิ่มกิจกรรม
+                </button>
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="btn btn-outline"
+                >
+                  ยกเลิก
                 </button>
               </div>
             </div>

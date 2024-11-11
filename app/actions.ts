@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
   const password = formData.get("password")?.toString();
-  const supabase = createClient();
+  const supabase = await createClient();
   const origin = (await headers()).get("origin");
 
   if (!email || !password) {

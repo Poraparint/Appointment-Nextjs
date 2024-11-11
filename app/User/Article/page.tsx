@@ -7,10 +7,20 @@ import { useState, useRef } from "react"; // นำเข้า React hooks ส�
 // ฟังก์ชันคอมโพเนนต์ FreeAddwork: สำหรับจัดการฟอร์มการเพิ่มงานหรือโพสต์งาน
 function FreeAddwork() {
   const router = useRouter();
+
+  const [sectionCount, setSectionCount] = useState(0);
+
   const [mainImg, setMainImg] = useState<File | null>(null);
   const [files, setFiles] = useState<File[]>([]);
   const mainImgInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // ฟังก์ชันสำหรับเพิ่มจำนวนส่วนหัวข้อย่อย
+  const handleAddSection = () => {
+    if (sectionCount < 3) {
+      setSectionCount(sectionCount + 1);
+    }
+  };
 
   const handleMainImgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
@@ -95,48 +105,39 @@ function FreeAddwork() {
                 className="h-[10rem] w-full outline-none border border-light rounded-md p-3 text-lg text-text bg-ice"
                 required
               ></textarea>
-              <h1 className="ml-5 text-text text-xl">หัวข้อย่อยที่ 1</h1>
-              <input
-                name="title1"
-                type="text"
-                placeholder="หัวข้อย่อยที่ 1"
-                className="w-full text-text bg-ice border border-light rounded-md p-2 text-lg outline-none"
-              />
+              
               <hr className="border-light" />
-              <h1 className="ml-5 text-text text-xl">รายละเอียดย่อยที่ 1</h1>
-              <textarea
-                name="detail1"
-                placeholder="รายละเอียดย่อยที่ 1"
-                className="h-[10rem] w-full outline-none border border-light rounded-md p-3 text-lg text-text bg-ice"
-              ></textarea>
-              <h1 className="ml-5 text-text text-xl">หัวข้อย่อยที่ 2</h1>
-              <input
-                name="title2"
-                type="text"
-                placeholder="หัวข้อย่อยที่ 2"
-                className="w-full text-text bg-ice border border-light rounded-md p-2 text-lg outline-none"
-              />
-              <hr className="border-light" />
-              <h1 className="ml-5 text-text text-xl">รายละเอียดย่อยที่ 2</h1>
-              <textarea
-                name="detail2"
-                placeholder="รายละเอียดย่อยที่ 2"
-                className="h-[10rem] w-full outline-none border border-light rounded-md p-3 text-lg text-text bg-ice"
-              ></textarea>
-              <h1 className="ml-5 text-text text-xl">หัวข้อย่อยที่ 3</h1>
-              <input
-                name="title3"
-                type="text"
-                placeholder="หัวข้อย่อยที่ 1"
-                className="w-full text-text bg-ice border border-light rounded-md p-2 text-lg outline-none"
-              />
-              <hr className="border-light" />
-              <h1 className="ml-5 text-text text-xl">รายละเอียดย่อยที่ 3</h1>
-              <textarea
-                name="detail3"
-                placeholder="รายละเอียดย่อยที่ 1"
-                className="h-[10rem] w-full outline-none border border-light rounded-md p-3 text-lg text-text bg-ice"
-              ></textarea>
+              {/* แสดงส่วนหัวข้อย่อยตามจำนวน sectionCount */}
+              {[...Array(sectionCount)].map((_, index) => (
+                <div key={index} className="flex flex-col gap-3">
+                  <h1 className="ml-5 text-text text-xl">
+                    หัวข้อย่อยที่ {index + 1}
+                  </h1>
+                  <input
+                    name={`title${index + 1}`}
+                    type="text"
+                    placeholder={`หัวข้อย่อยที่ ${index + 1}`}
+                    className="w-full text-text bg-ice border border-light rounded-md p-2 text-lg outline-none"
+                  />
+                  <hr className="border-light" />
+                  <h1 className="ml-5 text-text text-xl">
+                    รายละเอียดย่อยที่ {index + 1}
+                  </h1>
+                  <textarea
+                    name={`detail${index + 1}`}
+                    placeholder={`รายละเอียดย่อยที่ ${index + 1}`}
+                    className="h-[10rem] w-full outline-none border border-light rounded-md p-3 text-lg text-text bg-ice"
+                  ></textarea>
+                </div>
+              ))}
+              {/* ปุ่มสำหรับเพิ่มส่วนหัวข้อย่อย */}
+              <button
+                type="button"
+                onClick={handleAddSection}
+                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+              >
+                เพิ่มหัวข้อย่อย
+              </button>
             </div>
           </div>
           <div className="w-2/6 max-lg:w-full">

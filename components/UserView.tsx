@@ -42,7 +42,7 @@ export default function UserView({ username }: UserViewProps) {
     try {
       // ใช้ userId ที่ได้จาก fetchUserData เพื่อดึงงานของผู้ใช้ที่เลือก
       const { data: works, error } = await supabase
-        .from("boards") // ชื่อ table ที่เก็บงานของผู้ใช้
+        .from("article") // ชื่อ table ที่เก็บงานของผู้ใช้
         .select("*")
         .eq("user_id", userId); // ตรวจสอบว่า user_id ตรงกับ ID ของผู้ใช้ที่เลือก
 
@@ -98,12 +98,12 @@ export default function UserView({ username }: UserViewProps) {
             </div>
           </div>
         </div>
-        <div className="flex gap-5 max-xl:flex-col h-[50rem]">
+        <div className="flex gap-5 max-xl:flex-col">
           <div className="bg-bg rounded-md w-full p-5">
-            <h1 className="text-text text-xl">บทความของ {username}</h1>
+            <h1 className="text-text text-xl">บทความ</h1>
             <div>
               {userWorks.length > 0 ? ( // แสดงงานของผู้ใช้
-                <div className="grid grid-cols-3 grid-rows-1 gap-5 max-lg:grid-cols-1 mt-8 ">
+                <div className="grid grid-cols-4 grid-rows-1 gap-5 max-lg:grid-cols-3 max-md:grid-cols-1 mt-8 ">
                   {userWorks.map((work) => (
                     <ShowWork key={work.id} work={work} />
                   ))}

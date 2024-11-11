@@ -10,7 +10,7 @@ const defaultUrl = process.env.VERCEL_URL
   : "http://localhost:3000";
 
 export const metadata = {
-  // metadataBase: new URL(defaultUrl),
+  metadataBase: new URL(defaultUrl),
   title: "A-Dental",
   description: "Calendar?",
   icons: [{ url: "/favicon/favicon.ico", href: "/favicon/favicon.ico" }],
@@ -32,11 +32,7 @@ export default function RootLayout({
       <body className="bg-background text-foreground">
         <main className="min-h-screen flex flex-col items-center">
           <Navbar />
-          <div className="mt-24 w-full">
-            {children}
-          </div>
-          
-          
+          <div className="mt-24 w-full">{children}</div>
         </main>
       </body>
     </html>

@@ -6,7 +6,7 @@ export async function updateProfile(formData: FormData) {
     const username = formData.get("username") as string | null;
     const avatar = formData.get("profile") as File | null;
 
-    const supabase = createClient();
+    const supabase = await createClient();
 
     // ดึงข้อมูลผู้ใช้จาก Supabase Auth
     const {

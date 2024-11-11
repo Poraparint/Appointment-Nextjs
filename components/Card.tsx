@@ -22,7 +22,7 @@ export default function Card() {
   const fetch = async () => {
     const supabase = createClient();
     let { data: Freework } = await supabase
-      .from("boards")
+      .from("article")
       .select("*, users (username)")
       .order("created_at", { ascending: false });
 

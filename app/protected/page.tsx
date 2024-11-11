@@ -2,7 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
 export default async function ProtectedPage() {
-  const supabase = createClient(); // สร้าง Supabase client
+  const supabase = await createClient(); // สร้าง Supabase client
 
   const {
     data: { user },
