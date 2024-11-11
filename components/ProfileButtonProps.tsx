@@ -6,13 +6,11 @@ import Image from "next/image";
 interface ProfileButtonProps {
   username: string;
   avatarUrl: string;
-  userDetails: string;
 }
 
 const ProfileButton: React.FC<ProfileButtonProps> = ({
   username,
   avatarUrl,
-  userDetails,
 }) => {
   return (
     <div className="py-2">

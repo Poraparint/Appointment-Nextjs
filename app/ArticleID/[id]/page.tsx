@@ -264,7 +264,6 @@ export default function WorkDetail({ params }: PageProps) {
               <ProfileButton
                 username={work.users.username}
                 avatarUrl={work.users.avatar_url}
-                userDetails={work.users.userdetails}
               />
               {/* แสดงปุ่มลบถ้าผู้ใช้ปัจจุบันเป็นเจ้าของงาน */}
               {isOwner && (
