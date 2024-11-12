@@ -25,7 +25,7 @@ export default function Navbar() {
           <Link href="/">
             <div className="relative w-40 h-12 max-sm:w-20 max-sm:h-7">
               <Image
-                src="/A-dental-white.png" // URL ของรูปภาพงาน
+                src="/A-Write.png" // URL ของรูปภาพงาน
                 alt="Profile"
                 layout="fill" // ใช้ layout fill เพื่อให้รูปภาพเต็มพื้นที่
                 objectFit="cover" // ให้รูปภาพเต็มขนาดและครอบคลุม

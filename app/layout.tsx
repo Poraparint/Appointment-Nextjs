@@ -11,7 +11,7 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "A-Dental",
+  title: "A-Write",
   description: "Calendar?",
   icons: [{ url: "/favicon/favicon.ico", href: "/favicon/favicon.ico" }],
 };
