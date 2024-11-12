@@ -9,6 +9,7 @@ interface EventManagerProps {
   boardId: string; // ค่าที่รับมาจะเป็น string
 }
 
+
 const EventManager: React.FC<EventManagerProps> = ({
   selectedDate,
   boardId,
@@ -40,9 +41,11 @@ const EventManager: React.FC<EventManagerProps> = ({
       try {
         const { data } = await supabase
           .from("APM")
-          .select("*")
+          .select(
+            "*"
+          )
           .eq("date", selectedDate.toLocaleDateString("sv-SE"))
-          .eq("board_id", boardId) // Filter by boardId
+          .eq("board_id", boardId); // Filter by boardId
 
         const eventsData = data?.reduce((acc: any, event: any) => {
           acc[event.time] = {
@@ -50,6 +53,7 @@ const EventManager: React.FC<EventManagerProps> = ({
             name: event.name,
             transaction: event.transaction,
             user_id: event.user_id,
+            
           };
           return acc;
         }, {});
@@ -177,46 +181,46 @@ const EventManager: React.FC<EventManagerProps> = ({
       return (
         <div
           key={time}
-          className={`border flex items-center tracking-wider gap-1 text-xl mb-5 rounded-md ${
+          className={`border rounded-md flex items-center gap-4 p-4 mb-5 transition-all duration-300 ease-in-out transform ${
             hasEvent
-              ? "bg-gray-100 border-pain text-pain"
-              : "border-text text-text"
+              ? "bg-gray-100 border-text"
+              : "border-light "
           }`}
         >
-          <div className="border-r px-5 py-5 my-1 text-2xl max-sm:text-xl">
+          <div className="flex-shrink-0 text-xl font-medium text-text w-16 text-center border-r border-text">
             {time}
           </div>
-          <div className="w-full">
-            <div className="flex w-full gap-2 justify-between">
-              {hasEvent ? (
-                <>
-                  <div className="flex flex-col w-full px-4 gap-4 my-5">
-                    <div className="text-3xl max-sm:text-xl">
-                      {events[time]?.name}
-                    </div>
-                    <div className="text-2xl font-light max-sm:text-lg">
-                      : {events[time]?.transaction}
-                    </div>
-                  </div>
+
+          <div className="flex-grow flex flex-col gap-2 tracking-wide">
+            {hasEvent ? (
+              <>
+                <div className="text-2xl font-semibold text-text">
+                  {events[time]?.name}
+                </div>
+                <div className="text-lg text-gray-600">
+                  : {events[time]?.transaction}
+                </div>
+                <div className="flex justify-end items-center">
+                 
                   <button
                     onClick={() => handleDeleteEvent(time)}
-                    className="border-l px-3 border-pain"
+                    className="text-red-500 hover:text-red-700 transition-colors duration-200"
                   >
-                    <i className="fa-solid fa-trash"></i>
+                    <i className="fa-solid fa-trash"></i> Delete
                   </button>
-                </>
-              ) : (
-                <button
-                  onClick={() => {
-                    setSelectedTime(time);
-                    setShowModal(true);
-                  }}
-                  className="py-6 rounded-md hover:bg-slate-100 duration-75 w-full"
-                >
-                  Add Event
-                </button>
-              )}
-            </div>
+                </div>
+              </>
+            ) : (
+              <button
+                onClick={() => {
+                  setSelectedTime(time);
+                  setShowModal(true);
+                }}
+                className="py-3 px-6 text-lg text-bg bg-pain hover:bg-purple-900 rounded-md shadow-md transition-all duration-300 transform"
+              >
+                Add Event
+              </button>
+            )}
           </div>
         </div>
       );
@@ -270,6 +274,12 @@ const EventManager: React.FC<EventManagerProps> = ({
               </div>
               <div className="modal-action">
                 <button
+                  onClick={() => setShowModal(false)}
+                  className="btn btn-outline"
+                >
+                  ยกเลิก
+                </button>
+                <button
                   onClick={() =>
                     handleEventSubmit(
                       selectedTime,
@@ -277,15 +287,9 @@ const EventManager: React.FC<EventManagerProps> = ({
                       eventTexts[selectedTime]?.transaction || ""
                     )
                   }
-                  className="btn btn-primary"
+                  className="btn bg-pain text-bg border-bg hover:bg-purple-900"
                 >
                   เพิ่มกิจกรรม
-                </button>
-                <button
-                  onClick={() => setShowModal(false)}
-                  className="btn btn-outline"
-                >
-                  ยกเลิก
                 </button>
               </div>
             </div>
