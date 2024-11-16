@@ -130,7 +130,7 @@ const SignInPage = () => {
                 pendingText="Signing In..."
                 className="w-full mt-4 "
               >
-                กำลังพัฒนาไม่สามารถใช้งานได้ (Sign-in ด้วย Google แทน)
+                เข้าสู่ระบบ
               </SubmitButton>
             </div>
           </form>

@@ -281,7 +281,7 @@ export default function Signup() {
               isDisabled={!isPasswordValid || !!error}
               pendingText="สมัครสมาชิก..."
             >
-              กำลังพัฒนาไม่สามารถใช้งานได้
+              สมัครสมาชิก
             </SubmitButton>
           </form>
 

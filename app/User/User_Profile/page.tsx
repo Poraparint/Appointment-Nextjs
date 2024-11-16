@@ -193,7 +193,7 @@ export default function User_Profile() {
               {showWorks && (
                 <div>
                   {works && works.length > 0 ? (
-                    <div className="grid grid-cols-3 grid-rows-1 gap-4 max-lg:grid-cols-1 bg-white shadow-md rounded-md p-5">
+                    <div className="grid grid-cols-3 grid-rows-1 gap-4 max-lg:grid-cols-1 bg-bg rounded-md p-5">
                       {works.map((work) => (
                         <ShowWork key={work.id} work={work} />
                       ))}
