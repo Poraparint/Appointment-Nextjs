@@ -39,32 +39,66 @@ const EventManager: React.FC<EventManagerProps> = ({
 
     const fetchEvents = async () => {
       try {
-        const { data } = await supabase
+        // Step 1: ดึงข้อมูลจาก APM
+        const { data: apmData, error: apmError } = await supabase
           .from("APM")
-          .select(
-            "*"
-          )
+          .select("id, name, date, transaction, time, user_id")
           .eq("date", selectedDate.toLocaleDateString("sv-SE"))
-          .eq("board_id", boardId); // Filter by boardId
+          .eq("board_id", boardId);
 
-        const eventsData = data?.reduce((acc: any, event: any) => {
+        if (apmError) {
+          console.error("Error fetching APM data:", apmError);
+          return;
+        }
+
+        if (!apmData || apmData.length === 0) {
+          setEvents({});
+          return;
+        }
+
+        // สร้าง Set ของ user_id ที่ต้องดึงข้อมูล
+        const userIds = Array.from(
+          new Set(apmData.map((event) => event.user_id))
+        );
+
+        // Step 2: ดึงข้อมูล username จาก users
+        const { data: userData, error: userError } = await supabase
+          .from("users")
+          .select("id, username")
+          .in("id", userIds);
+
+        if (userError) {
+          console.error("Error fetching users data:", userError);
+          return;
+        }
+
+        // Mapping user_id -> username
+        const userMap = userData?.reduce((acc: any, user: any) => {
+          acc[user.id] = user.username;
+          return acc;
+        }, {});
+
+        // Step 3: รวมข้อมูล APM และ Users
+        const eventsData = apmData.reduce((acc: any, event: any) => {
           acc[event.time] = {
             id: event.id,
             name: event.name,
             transaction: event.transaction,
             user_id: event.user_id,
-            
+            username: userMap?.[event.user_id] || "Unknown", // ดึง username จาก userMap
           };
           return acc;
         }, {});
+
         setEvents(eventsData || {});
       } catch (error) {
-        console.error("Error fetching events", error);
+        console.error("Error fetching events:", error);
       }
     };
 
     fetchEvents();
   }, [selectedDate, userId, boardId]);
+
 
   const handleEventSubmit = async (
     time: string,
@@ -182,16 +216,14 @@ const EventManager: React.FC<EventManagerProps> = ({
         <div
           key={time}
           className={`border rounded-md flex items-center gap-4 p-4 mb-5 transition-all duration-300 ease-in-out transform ${
-            hasEvent
-              ? "bg-gray-100 border-text"
-              : "border-light "
+            hasEvent ? "bg-gray-100 border-text" : "border-light "
           }`}
         >
           <div className="flex-shrink-0 text-xl font-medium text-text w-16 text-center border-r border-text">
             {time}
           </div>
 
-          <div className="flex-grow flex flex-col gap-2 tracking-wide">
+          <div className="tracking-wide flex-grow flex flex-col gap-2">
             {hasEvent ? (
               <>
                 <div className="text-2xl font-semibold text-text">
@@ -200,8 +232,11 @@ const EventManager: React.FC<EventManagerProps> = ({
                 <div className="text-lg text-gray-600">
                   : {events[time]?.transaction}
                 </div>
-                <div className="flex justify-end items-center">
-                 
+                <div className="text-base text-gray-500 mt-5 ">
+                  เพิ่มโดย : {events[time]?.username}
+                </div>
+
+                <div className="flex flex-col items-end absolute right-3 ">
                   <button
                     onClick={() => handleDeleteEvent(time)}
                     className="text-red-500 hover:text-red-700 transition-colors duration-200"

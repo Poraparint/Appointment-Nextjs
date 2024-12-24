@@ -3,9 +3,9 @@ import React from "react";
 interface Member {
   users: {
     username: string;
+    avatar_url: string;
   };
   user_id: string;
-  
 }
 
 interface BoardMemberInfoProps {
@@ -27,7 +27,9 @@ const BoardMemberInfo: React.FC<BoardMemberInfoProps> = ({
     <div className="flex flex-col gap-4 text-text">
       {/* Board Creator Info */}
       <div className="creator-info">
-        <h3 className="font-semibold text-xl">ผู้สร้างบอร์ด: {creatorUsername}</h3>
+        <h3 className="font-semibold text-xl">
+          ผู้สร้างบอร์ด: {creatorUsername}
+        </h3>
       </div>
 
       {/* Board Members List */}
@@ -40,15 +42,27 @@ const BoardMemberInfo: React.FC<BoardMemberInfoProps> = ({
             {members.map((member) => (
               <li
                 key={member.user_id}
-                className="flex justify-between items-center text-gray-500"
+                
               >
-                <span>- {member.users.username}</span>
+                <div
+                  className="flex items-center space-x-4 p-3 hover:bg-gray-50 border-b border-light w-full cursor-pointer rounded-md"
+                  
+                >
+                  <img
+                    src={member.users.avatar_url || "/De_Profile.jpeg"} // Fallback image if avatar_url is not available
+                    alt={member.users.username}
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+                  <span className="text-lg font-medium text-text max-md:text-sm">
+                    {member.users.username}
+                  </span>
+                </div>
               </li>
             ))}
           </ul>
         )}
       </div>
-      <hr className="border-light my-2" />
+      
     </div>
   );
 };

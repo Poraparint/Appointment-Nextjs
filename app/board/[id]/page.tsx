@@ -54,7 +54,7 @@ const AppointmentBoard = ({ params }: PageProps) => {
   const fetchBoardMembers = async (boardId: string) => {
     const { data, error } = await supabase
       .from("board_members")
-      .select("user_id, users(username)") // Fetch members of the board
+      .select("user_id, users(username, avatar_url)") // Fetch members of the board
       .eq("board_id", boardId);
 
     if (error) {
