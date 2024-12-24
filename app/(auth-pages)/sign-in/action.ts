@@ -47,5 +47,5 @@ export const signIn = async (formData: FormData) => {
   }
 
   // If no error, redirect to the protected page
-  return redirect("/protected");
+  return redirect("/User/User_Profile");
 };

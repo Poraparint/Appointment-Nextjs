@@ -5,7 +5,7 @@ import { createClient } from "@/utils/supabase/server";
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? "/protected";
+  const next = searchParams.get("next") ?? "/User/User_Profile";
 
   if (code) {
     const supabase = await createClient();
