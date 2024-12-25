@@ -40,7 +40,7 @@ function SearchUsername() {
   };
 
   return (
-    <div>
+    <div className="absolute">
       <div className="flex justify-center mb-4">
         <input
           type="text"
