@@ -34,9 +34,11 @@ export default function Navbar() {
             </div>
           </Link>
         </div>
-        <SearchUsername/>
+        <div className="relative">
+          <SearchUsername />
+        </div>
+
         <div className="flex gap-8 items-center p-3 text-base">
-          
           {isSupabaseConnected && <AuthButton />}
         </div>
       </nav>

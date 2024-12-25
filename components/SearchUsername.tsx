@@ -15,6 +15,7 @@ function SearchUsername() {
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState<User[]>([]); // Set the type of results as an array of User objects
   const [loading, setLoading] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const supabase = createClient();
 
@@ -27,7 +28,9 @@ function SearchUsername() {
         .ilike("username", `%${searchTerm}%`); // Case-insensitive search
 
       if (error) throw error;
-      setResults(data); // Now TypeScript knows that data is of type User[]
+      
+      setResults(data);
+      
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error("Error searching for username:", error.message);
@@ -39,14 +42,22 @@ function SearchUsername() {
     }
   };
 
+  const handleBlur = () => {
+    setTimeout(() => {
+      setShowDropdown(false); // Delay hiding the dropdown to allow link clicks
+    }, 200);
+  };
+
   return (
-    <div className="absolute">
+    <div className="relative">
       <div className="flex justify-center mb-4">
         <input
           type="text"
           placeholder="ใส่ชื่อผู้ใช้"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          onFocus={() => setShowDropdown(true)} // แสดง dropdown เมื่อ focus
+          onBlur={handleBlur} // ซ่อน dropdown เมื่อ blur
           className="p-3 border bg-bg rounded-md w-80 focus:outline-none focus:ring-2 focus:ring-pain transition duration-300"
         />
         <button
@@ -54,39 +65,31 @@ function SearchUsername() {
           disabled={loading}
           className="ml-4 px-6 py-3 bg-pain text-white rounded-md hover:bg-purple-900 disabled:bg-gray-400 transition duration-300"
         >
-          {loading ? (
-            <span className="loader"></span> // Custom loading indicator
-          ) : (
-            "ค้นหา"
-          )}
+          {loading ? <span className="loader"></span> : "ค้นหา"}
         </button>
       </div>
 
-      <div>
-        {results.length > 0 ? (
-          <ul className="space-y-4">
-            {results.map((user) => (
-              <li key={user.id}>
-                <Link
-                  className="flex items-center space-x-4 p-3 hover:bg-gray-50 border-b border-light"
-                  href={`/UserView/${user.username}`}
-                >
-                  <img
-                    src={user.avatar_url || "/De_Profile.jpeg"} // Fallback image if avatar_url is not available
-                    alt={user.username}
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
-                  <span className="text-lg font-medium text-text max-md:text-sm">
-                    {user.username}
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-center text-gray-500"></p>
-        )}
-      </div>
+      {showDropdown && results.length > 0 && (
+        <ul className="absolute z-50 bg-white border border-gray-200 rounded-md shadow-md w-full max-h-60 overflow-y-auto mt-1">
+          {results.map((user) => (
+            <li key={user.id}>
+              <Link
+                className="flex items-center space-x-4 p-3 hover:bg-gray-50 border-b border-light"
+                href={`/UserView/${user.username}`}
+              >
+                <img
+                  src={user.avatar_url || "/De_Profile.jpeg"}
+                  alt={user.username}
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+                <span className="text-lg font-medium text-text max-md:text-sm">
+                  {user.username}
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
