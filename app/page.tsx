@@ -1,7 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import ConnectSupabaseSteps from "@/components/tutorial/connect-supabase-steps";
 import Header from "@/components/hero";
-import Footer from "@/components/Footer";
 import UserProfile from "./User/User_Profile/page";
 
 export default async function Index() {
@@ -37,7 +36,6 @@ export default async function Index() {
           <ConnectSupabaseSteps />
         )}
       </div>
-      <Footer />
     </div>
   );
 }
