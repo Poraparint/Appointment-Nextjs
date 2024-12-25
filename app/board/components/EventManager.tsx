@@ -274,7 +274,10 @@ const EventManager: React.FC<EventManagerProps> = ({
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="modal modal-open">
             <div className="modal-box bg-bg text-text">
-              <h2 className="text-3xl mb-7 text-pain mt-2">เพิ่มกิจกรรม</h2>
+              <h2 className="text-3xl text-pain mt-2">เพิ่มกิจกรรม</h2>
+              <p className="text-xl my-5">
+                เวลา: <span className="font-semibold">{selectedTime}</span>
+              </p>
               <div className="flex flex-col gap-5">
                 <input
                   type="text"
