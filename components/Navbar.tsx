@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/legacy/image";
 import { createClient } from "@/utils/supabase/server";
 import AuthButton from "./AuthButton";
+import SearchUsername from "./SearchUsername";
 
 export default function Navbar() {
   const canInitSupabaseClient = () => {
@@ -33,6 +34,7 @@ export default function Navbar() {
             </div>
           </Link>
         </div>
+        <SearchUsername/>
         <div className="flex gap-8 items-center p-3 text-base">
           
           {isSupabaseConnected && <AuthButton />}

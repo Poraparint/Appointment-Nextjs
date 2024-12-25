@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
@@ -40,11 +40,7 @@ function SearchUsername() {
   };
 
   return (
-    <div className="container ">
-      <h2 className="text-3xl font-semibold text-center text-text mb-4">
-        ค้นหาผู้ใช้
-      </h2>
-
+    <div>
       <div className="flex justify-center mb-4">
         <input
           type="text"
