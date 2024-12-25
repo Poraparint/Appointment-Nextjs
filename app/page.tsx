@@ -2,6 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import ConnectSupabaseSteps from "@/components/tutorial/connect-supabase-steps";
 import Header from "@/components/hero";
 import Footer from "@/components/Footer";
+import UserProfile from "./User/User_Profile/page";
 
 export default async function Index() {
   const canInitSupabaseClient = () => {
@@ -15,12 +16,26 @@ export default async function Index() {
     }
   };
 
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   const isSupabaseConnected = canInitSupabaseClient();
 
   return (
     <div className="w-full">
       <div className="w-full flex flex-col gap-20">
-        {isSupabaseConnected ? <Header /> : <ConnectSupabaseSteps />}
+        {isSupabaseConnected ? (
+          user ? (
+            <UserProfile />
+          ) : (
+            <Header />
+          )
+        ) : (
+          <ConnectSupabaseSteps />
+        )}
       </div>
       <Footer />
     </div>
