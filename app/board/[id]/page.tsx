@@ -54,7 +54,6 @@ const AppointmentBoard = ({ params }: PageProps) => {
 
       if (!userId) return; // Wait until userId is available
 
-      // Fetch board metadata and data
       const metadataResult = await fetchBoardMetadata(boardId);
       const boardResult = await fetchBoardData(boardId);
 
@@ -101,18 +100,14 @@ const AppointmentBoard = ({ params }: PageProps) => {
     setMembers(data); // Update board members
   };
 
-  if (loading) {
-    return <div>กำลังโหลดข้อมูล...</div>;
-  }
+
 
   if (accessDenied) {
     return <div>คุณไม่มีสิทธิ์เข้าถึงบอร์ดนี้</div>;
   }
 
-  if (!boardData) {
-    return <div>ไม่พบข้อมูลบอร์ดนี้</div>;
-  }
   
+
   // Function to generate calendar dates
   const generateDates = () => {
     const daysInWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
