@@ -29,18 +29,53 @@ const AppointmentBoard = ({ params }: PageProps) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [displayMonth, setDisplayMonth] = useState<string>("");
   const [metadata, setMetadata] = useState({ title: "Appointment Board" }); // State for metadata
-
+  const [accessDenied, setAccessDenied] = useState(false);
   const supabase = createClient();
+
+  // Fetch user session
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data, error } = await supabase.auth.getSession();
+      if (error || !data?.session?.user) {
+        setAccessDenied(true);
+        return;
+      }
+      setUserId(data.session.user.id);
+    };
+
+    fetchUser();
+  }, []);
 
   // Fetch metadata and board data
   useEffect(() => {
     const fetchData = async () => {
-      const resolvedParams = await params; // Ensure params is resolved
-      const metadataResult = await fetchBoardMetadata(resolvedParams.id);
-      const boardResult = await fetchBoardData(resolvedParams.id);
+      const resolvedParams = await params;
+      const boardId = resolvedParams.id;
+
+      if (!userId) return; // Wait until userId is available
+
+      // Fetch board metadata and data
+      const metadataResult = await fetchBoardMetadata(boardId);
+      const boardResult = await fetchBoardData(boardId);
+
+      // Check if user is a member or creator
+      const { data: memberCheck, error } = await supabase
+        .from("board_members")
+        .select("user_id")
+        .eq("board_id", boardId)
+        .eq("user_id", userId);
+
+      if (
+        error ||
+        (!memberCheck.length && boardResult?.creator_id !== userId)
+      ) {
+        setAccessDenied(true);
+        return;
+      }
 
       setMetadata(metadataResult);
       setBoardData(boardResult);
+      fetchBoardMembers(boardId);
       setLoading(false);
 
       if (boardResult) {
@@ -49,7 +84,7 @@ const AppointmentBoard = ({ params }: PageProps) => {
     };
 
     fetchData();
-  }, [params]);
+  }, [params, userId]);
 
   // Function to fetch board members
   const fetchBoardMembers = async (boardId: string) => {
@@ -66,6 +101,18 @@ const AppointmentBoard = ({ params }: PageProps) => {
     setMembers(data); // Update board members
   };
 
+  if (loading) {
+    return <div>กำลังโหลดข้อมูล...</div>;
+  }
+
+  if (accessDenied) {
+    return <div>คุณไม่มีสิทธิ์เข้าถึงบอร์ดนี้</div>;
+  }
+
+  if (!boardData) {
+    return <div>ไม่พบข้อมูลบอร์ดนี้</div>;
+  }
+  
   // Function to generate calendar dates
   const generateDates = () => {
     const daysInWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -133,81 +180,81 @@ const AppointmentBoard = ({ params }: PageProps) => {
   return (
     <div className="w-full">
       <div className="appointment-board px-10 max-sm:px-3 flex flex-col gap-5 w-full">
-      <div className="bg-bg rounded-md p-5 flex flex-col gap-2 text-text">
-        <h1 className="font-semibold text-3xl my-3">{boardData.board_name}</h1>
-        {boardData?.description ? (
-          <p className="text-gray-500 text-lg flex text-center max-sm:text-sm">
-            {boardData.description}
-          </p>
-        ) : (
-          <p className="text-gray-500 text-lg flex text-center max-sm:text-sm"></p>
-        )}
-        <hr className="border-light my-3"/>
-        <BoardMemberInfo
-          creatorUsername={boardData.users?.username}
-          members={members}
-          loading={loading}
-        />
-      </div>
-
-      {/* Calendar and Event Management */}
-      <div className="calendar-container text-sec flex flex-col items-center">
-        <div className="w-full text-text bg-bg rounded-md">
-          <div className="">
-            <div className="calendar-header flex justify-between items-center p-8 text-2xl">
-              <button
-                onClick={handlePrevMonth}
-                className="px-4 py-2 text-xl flex gap-3 items-center max-sm:text-base"
-              >
-                <i className="fas fa-caret-left"></i>
-                <p className="max-sm:hidden">Previous</p>
-              </button>
-              <span className="max-sm:text-base">{displayMonth}</span>
-              <button
-                onClick={handleNextMonth}
-                className="px-4 py-2 text-xl flex gap-3 items-center max-sm:text-base"
-              >
-                <p className="max-sm:hidden">Next</p>
-                <i className="fas fa-caret-right"></i>
-              </button>
-            </div>
-            <hr className="m-5 border-light" />
-            <div className="dates-grid flex overflow-x-auto whitespace-nowrap p-3">
-              {dates.map(({ dayOfWeek, day, date }) => (
-                <div
-                  key={day}
-                  className={`date-item p-4 mx-1 text-xl max-sm:text-base rounded-md text-center cursor-pointer transition-all duration-100 hover:bg-gray-100 ${
-                    date.toDateString() === today?.toDateString()
-                      ? "border-2 border-text"
-                      : ""
-                  }`}
-                  onClick={() => handleDateClick(date)}
-                >
-                  <div>
-                    {dayOfWeek} {day}
-                  </div>
-                </div>
-              ))}
-            </div>
-            <hr className="m-5 border-light" />
-          </div>
-
-          {/* Event Management for selected date */}
-          {selectedDate && (
-            <Suspense fallback={<div>กำลังโหลดเหตุการณ์...</div>}>
-              <EventManager
-                selectedDate={selectedDate}
-                boardId={boardData.id}
-              />
-            </Suspense>
+        <div className="bg-bg rounded-md p-5 flex flex-col gap-2 text-text">
+          <h1 className="font-semibold text-3xl my-3">
+            {boardData.board_name}
+          </h1>
+          {boardData?.description ? (
+            <p className="text-gray-500 text-lg flex text-center max-sm:text-sm">
+              {boardData.description}
+            </p>
+          ) : (
+            <p className="text-gray-500 text-lg flex text-center max-sm:text-sm"></p>
           )}
+          <hr className="border-light my-3" />
+          <BoardMemberInfo
+            creatorUsername={boardData.users?.username}
+            members={members}
+            loading={loading}
+          />
+        </div>
 
+        {/* Calendar and Event Management */}
+        <div className="calendar-container text-sec flex flex-col items-center">
+          <div className="w-full text-text bg-bg rounded-md">
+            <div className="">
+              <div className="calendar-header flex justify-between items-center p-8 text-2xl">
+                <button
+                  onClick={handlePrevMonth}
+                  className="px-4 py-2 text-xl flex gap-3 items-center max-sm:text-base"
+                >
+                  <i className="fas fa-caret-left"></i>
+                  <p className="max-sm:hidden">Previous</p>
+                </button>
+                <span className="max-sm:text-base">{displayMonth}</span>
+                <button
+                  onClick={handleNextMonth}
+                  className="px-4 py-2 text-xl flex gap-3 items-center max-sm:text-base"
+                >
+                  <p className="max-sm:hidden">Next</p>
+                  <i className="fas fa-caret-right"></i>
+                </button>
+              </div>
+              <hr className="m-5 border-light" />
+              <div className="dates-grid flex overflow-x-auto whitespace-nowrap p-3">
+                {dates.map(({ dayOfWeek, day, date }) => (
+                  <div
+                    key={day}
+                    className={`date-item p-4 mx-1 text-xl max-sm:text-base rounded-md text-center cursor-pointer transition-all duration-100 hover:bg-gray-100 ${
+                      date.toDateString() === today?.toDateString()
+                        ? "border-2 border-text"
+                        : ""
+                    }`}
+                    onClick={() => handleDateClick(date)}
+                  >
+                    <div>
+                      {dayOfWeek} {day}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <hr className="m-5 border-light" />
+            </div>
+
+            {/* Event Management for selected date */}
+            {selectedDate && (
+              <Suspense fallback={<div>กำลังโหลดเหตุการณ์...</div>}>
+                <EventManager
+                  selectedDate={selectedDate}
+                  boardId={boardData.id}
+                />
+              </Suspense>
+            )}
+          </div>
         </div>
       </div>
-      </div>
-      <Footer/>
+      <Footer />
     </div>
-    
   );
 };
 
