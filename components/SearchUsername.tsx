@@ -20,6 +20,12 @@ function SearchUsername() {
   const supabase = createClient();
 
   const handleSearch = async () => {
+
+    if (!searchTerm.trim()) {
+      setResults([]); // ล้างผลลัพธ์
+      return;
+    }
+
     setLoading(true);
     try {
       const { data, error } = await supabase
@@ -50,20 +56,21 @@ function SearchUsername() {
 
   return (
     <div className="relative">
-      <div className="flex justify-center mb-4">
+      <div className="flex justify-center">
         <input
           type="text"
           placeholder="ใส่ชื่อผู้ใช้"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onFocus={() => setShowDropdown(true)} // แสดง dropdown เมื่อ focus
-          onBlur={handleBlur} // ซ่อน dropdown เมื่อ blur
-          className="p-3 border bg-bg rounded-md w-80 focus:outline-none focus:ring-2 focus:ring-pain transition duration-300"
+          // ซ่อน dropdown เมื่อ blur
+          className="p-2 border border-gray-300 bg-bg rounded-md w-80 max-lg:w-52 max-sm:w-24 focus:outline-none focus:ring-2 focus:ring-pain transition duration-300"
         />
         <button
           onClick={handleSearch}
+          onBlur={handleBlur}
           disabled={loading}
-          className="ml-4 px-6 py-3 bg-pain text-white rounded-md hover:bg-purple-900 disabled:bg-gray-400 transition duration-300"
+          className="ml-1 px-4 py-2 bg-pain text-white rounded-md hover:bg-purple-900 disabled:bg-gray-400 transition duration-300"
         >
           {loading ? <span className="loader"></span> : "ค้นหา"}
         </button>
