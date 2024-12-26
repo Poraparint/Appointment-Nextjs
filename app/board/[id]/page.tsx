@@ -131,7 +131,8 @@ const AppointmentBoard = ({ params }: PageProps) => {
   }
 
   return (
-    <div className="appointment-board px-10 max-sm:px-3 flex flex-col gap-5">
+    <div className="w-full">
+      <div className="appointment-board px-10 max-sm:px-3 flex flex-col gap-5 w-full">
       <div className="bg-bg rounded-md p-5 flex flex-col gap-2 text-text">
         <h1 className="font-semibold text-3xl my-3">{boardData.board_name}</h1>
         {boardData?.description ? (
@@ -200,10 +201,13 @@ const AppointmentBoard = ({ params }: PageProps) => {
               />
             </Suspense>
           )}
-<Footer/>
+
         </div>
       </div>
+      </div>
+      <Footer/>
     </div>
+    
   );
 };
 
