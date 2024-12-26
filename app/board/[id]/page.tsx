@@ -176,7 +176,7 @@ const AppointmentBoard = ({ params }: PageProps) => {
               {dates.map(({ dayOfWeek, day, date }) => (
                 <div
                   key={day}
-                  className={`date-item p-4 mx-1 text-xl max-sm:text-base rounded-md text-center cursor-pointer transition-all duration-200 hover:bg-gray-50 ${
+                  className={`date-item p-4 mx-1 text-xl max-sm:text-base rounded-md text-center cursor-pointer transition-all duration-100 hover:bg-gray-100 ${
                     date.toDateString() === today?.toDateString()
                       ? "border-2 border-text"
                       : ""
