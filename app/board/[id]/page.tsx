@@ -6,6 +6,7 @@ import { useState, useEffect, Suspense } from "react";
 
 import { fetchBoardData, fetchBoardMetadata } from "@/lib/fetchBoardData";
 import EventManager from "../components/EventManager";
+import Footer from "@/components/Footer";
 
 //Components
 
@@ -199,6 +200,7 @@ const AppointmentBoard = ({ params }: PageProps) => {
               />
             </Suspense>
           )}
+<Footer/>
         </div>
       </div>
     </div>
