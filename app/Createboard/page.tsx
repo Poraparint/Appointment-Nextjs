@@ -13,6 +13,7 @@ const CreateBoard = () => {
   const [searchResults, setSearchResults] = useState<any[]>([]); // ผลลัพธ์การค้นหา
   const [usernames, setUsernames] = useState<any>({}); // เก็บข้อมูล username ของผู้ใช้ที่ถูกเชิญ
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   // ฟังก์ชันค้นหาผู้ใช้จาก Supabase
   const searchUsers = async (query: string) => {
@@ -100,6 +101,8 @@ const CreateBoard = () => {
         title: "เกิดข้อผิดพลาด",
         text: "ไม่สามารถสร้างบอร์ดได้ โปรดลองอีกครั้ง",
       });
+    } finally {
+      setIsLoading(false); // ปิดสถานะ loading
     }
   };
 
@@ -222,9 +225,12 @@ const CreateBoard = () => {
 
           <button
             type="submit"
-            className="w-full p-3 bg-pain text-white rounded-md mt-4"
+            className={`w-full p-3 rounded-md mt-4 ${
+              isLoading ? "bg-gray-500" : "bg-pain"
+            }`}
+            disabled={isLoading}
           >
-            สร้างบอร์ด
+            {isLoading ? "กำลังสร้างบอร์ด..." : "สร้างบอร์ด"}
           </button>
         </div>
       </form>

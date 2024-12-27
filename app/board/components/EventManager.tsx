@@ -142,13 +142,13 @@ const EventManager: React.FC<EventManagerProps> = ({
     if (!event) return;
 
     const result = await Swal.fire({
-      title: "Are you sure?",
-      text: "Do you really want to delete this event?",
+      title: "แน่ใจนะ?",
+      text: "ยืนยันที่จะลบรายการนี้?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
       cancelButtonColor: "#3085d6",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "ยืนยันที่จะลบ",
     });
 
     if (result.isConfirmed) {
@@ -189,6 +189,59 @@ const EventManager: React.FC<EventManagerProps> = ({
     }
   };
 
+  const handleDeleteAllEvents = async () => {
+    if (!selectedDate || !boardId) return;
+
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you really want to delete all events for this date?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete all!",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const date = selectedDate.toLocaleDateString("sv-SE");
+
+        // Delete all events for the selected date and boardId
+        const { error } = await supabase
+          .from("APM")
+          .delete()
+          .eq("date", date)
+          .eq("board_id", boardId);
+
+        if (error) throw error;
+
+        // Clear events state
+        setEvents({});
+
+        // Show success toast
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+
+        Toast.fire({
+          icon: "success",
+          title: "All events deleted successfully",
+        });
+      } catch (error) {
+        console.error("Error deleting all events:", error);
+        Swal.fire("Error", "There was an error deleting all events.", "error");
+      }
+    }
+  };
+
   const renderEventInputs = () => {
     const times = [
       "09:00",
@@ -222,6 +275,12 @@ const EventManager: React.FC<EventManagerProps> = ({
           <div className="flex-shrink-0 text-xl font-medium text-text w-16 text-center border-r border-text">
             {time}
           </div>
+          <button
+            onClick={handleDeleteAllEvents}
+            className="py-2 px-4 bg-red-500 border border-text text-white rounded-md hover:bg-red-700 transition-all duration-300"
+          >
+            <i className="fa-solid fa-trash"></i> Delete All Events
+          </button>
 
           <div className="tracking-wide flex-grow flex flex-col gap-2">
             {hasEvent ? (
