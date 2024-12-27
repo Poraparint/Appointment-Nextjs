@@ -275,12 +275,7 @@ const EventManager: React.FC<EventManagerProps> = ({
           <div className="flex-shrink-0 text-xl font-medium text-text w-16 text-center border-r border-text">
             {time}
           </div>
-          <button
-            onClick={handleDeleteAllEvents}
-            className="py-2 px-4 bg-red-500 border border-text text-white rounded-md hover:bg-red-700 transition-all duration-300"
-          >
-            <i className="fa-solid fa-trash"></i> Delete All Events
-          </button>
+          
 
           <div className="tracking-wide flex-grow flex flex-col gap-2">
             {hasEvent ? (
@@ -323,9 +318,17 @@ const EventManager: React.FC<EventManagerProps> = ({
 
   return (
     <div className="event-manager pb-20 px-5 bg-bg rounded-b-md shadow-md text-text">
-      <div className="border border-text rounded-md text-2xl text-text w-max px-6 py-3">
+      <div className="flex justify-around">
+        <div className="border border-text rounded-md text-2xl text-text w-max px-6 py-3">
         {selectedDate.toDateString()}
       </div>
+      <button
+        onClick={handleDeleteAllEvents}
+        className="py-2 px-4 bg-red-500 border border-text text-white rounded-md hover:bg-red-700 transition-all duration-300"
+      >
+        <i className="fa-solid fa-trash"></i> Delete All Events
+      </button></div>
+      
       <hr className="border-light my-5" />
       {renderEventInputs()}
 
