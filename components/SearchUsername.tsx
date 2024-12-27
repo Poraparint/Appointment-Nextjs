@@ -55,7 +55,7 @@ function SearchUsername() {
   };
 
   return (
-    <div className="relative">
+    <div className="relative max-md:text-sm">
       <div className="flex justify-center">
         <input
           type="text"
@@ -70,9 +70,10 @@ function SearchUsername() {
           onClick={handleSearch}
           onBlur={handleBlur}
           disabled={loading}
-          className="ml-1 px-4 py-2 bg-pain text-white rounded-md hover:bg-purple-900 disabled:bg-gray-400 transition duration-300"
+          className="ml-1 px-4 py-2 bg-pain text-white rounded-md hover:bg-purple-900 disabled:bg-gray-400 transition duration-300 "
         >
-          {loading ? <span className="loader"></span> : "ค้นหา"}
+          
+          <i className="fa-solid fa-magnifying-glass "></i>
         </button>
       </div>
 
