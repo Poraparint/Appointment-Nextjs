@@ -225,7 +225,7 @@ const CreateBoard = () => {
 
           <button
             type="submit"
-            className={`w-full p-3 rounded-md mt-4 ${
+            className={`w-full p-3 rounded-md mt-4 text-bg ${
               isLoading ? "bg-gray-500" : "bg-pain"
             }`}
             disabled={isLoading}

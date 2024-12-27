@@ -193,13 +193,13 @@ const EventManager: React.FC<EventManagerProps> = ({
     if (!selectedDate || !boardId) return;
 
     const result = await Swal.fire({
-      title: "Are you sure?",
-      text: "Do you really want to delete all events for this date?",
+      title: "แน่ใจนะ?",
+      text: "ยืนยันที่จะลบรายการทั้งหมดของวันนี้?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
       cancelButtonColor: "#3085d6",
-      confirmButtonText: "Yes, delete all!",
+      confirmButtonText: "ยืนยันที่จะลบทั้งหมด",
     });
 
     if (result.isConfirmed) {
@@ -318,13 +318,13 @@ const EventManager: React.FC<EventManagerProps> = ({
 
   return (
     <div className="event-manager pb-20 px-5 bg-bg rounded-b-md shadow-md text-text">
-      <div className="flex justify-around">
+      <div className="flex justify-between">
         <div className="border border-text rounded-md text-2xl text-text w-max px-6 py-3">
         {selectedDate.toDateString()}
       </div>
       <button
         onClick={handleDeleteAllEvents}
-        className="py-2 px-4 bg-red-500 border border-text text-white rounded-md hover:bg-red-700 transition-all duration-300"
+        className="py-2 px-4 bg-red-500 text-white rounded-md hover:bg-red-700 transition-all duration-300"
       >
         <i className="fa-solid fa-trash"></i> Delete All Events
       </button></div>
