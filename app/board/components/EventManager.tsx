@@ -326,7 +326,7 @@ const EventManager: React.FC<EventManagerProps> = ({
         onClick={handleDeleteAllEvents}
         className="py-2 px-4 bg-red-500 text-white rounded-md hover:bg-red-700 transition-all duration-300"
       >
-        <i className="fa-solid fa-trash"></i> Delete All Events
+        ลบทั้งหมด
       </button></div>
       
       <hr className="border-light my-5" />

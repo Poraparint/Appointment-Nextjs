@@ -54,9 +54,9 @@ export default async function AuthButton() {
   const profileImageUrl = profileData?.avatar_url || "/De_Profile.jpeg"; // Default image if none exists
 
   return (
-    <div className="flex items-center gap-10">
+    <div className="flex items-center gap-6">
       <Link href="/Createboard">
-        <div className="py-2 px-5 rounded-md bg-pain hover:bg-[#5e1778] text-bg duration-300 max-sm:text-sm">
+        <div className="py-2 px-5 rounded-md bg-pain hover:bg-[#5e1778] text-bg duration-300 max-sm:text-xs">
           สร้างบอร์ด
         </div>
       </Link>
