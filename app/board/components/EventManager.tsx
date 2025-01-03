@@ -270,11 +270,11 @@ const EventManager: React.FC<EventManagerProps> = ({
           key={time}
           className={`relative flex items-center gap-4 p-4 transition-all duration-300 ease-in-out transform border-b ${
             hasEvent
-              ? "bg-gradient-to-r from-pain to-indigo-600 text-white"
-              : "bg-gray-100 border-gray-300"
+              ? "border-gradient-to-r from-pain to-indigo-600 text-text rounded-md"
+              : ""
           } hover:shadow-lg`}
         >
-          <div className="text-2xl font-bold border-r border-gray-300 pr-3 text-center">
+          <div className="text-2xl font-bold border-r border-light pr-3 text-center">
             {time}
           </div>
 
