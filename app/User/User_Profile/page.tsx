@@ -4,22 +4,25 @@ import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import Image from "next/image";
 import { useUser } from "@/hooks/useUser";
-
+import Link from "next/link";
 import Footer from "@/components/Footer";
 import BoardCard from "@/components/BoardCard";
 import EditProfileForm from "./Edit/EditProfileForm";
-
 export default function User_Profile() {
   const supabase = createClient();
   const useuserData = useUser();
 
   const [userData, setUserData] = useState<any>(null);
+  const [works, setWorks] = useState<any[]>([]);
 
   const [boards, setBoards] = useState<any[]>([]);
   const [invitedBoards, setInvitedBoards] = useState<any[]>([]);
 
   const [profileImage, setProfileImage] = useState("/De_Profile.jpeg");
   const [username, setUsername] = useState("");
+
+  const [showEdit, setShowEdit] = useState(false); // State สำหรับเปิดปิด modal
+  const [showWorks, setShowWorks] = useState(true); // เพิ่ม state สำหรับจัดการการแสดง ShowWork
 
   const useuser = useuserData?.user;
   const isUserLoading = useuserData?.isLoading;
@@ -44,6 +47,21 @@ export default function User_Profile() {
       console.error("Error fetching user data:", error);
     }
   };
+
+  // Fetch user works
+  // const fetchWorks = async () => {
+  //   try {
+  //     const { data: works, error } = await supabase
+  //       .from("article")
+  //       .select("*, users (username, avatar_url)")
+  //       .eq("user_id", useuser.id)
+  //       .order("created_at", { ascending: false });
+  //     if (error) throw error;
+  //     setWorks(works || []);
+  //   } catch (error) {
+  //     console.error("Error fetching works:", error);
+  //   }
+  // };
 
   // Fetch user boards
   const fetchBoards = async () => {
@@ -75,8 +93,9 @@ export default function User_Profile() {
   };
 
   useEffect(() => {
-    if (useuser?.id && !isUserLoading) {
+    if (useuser && !isUserLoading) {
       fetchUserData();
+      // fetchWorks();
       fetchBoards();
       fetchInvitedBoards();
     }
@@ -98,7 +117,7 @@ export default function User_Profile() {
             <div className="relative w-24 h-24 max-sm:w-16 max-sm:h-16 rounded-full">
               <Image
                 className="rounded-full"
-                src={userData.avatar_url || "/De_Profile.jpeg"}
+                src={userData.avatar_url}
                 alt="Avatar"
                 layout="fill"
                 objectFit="cover"
@@ -116,22 +135,69 @@ export default function User_Profile() {
             </div>
           )}
           <div className="flex flex-col gap-5 tracking-wide max-sm:items-center">
-            {userData ? (
-              <div className="flex flex-col gap-5 tracking-wide max-sm:items-center">
-                <p className="text-text text-2xl flex text-center max-sm:text-lg">
-                  {userData.username || "ไม่มีชื่อ"}
-                </p>
-              </div>
+            {userData?.username ? (
+              <p className="text-text text-2xl flex text-center max-sm:text-lg">
+                {userData.username}
+              </p>
             ) : (
-              <p className="text-text text-lg">กำลังโหลดข้อมูลผู้ใช้...</p>
+              <p className="text-text text-2xl flex text-center max-sm:text-lg">
+                ไม่มีชื่อ
+              </p>
             )}
+            <div className="">
+              <button className="btn bg-pain border-white text-white px-8 hover:bg-purple-800 max-sm:text-sm max-sm:px-2">
+                <div>เพิ่มบทความ</div>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="w-full flex">
+          <div className="w-full flex bg-bg rounded-md">
+            <div className="flex justify-evenly text-lg py-3 w-full">
+              <h1
+                className={`cursor-pointer transition-all duration-300 pb-2 ${
+                  showEdit
+                    ? "text-pain border-b-2 border-pain"
+                    : "text-third hover:text-pain hover:border-pain"
+                }`}
+                onClick={() => {
+                  setShowEdit(true);
+                  setShowWorks(false);
+                }}
+              >
+                โปรไฟล์
+              </h1>
+              <h1
+                className={`cursor-pointer transition-all duration-300 pb-2 ${
+                  showWorks
+                    ? "text-pain border-b-2 border-pain"
+                    : "text-third hover:text-pain hover:border-pain"
+                }`}
+                onClick={() => {
+                  setShowWorks(true);
+                  setShowEdit(false);
+                }}
+              >
+                ผลงาน
+              </h1>
+            </div>
           </div>
         </div>
 
         <div className="flex gap-5 max-lg:flex-col">
           <div className="w-3/4 max-lg:w-full">
             <div className="w-full">
-              <EditProfileForm user={userData} />
+              {showWorks && (
+                <div>
+                  k
+                </div>
+              )}
+              {showEdit && ( // ตรวจสอบเงื่อนไข showEdit
+                <div className="">
+                  <EditProfileForm user={userData} />
+                </div>
+              )}
             </div>
           </div>
 
