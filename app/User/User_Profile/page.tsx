@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
@@ -13,15 +13,12 @@ export default function User_Profile() {
   const useuserData = useUser();
 
   const [userData, setUserData] = useState<any>(null);
-  
 
   const [boards, setBoards] = useState<any[]>([]);
   const [invitedBoards, setInvitedBoards] = useState<any[]>([]);
 
   const [profileImage, setProfileImage] = useState("/De_Profile.jpeg");
   const [username, setUsername] = useState("");
-
-  
 
   const useuser = useuserData?.user;
   const isUserLoading = useuserData?.isLoading;
@@ -46,8 +43,6 @@ export default function User_Profile() {
       console.error("Error fetching user data:", error);
     }
   };
-
-  
 
   // Fetch user boards
   const fetchBoards = async () => {
@@ -81,7 +76,6 @@ export default function User_Profile() {
   useEffect(() => {
     if (useuser && !isUserLoading) {
       fetchUserData();
-      
       fetchBoards();
       fetchInvitedBoards();
     }
@@ -130,21 +124,13 @@ export default function User_Profile() {
                 ไม่มีชื่อ
               </p>
             )}
-            
           </div>
         </div>
-
-       
 
         <div className="flex gap-5 max-lg:flex-col">
           <div className="w-3/4 max-lg:w-full">
             <div className="w-full">
-              
-              
-     
-                  <EditProfileForm user={userData} />
-           
-          
+              <EditProfileForm user={userData} />
             </div>
           </div>
 
