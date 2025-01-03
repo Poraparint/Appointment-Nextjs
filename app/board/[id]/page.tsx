@@ -241,6 +241,8 @@ const AppointmentBoard = ({ params }: PageProps) => {
               </Suspense>
             )}
           </div>
+        </div>
+        <div className="bg-bg rounded-md p-5 flex flex-col gap-2 text-text">
           <BoardMemberInfo
             creatorUsername={boardData.users?.username}
             members={members}
