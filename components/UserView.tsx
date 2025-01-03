@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import Image from "next/image";
-import ShowWork from "./ShowWork";
 import Footer from "./Footer";
 
 interface UserViewProps {
@@ -14,7 +13,7 @@ export default function UserView({ username }: UserViewProps) {
   const supabase = createClient();
 
   const [userData, setUserData] = useState<any>(null);
-  const [userWorks, setUserWorks] = useState<any[]>([]); // สร้าง state สำหรับงานของผู้ใช้
+  
 
   // ฟังก์ชันสำหรับดึงข้อมูลผู้ใช้
   const fetchUserData = async () => {
@@ -31,27 +30,13 @@ export default function UserView({ username }: UserViewProps) {
       if (error) throw error;
       setUserData(userData);
       // หลังจากดึงข้อมูลผู้ใช้แล้ว ให้ดึงงานของผู้ใช้คนนี้
-      fetchUserWorks(userData.id); // เรียกใช้งานฟังก์ชันนี้เพื่อดึงงานของผู้ใช้ที่เลือก
+      
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
   };
 
-  // ฟังก์ชันสำหรับดึงงานของผู้ใช้
-  const fetchUserWorks = async (userId: string) => {
-    try {
-      // ใช้ userId ที่ได้จาก fetchUserData เพื่อดึงงานของผู้ใช้ที่เลือก
-      const { data: works, error } = await supabase
-        .from("article") // ชื่อ table ที่เก็บงานของผู้ใช้
-        .select("*")
-        .eq("user_id", userId); // ตรวจสอบว่า user_id ตรงกับ ID ของผู้ใช้ที่เลือก
-
-      if (error) throw error;
-      setUserWorks(works || []); // กำหนดค่าเป็น array ว่างถ้าไม่มีงาน
-    } catch (error) {
-      console.error("Error fetching user works:", error);
-    }
-  };
+  
 
   useEffect(() => {
     if (username) {
@@ -98,22 +83,7 @@ export default function UserView({ username }: UserViewProps) {
             </div>
           </div>
         </div>
-        <div className="flex gap-5 max-xl:flex-col">
-          <div className="bg-bg rounded-md w-full p-5">
-            <h1 className="text-text text-xl">บทความ</h1>
-            <div>
-              {userWorks.length > 0 ? ( // แสดงงานของผู้ใช้
-                <div className="grid grid-cols-4 grid-rows-1 gap-5 max-lg:grid-cols-3 max-md:grid-cols-1 mt-8 ">
-                  {userWorks.map((work) => (
-                    <ShowWork key={work.id} work={work} />
-                  ))}
-                </div>
-              ) : (
-                <p>ผู้ใช้นี้ยังไม่มีงานที่เพิ่มในระบบ</p>
-              )}
-            </div>
-          </div>
-        </div>
+        
       </div>
       <Footer />
     </div>

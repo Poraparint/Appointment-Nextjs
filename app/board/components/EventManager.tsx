@@ -272,7 +272,7 @@ const EventManager: React.FC<EventManagerProps> = ({
             hasEvent
               ? "border-2 border-pain text-text rounded-md"
               : "border-b border-light"
-          } hover:shadow-lg`}
+          } hover:bg-gray-100`}
         >
           <div className="text-2xl font-medium border-r border-light pr-3 text-center">
             {time}
