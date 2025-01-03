@@ -20,8 +20,8 @@ export default function Navbar() {
   const isSupabaseConnected = canInitSupabaseClient();
 
   return (
-    <div>
-      <nav className="w-full bg-bg text-text drop-shadow-xl items-center flex justify-between px-5 fixed left-0 top-0 z-50">
+    <div className="fixed left-0 top-0 z-50 w-full flex items-center justify-center ">
+      <nav className="w-10/12 bg-bg text-text drop-shadow-xl items-center flex justify-between px-5 rounded-b-2xl ">
         <div className="">
           <Link href="/">
             <div className="relative w-40 h-12 max-sm:w-20 max-sm:h-7">
@@ -33,9 +33,6 @@ export default function Navbar() {
               />
             </div>
           </Link>
-        </div>
-        <div className="relative">
-          <SearchUsername />
         </div>
 
         <div className="flex gap-8 items-center p-3 text-base">
