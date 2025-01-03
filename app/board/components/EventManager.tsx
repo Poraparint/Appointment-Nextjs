@@ -331,7 +331,7 @@ const EventManager: React.FC<EventManagerProps> = ({
         </div>
       </div>
 
-      <hr className="border-light my-5" />
+      
       <div className="px-5">{renderEventInputs()}</div>
 
       {showModal && selectedTime && (
