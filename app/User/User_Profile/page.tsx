@@ -8,6 +8,7 @@ import { useUser } from "@/hooks/useUser";
 import Footer from "@/components/Footer";
 import BoardCard from "@/components/BoardCard";
 import EditProfileForm from "./Edit/EditProfileForm";
+
 export default function User_Profile() {
   const supabase = createClient();
   const useuserData = useUser();
@@ -74,7 +75,7 @@ export default function User_Profile() {
   };
 
   useEffect(() => {
-    if (useuser && !isUserLoading) {
+    if (useuser?.id && !isUserLoading) {
       fetchUserData();
       fetchBoards();
       fetchInvitedBoards();
@@ -97,7 +98,7 @@ export default function User_Profile() {
             <div className="relative w-24 h-24 max-sm:w-16 max-sm:h-16 rounded-full">
               <Image
                 className="rounded-full"
-                src={userData.avatar_url}
+                src={userData.avatar_url || "/De_Profile.jpeg"}
                 alt="Avatar"
                 layout="fill"
                 objectFit="cover"
@@ -115,14 +116,14 @@ export default function User_Profile() {
             </div>
           )}
           <div className="flex flex-col gap-5 tracking-wide max-sm:items-center">
-            {userData?.username ? (
-              <p className="text-text text-2xl flex text-center max-sm:text-lg">
-                {userData.username}
-              </p>
+            {userData ? (
+              <div className="flex flex-col gap-5 tracking-wide max-sm:items-center">
+                <p className="text-text text-2xl flex text-center max-sm:text-lg">
+                  {userData.username || "ไม่มีชื่อ"}
+                </p>
+              </div>
             ) : (
-              <p className="text-text text-2xl flex text-center max-sm:text-lg">
-                ไม่มีชื่อ
-              </p>
+              <p className="text-text text-lg">กำลังโหลดข้อมูลผู้ใช้...</p>
             )}
           </div>
         </div>
