@@ -268,14 +268,13 @@ const EventManager: React.FC<EventManagerProps> = ({
       return (
         <div
           key={time}
-          className={`border rounded-md flex items-center gap-4 p-4 mb-5 transition-all duration-300 ease-in-out transform ${
-            hasEvent ? "bg-gray-100 border-text" : "border-light "
+          className={` flex items-center gap-4 p-4 mb-5 transition-all duration-300 ease-in-out transform ${
+            hasEvent ? "bg-bg" : "border-light bg-gray-100"
           }`}
         >
-          <div className="flex-shrink-0 text-xl font-medium text-text w-16 text-center border-r border-text">
+          <div className=" text-2xl font-medium text-pain border-r text-center pr-3">
             {time}
           </div>
-          
 
           <div className="tracking-wide flex-grow flex flex-col gap-2">
             {hasEvent ? (
@@ -290,12 +289,12 @@ const EventManager: React.FC<EventManagerProps> = ({
                   เพิ่มโดย : {events[time]?.username}
                 </div>
 
-                <div className="flex flex-col items-end absolute right-3 ">
+                <div className="flex flex-col items-center justify-center absolute top-0 bottom-0 right-3">
                   <button
                     onClick={() => handleDeleteEvent(time)}
                     className="text-red-500 hover:text-red-700 transition-colors duration-200"
                   >
-                    <i className="fa-solid fa-trash"></i> Delete
+                    <i className="fa-solid fa-trash"></i>
                   </button>
                 </div>
               </>
@@ -305,8 +304,8 @@ const EventManager: React.FC<EventManagerProps> = ({
                   setSelectedTime(time);
                   setShowModal(true);
                 }}
-                className="py-3 px-6 text-lg text-bg bg-pain hover:bg-purple-900 rounded-md shadow-md transition-all duration-300 transform"
-              >
+                className="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-800 duration-200">
+              
                 Add Event
               </button>
             )}
@@ -317,18 +316,21 @@ const EventManager: React.FC<EventManagerProps> = ({
   };
 
   return (
-    <div className="event-manager pb-20 px-5 bg-bg rounded-b-md shadow-md text-text">
+    <div className="event-manager pb-20 bg-bg rounded-b-md shadow-md text-text">
       <div className="flex justify-between">
-        <div className="border border-text rounded-md text-2xl text-text w-max px-6 py-3">
-        {selectedDate.toDateString()}
+        <div className="text-2xl bg-pain text-white p-9 w-8/12">
+          {selectedDate.toDateString()}
+        </div>
+        <div className="flex items-center w-4/12 justify-center">
+          <button
+            onClick={handleDeleteAllEvents}
+            className="text-danger px-4 py-2 rounded-md"
+          >
+            ลบทั้งหมด
+          </button>
+        </div>
       </div>
-      <button
-        onClick={handleDeleteAllEvents}
-        className="py-2 px-4 bg-red-500 text-white rounded-md hover:bg-red-700 transition-all duration-300"
-      >
-        ลบทั้งหมด
-      </button></div>
-      
+
       <hr className="border-light my-5" />
       {renderEventInputs()}
 

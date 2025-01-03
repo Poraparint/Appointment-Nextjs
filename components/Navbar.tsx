@@ -20,18 +20,11 @@ export default function Navbar() {
   const isSupabaseConnected = canInitSupabaseClient();
 
   return (
-    <div className="fixed left-0 top-0 z-50 w-full flex items-center justify-center ">
-      <nav className="w-10/12 bg-bg text-text drop-shadow-xl items-center flex justify-between px-5 rounded-b-2xl ">
+    <div className="fixed left-0 top-4 z-50 w-full flex items-center justify-center ">
+      <nav className="w-10/12 bg-bg text-text drop-shadow-xl items-center flex justify-between px-5 p-1 rounded-2xl ">
         <div className="">
           <Link href="/">
-            <div className="relative w-40 h-12 max-sm:w-20 max-sm:h-7">
-              <Image
-                src="/A-Write.png" // URL ของรูปภาพงาน
-                alt="Profile"
-                layout="fill" // ใช้ layout fill เพื่อให้รูปภาพเต็มพื้นที่
-                objectFit="cover" // ให้รูปภาพเต็มขนาดและครอบคลุม
-              />
-            </div>
+            <i className="fa-solid fa-house text-pain text-3xl"></i>
           </Link>
         </div>
 

@@ -112,7 +112,12 @@ const AppointmentBoard = ({ params }: PageProps) => {
   const generateDates = () => {
     const daysInWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const numberOfDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+    const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
     const datesArray: DateObject[] = [];
+
+    for (let i = 0; i < firstDayOfMonth; i++) {
+      datesArray.push({ dayOfWeek: "", day: -1, date: new Date(0) }); // Use -1 or a dummy date for empty cells
+    }
 
     for (let day = 1; day <= numberOfDays; day++) {
       const date = new Date(currentYear, currentMonth, day);
@@ -175,10 +180,8 @@ const AppointmentBoard = ({ params }: PageProps) => {
   return (
     <div className="w-full">
       <div className="appointment-board px-10 max-sm:px-3 flex flex-col gap-5 w-full">
-        <div className="bg-bg rounded-md p-5 flex flex-col gap-2 text-text">
-          <h1 className="font-semibold text-3xl my-3">
-            {boardData.board_name}
-          </h1>
+        <div className="text-text bg-bg rounded-md p-8">
+          <h1 className="text-4xl font-bold mb-2">{boardData.board_name}</h1>
           {boardData?.description ? (
             <p className="text-gray-500 text-lg flex text-center max-sm:text-sm">
               {boardData.description}
@@ -186,52 +189,73 @@ const AppointmentBoard = ({ params }: PageProps) => {
           ) : (
             <p className="text-gray-500 text-lg flex text-center max-sm:text-sm"></p>
           )}
-          <hr className="border-light my-3" />
         </div>
 
         {/* Calendar and Event Management */}
-        <div className="calendar-container text-sec flex flex-col items-center">
-          <div className="w-full text-text bg-bg rounded-md">
-            <div className="">
-              <div className="calendar-header flex justify-between items-center p-8 text-2xl">
-                <button
-                  onClick={handlePrevMonth}
-                  className="px-4 py-2 text-xl flex gap-3 items-center max-sm:text-base"
-                >
-                  <i className="fas fa-caret-left"></i>
-                  <p className="max-sm:hidden">Previous</p>
-                </button>
-                <span className="max-sm:text-base">{displayMonth}</span>
-                <button
-                  onClick={handleNextMonth}
-                  className="px-4 py-2 text-xl flex gap-3 items-center max-sm:text-base"
-                >
-                  <p className="max-sm:hidden">Next</p>
-                  <i className="fas fa-caret-right"></i>
-                </button>
-              </div>
-              <hr className="m-5 border-light" />
-              <div className="dates-grid flex overflow-x-auto whitespace-nowrap p-3">
-                {dates.map(({ dayOfWeek, day, date }) => (
-                  <div
-                    key={day}
-                    className={`date-item p-4 mx-1 text-xl max-sm:text-base rounded-md text-center cursor-pointer transition-all duration-100 hover:bg-gray-100 ${
-                      date.toDateString() === today?.toDateString()
-                        ? "border-2 border-text"
-                        : ""
-                    }`}
-                    onClick={() => handleDateClick(date)}
-                  >
-                    <div>
-                      {dayOfWeek} {day}
-                    </div>
+        <div className="calendar-container flex flex-col items-center">
+          <div className="w-full text-text flex gap-5 max-xl:flex-col">
+            <div className=" w-8/12 max-xl:w-full">
+              <div className="bg-bg shadow-md rounded-md">
+                <div className="calendar-header flex justify-between items-center p-8 text-2xl ">
+                  <span className="text-2xl max-sm:text-xl font-semibold">
+                    {displayMonth}
+                  </span>
+                  <div className="flex">
+                    <button
+                      onClick={handlePrevMonth}
+                      className="px-5 py-3 flex gap-3 items-center max-sm:text-base border border-text rounded-l-md hover:bg-gray-100"
+                    >
+                      <i className="fas fa-caret-left text-2xl"></i>
+                    </button>
+                    <button
+                      onClick={handleNextMonth}
+                      className="px-5 py-3 flex gap-3 items-center max-sm:text-base border border-text rounded-r-md hover:bg-gray-100"
+                    >
+                      <i className="fas fa-caret-right text-2xl"></i>
+                    </button>
                   </div>
-                ))}
+                </div>
+                <hr className="m-5 border-light" />
+                <div className="grid grid-cols-7 gap-2 p-3 max-sm:gap-0 text-center text-2xl font-medium max-sm:text-lg">
+                  {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
+                    (day, index) => (
+                      <div key={index} className="text-center">
+                        {day}
+                      </div>
+                    )
+                  )}
+                </div>
+                <div className="grid grid-cols-7 gap-2 px-3 pb-9 max-sm:gap-0">
+                  {/* Days of the week header */}
+
+                  {dates.map(({ day, date }, index) => (
+                    <div
+                      key={index}
+                      className={`px-1 py-4 text-center text-2xl rounded-lg cursor-pointer transition-all border-2 text-text max-sm:text-lg ${
+                        !day // Skip empty cells
+                          ? "border-transparent" // For empty cells
+                          : date.toDateString() === today?.toDateString()
+                            ? "border-text"
+                            : selectedDate?.toDateString() ===
+                                date.toDateString()
+                              ? "bg-pain text-white border-pain"
+                              : "hover:bg-gray-200 border-transparent"
+                      }`}
+                      onClick={() => day && handleDateClick(date)} // Only allow click for valid dates
+                    >
+                      {day && (
+                        <>
+                          <div>{day}</div>
+                        </>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
-              <hr className="m-5 border-light" />
             </div>
 
             {/* Event Management for selected date */}
+            <div className="bg-bg rounded-md w-4/12 shadow-md text-text max-xl:w-full">
             {selectedDate && (
               <Suspense fallback={<div>กำลังโหลดเหตุการณ์...</div>}>
                 <EventManager
@@ -239,7 +263,8 @@ const AppointmentBoard = ({ params }: PageProps) => {
                   boardId={boardData.id}
                 />
               </Suspense>
-            )}
+              )}
+              </div>
           </div>
         </div>
         <div className="bg-bg rounded-md p-5 flex flex-col gap-2 text-text">

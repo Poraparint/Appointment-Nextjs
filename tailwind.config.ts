@@ -20,7 +20,7 @@ const config = {
     extend: {
       colors: {
         ice: "#E5EAF5",
-        pain: "#8458B3",
+        pain: "#7267C4",
         text: "#494D5F",
         baht: "#238326",
         bg: "#ffffff", // แก้ไขสีพื้นหลังเป็นสีขาว
@@ -29,7 +29,7 @@ const config = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "#E5EAF5", // แก้ไขสี background ให้เป็นสีขาว
+        background: "#F6F7FA", // แก้ไขสี background ให้เป็นสีขาว
         foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
