@@ -268,10 +268,10 @@ const EventManager: React.FC<EventManagerProps> = ({
       return (
         <div
           key={time}
-          className={`relative flex items-center gap-4 p-4 transition-all duration-300 ease-in-out transform border-b ${
+          className={`relative flex items-center mb-1 gap-4 p-4 transition-all duration-300 ease-in-out transform ${
             hasEvent
-              ? "border-gradient-to-r from-pain to-indigo-600 text-text rounded-md"
-              : ""
+              ? "border border-gradient-to-r from-pain to-indigo-600 text-text"
+              : "border-b"
           } hover:shadow-lg`}
         >
           <div className="text-2xl font-bold border-r border-light pr-3 text-center">
@@ -285,7 +285,7 @@ const EventManager: React.FC<EventManagerProps> = ({
                   {events[time]?.name}
                 </div>
                 <div className="text-lg">: {events[time]?.transaction}</div>
-                <div className="text-sm text-gray-200">
+                <div className="text-sm text-gray-500">
                   เพิ่มโดย: {events[time]?.username}
                 </div>
                 <button
@@ -315,7 +315,7 @@ const EventManager: React.FC<EventManagerProps> = ({
 
   return (
     <div className="event-manager pb-20 bg-bg rounded-md shadow-md text-text">
-      <div className="flex justify-between bg-pain p-9">
+      <div className="flex justify-between bg-gradient-to-r rounded-t-md from-pain to-indigo-600 p-9">
         <div className="text-2xl text-white ">
           {selectedDate.toDateString()}
         </div>
