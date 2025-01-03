@@ -268,8 +268,8 @@ const EventManager: React.FC<EventManagerProps> = ({
       return (
         <div
           key={time}
-          className={` flex items-center gap-4 p-4 mb-5 transition-all duration-300 ease-in-out transform ${
-            hasEvent ? "bg-bg" : "border-light bg-gray-100"
+          className={` flex items-center gap-4 p-4 mb-5 transition-all duration-300 ease-in-out transform border-b border-light ${
+            hasEvent ? "bg-bg" : "border-light"
           }`}
         >
           <div className=" text-2xl font-medium text-pain border-r text-center pr-3">
@@ -332,7 +332,8 @@ const EventManager: React.FC<EventManagerProps> = ({
       </div>
 
       <hr className="border-light my-5" />
-      {renderEventInputs()}
+      <div className="px-5">{renderEventInputs()}</div>
+      
 
       {showModal && selectedTime && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
