@@ -317,8 +317,8 @@ const EventManager: React.FC<EventManagerProps> = ({
 
   return (
     <div className="event-manager pb-20 bg-bg rounded-b-md shadow-md text-text">
-      <div className="flex justify-between">
-        <div className="text-2xl bg-pain text-white p-9">
+      <div className="flex justify-between bg-pain p-9">
+        <div className="text-2xl text-white ">
           {selectedDate.toDateString()}
         </div>
         <div className="flex items-center justify-center">
@@ -333,7 +333,6 @@ const EventManager: React.FC<EventManagerProps> = ({
 
       <hr className="border-light my-5" />
       <div className="px-5">{renderEventInputs()}</div>
-      
 
       {showModal && selectedTime && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
