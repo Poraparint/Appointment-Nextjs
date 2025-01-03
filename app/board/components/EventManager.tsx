@@ -318,13 +318,13 @@ const EventManager: React.FC<EventManagerProps> = ({
   return (
     <div className="event-manager pb-20 bg-bg rounded-b-md shadow-md text-text">
       <div className="flex justify-between">
-        <div className="text-2xl bg-pain text-white p-9 w-8/12">
+        <div className="text-2xl bg-pain text-white p-9">
           {selectedDate.toDateString()}
         </div>
-        <div className="flex items-center w-4/12 justify-center">
+        <div className="flex items-center justify-center">
           <button
             onClick={handleDeleteAllEvents}
-            className="text-danger px-4 py-2 rounded-md"
+            className="text-danger px-4 py-2 rounded-md border border-danger bg-bg "
           >
             ลบทั้งหมด
           </button>
