@@ -187,11 +187,6 @@ const AppointmentBoard = ({ params }: PageProps) => {
             <p className="text-gray-500 text-lg flex text-center max-sm:text-sm"></p>
           )}
           <hr className="border-light my-3" />
-          <BoardMemberInfo
-            creatorUsername={boardData.users?.username}
-            members={members}
-            loading={loading}
-          />
         </div>
 
         {/* Calendar and Event Management */}
@@ -246,6 +241,11 @@ const AppointmentBoard = ({ params }: PageProps) => {
               </Suspense>
             )}
           </div>
+          <BoardMemberInfo
+            creatorUsername={boardData.users?.username}
+            members={members}
+            loading={loading}
+          />
         </div>
       </div>
       <Footer />
