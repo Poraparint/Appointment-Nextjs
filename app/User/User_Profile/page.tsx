@@ -144,11 +144,11 @@ export default function User_Profile() {
                 ไม่มีชื่อ
               </p>
             )}
-            <div className="">
+            {/* <div className="">
               <button className="btn bg-pain border-white text-white px-8 hover:bg-purple-800 max-sm:text-sm max-sm:px-2">
                 <div>เพิ่มบทความ</div>
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -190,7 +190,7 @@ export default function User_Profile() {
             <div className="w-full">
               {showWorks && (
                 <div>
-                  k
+                  In Build Mode
                 </div>
               )}
               {showEdit && ( // ตรวจสอบเงื่อนไข showEdit
