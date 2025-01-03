@@ -268,35 +268,33 @@ const EventManager: React.FC<EventManagerProps> = ({
       return (
         <div
           key={time}
-          className={` flex items-center gap-4 p-4 transition-all duration-300 ease-in-out transform border-b border-light ${
-            hasEvent ? "bg-bg" : "border-light"
-          }`}
+          className={`relative flex items-center gap-4 p-4 transition-all duration-300 ease-in-out transform border-b ${
+            hasEvent
+              ? "bg-gradient-to-r from-pain to-indigo-600 text-white"
+              : "bg-gray-100 border-gray-300"
+          } hover:shadow-lg`}
         >
-          <div className=" text-2xl font-medium text-pain border-r text-center pr-3">
+          <div className="text-2xl font-bold border-r border-gray-300 pr-3 text-center">
             {time}
           </div>
 
-          <div className="tracking-wide flex-grow flex flex-col gap-2">
+          <div className="flex-grow flex flex-col gap-3">
             {hasEvent ? (
               <>
-                <div className="text-2xl font-semibold text-text">
+                <div className="text-xl font-semibold">
                   {events[time]?.name}
                 </div>
-                <div className="text-lg text-gray-600">
-                  : {events[time]?.transaction}
+                <div className="text-lg">: {events[time]?.transaction}</div>
+                <div className="text-sm text-gray-200">
+                  เพิ่มโดย: {events[time]?.username}
                 </div>
-                <div className="text-base text-gray-500 mt-5 ">
-                  เพิ่มโดย : {events[time]?.username}
-                </div>
-
-                <div className="flex flex-col items-center justify-center absolute top-0 bottom-0 right-3">
-                  <button
-                    onClick={() => handleDeleteEvent(time)}
-                    className="text-white bg-pain hover:bg-purple-700 transition-all duration-200 p-2 rounded-full shadow-lg"
-                  >
-                    <i className="fa-solid fa-trash text-lg"></i>
-                  </button>
-                </div>
+                <button
+                  onClick={() => handleDeleteEvent(time)}
+                  className="absolute top-3 right-3 text-red-400 hover:text-red-600 transition-colors duration-200"
+                  aria-label="Delete Event"
+                >
+                  <i className="fa-solid fa-trash"></i>
+                </button>
               </>
             ) : (
               <button
@@ -304,7 +302,7 @@ const EventManager: React.FC<EventManagerProps> = ({
                   setSelectedTime(time);
                   setShowModal(true);
                 }}
-                className="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700 duration-200"
+                className="bg-yellow-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-yellow-600 focus:ring-2 focus:ring-yellow-400 focus:outline-none transition-all duration-200"
               >
                 เพิ่มรายการ
               </button>
@@ -324,15 +322,14 @@ const EventManager: React.FC<EventManagerProps> = ({
         <div className="flex items-center justify-center">
           <button
             onClick={handleDeleteAllEvents}
-            className="text-danger px-4 py-2 rounded-md border border-danger bg-bg "
+            className="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-md border border-red-700 transition-colors duration-200 shadow-sm"
           >
             ลบทั้งหมด
           </button>
         </div>
       </div>
 
-      
-      <div className="px-5">{renderEventInputs()}</div>
+      <div className="p-5">{renderEventInputs()}</div>
 
       {showModal && selectedTime && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
