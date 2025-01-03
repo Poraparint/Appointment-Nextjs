@@ -268,7 +268,7 @@ const EventManager: React.FC<EventManagerProps> = ({
       return (
         <div
           key={time}
-          className={` flex items-center gap-4 p-4 mb-5 transition-all duration-300 ease-in-out transform border-b border-light ${
+          className={` flex items-center gap-4 p-4 transition-all duration-300 ease-in-out transform border-b border-light ${
             hasEvent ? "bg-bg" : "border-light"
           }`}
         >
