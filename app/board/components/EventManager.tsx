@@ -292,9 +292,9 @@ const EventManager: React.FC<EventManagerProps> = ({
                 <div className="flex flex-col items-center justify-center absolute top-0 bottom-0 right-3">
                   <button
                     onClick={() => handleDeleteEvent(time)}
-                    className="text-red-500 hover:text-red-700 transition-colors duration-200"
+                    className="text-white bg-pain hover:bg-purple-700 transition-all duration-200 p-2 rounded-full shadow-lg"
                   >
-                    <i className="fa-solid fa-trash"></i>
+                    <i className="fa-solid fa-trash text-lg"></i>
                   </button>
                 </div>
               </>
@@ -304,9 +304,9 @@ const EventManager: React.FC<EventManagerProps> = ({
                   setSelectedTime(time);
                   setShowModal(true);
                 }}
-                className="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-800 duration-200">
-              
-                Add Event
+                className="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700 duration-200"
+              >
+                เพิ่มรายการ
               </button>
             )}
           </div>
@@ -316,7 +316,7 @@ const EventManager: React.FC<EventManagerProps> = ({
   };
 
   return (
-    <div className="event-manager pb-20 bg-bg rounded-b-md shadow-md text-text">
+    <div className="event-manager pb-20 bg-bg rounded-md shadow-md text-text">
       <div className="flex justify-between bg-pain p-9">
         <div className="text-2xl text-white ">
           {selectedDate.toDateString()}
