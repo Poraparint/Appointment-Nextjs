@@ -226,24 +226,22 @@ const AppointmentBoard = ({ params }: PageProps) => {
                   )}
                 </div>
                 <div className="grid grid-cols-7 gap-2 px-3 pb-9 max-sm:gap-0">
-                  {/* Days of the week header */}
-
                   {dates.map(({ day, date }, index) => (
                     <div
                       key={index}
                       className={`px-1 py-4 text-center text-2xl rounded-lg cursor-pointer transition-all border-2 text-text max-sm:text-lg ${
-                        !day // Skip empty cells
-                          ? "border-transparent" // For empty cells
-                          : date.toDateString() === today?.toDateString()
+                        day === -1 // Check for -1
+                          ? "border-transparent cursor-default" // If day is -1, disable clicking and hide content
+                          : date?.toDateString() === today?.toDateString()
                             ? "border-text"
                             : selectedDate?.toDateString() ===
-                                date.toDateString()
+                                date?.toDateString()
                               ? "bg-pain text-white border-pain"
                               : "hover:bg-gray-200 border-transparent"
                       }`}
-                      onClick={() => day && handleDateClick(date)} // Only allow click for valid dates
+                      onClick={() => day !== -1 && handleDateClick(date)} // Disable click if day is -1
                     >
-                      {day && (
+                      {day !== -1 && day !== 0 && (
                         <>
                           <div>{day}</div>
                         </>
@@ -256,15 +254,15 @@ const AppointmentBoard = ({ params }: PageProps) => {
 
             {/* Event Management for selected date */}
             <div className="bg-bg rounded-md w-4/12 shadow-md text-text max-xl:w-full">
-            {selectedDate && (
-              <Suspense fallback={<div>กำลังโหลดเหตุการณ์...</div>}>
-                <EventManager
-                  selectedDate={selectedDate}
-                  boardId={boardData.id}
-                />
-              </Suspense>
+              {selectedDate && (
+                <Suspense fallback={<div>กำลังโหลดเหตุการณ์...</div>}>
+                  <EventManager
+                    selectedDate={selectedDate}
+                    boardId={boardData.id}
+                  />
+                </Suspense>
               )}
-              </div>
+            </div>
           </div>
         </div>
         <div className="bg-bg rounded-md p-5 flex flex-col gap-2 text-text">
