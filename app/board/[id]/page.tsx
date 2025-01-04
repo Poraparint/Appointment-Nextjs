@@ -180,7 +180,7 @@ const AppointmentBoard = ({ params }: PageProps) => {
   return (
     <div className="w-full">
       <div className="appointment-board px-10 max-sm:px-3 flex flex-col gap-5 w-full">
-        <div className="text-text bg-bg rounded-md p-8">
+        <div className="text-text bg-bg rounded-md p-8 shadow-md">
           <h1 className="text-4xl font-bold mb-2">{boardData.board_name}</h1>
           {boardData?.description ? (
             <p className="text-gray-500 text-lg flex text-center max-sm:text-sm">
