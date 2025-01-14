@@ -1,5 +1,6 @@
 "use client";
 
+import FormatDate from "@/components/FormatDate";
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import Swal from "sweetalert2";
@@ -281,13 +282,20 @@ const EventManager: React.FC<EventManagerProps> = ({
           <div className="flex-grow flex flex-col gap-3">
             {hasEvent ? (
               <>
+                
                 <div className="text-xl font-semibold">
                   {events[time]?.name}
                 </div>
                 <div className="text-lg">: {events[time]?.transaction}</div>
-                <div className="text-sm text-gray-500">
+                <div className="flex justify-between">
+                  <div className="text-sm text-gray-500">
                   เพิ่มโดย: {events[time]?.username}
+                  </div>
+                  <div className="text-sm text-gray-500">
+                  วันที่: <FormatDate dateString={events[time]?.date} />
                 </div>
+                </div>
+                
                 <button
                   onClick={() => handleDeleteEvent(time)}
                   className="absolute top-3 right-3 text-red-400 hover:text-red-600 transition-colors duration-200"
