@@ -24,11 +24,16 @@ const EventManager: React.FC<EventManagerProps> = ({
 
   useEffect(() => {
     const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (user) {
-        setUserId(user.id);
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (user) {
+          setUserId(user.id);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
       }
     };
 
@@ -40,6 +45,9 @@ const EventManager: React.FC<EventManagerProps> = ({
 
     const fetchEvents = async () => {
       try {
+        // Reset events state ก่อนโหลดข้อมูลใหม่
+        setEvents({});
+
         // Step 1: ดึงข้อมูลจาก APM
         const { data: apmData, error: apmError } = await supabase
           .from("APM")
@@ -86,7 +94,7 @@ const EventManager: React.FC<EventManagerProps> = ({
             name: event.name,
             transaction: event.transaction,
             user_id: event.user_id,
-            username: userMap?.[event.user_id] || "Unknown", // ดึง username จาก userMap
+            username: userMap?.[event.user_id] || "Unknown",
           };
           return acc;
         }, {});
@@ -98,8 +106,7 @@ const EventManager: React.FC<EventManagerProps> = ({
     };
 
     fetchEvents();
-  }, [selectedDate, userId, boardId]);
-
+  }, [selectedDate, userId, boardId]); // เพิ่ม selectedDate เป็น dependency
 
   const handleEventSubmit = async (
     time: string,
@@ -282,20 +289,19 @@ const EventManager: React.FC<EventManagerProps> = ({
           <div className="flex-grow flex flex-col gap-3">
             {hasEvent ? (
               <>
-                
                 <div className="text-xl font-semibold">
                   {events[time]?.name}
                 </div>
                 <div className="text-lg">: {events[time]?.transaction}</div>
                 <div className="flex justify-between">
                   <div className="text-sm text-gray-500">
-                  เพิ่มโดย: {events[time]?.username}
+                    เพิ่มโดย: {events[time]?.username}
                   </div>
                   <div className="text-sm text-gray-500">
-                  วันที่: {events[time]?.date} 
+                    วันที่: {events[time]?.date}
+                  </div>
                 </div>
-                </div>
-                
+
                 <button
                   onClick={() => handleDeleteEvent(time)}
                   className="absolute top-3 right-3 text-red-400 hover:text-red-600 transition-colors duration-200"
