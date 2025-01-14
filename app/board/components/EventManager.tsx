@@ -292,7 +292,7 @@ const EventManager: React.FC<EventManagerProps> = ({
                   เพิ่มโดย: {events[time]?.username}
                   </div>
                   <div className="text-sm text-gray-500">
-                  วันที่: <FormatDate dateString={events[time]?.date} />
+                  วันที่: {events[time]?.date} 
                 </div>
                 </div>
                 
