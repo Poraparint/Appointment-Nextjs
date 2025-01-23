@@ -10,7 +10,6 @@ interface EventManagerProps {
   boardId: string; // ค่าที่รับมาจะเป็น string
 }
 
-
 const EventManager: React.FC<EventManagerProps> = ({
   selectedDate,
   boardId,
@@ -51,7 +50,7 @@ const EventManager: React.FC<EventManagerProps> = ({
         // Step 1: ดึงข้อมูลจาก APM
         const { data: apmData, error: apmError } = await supabase
           .from("APM")
-          .select("id, name, date, transaction, time, user_id")
+          .select("id, name, date, transaction, tel, time, user_id")
           .eq("date", selectedDate.toLocaleDateString("sv-SE"))
           .eq("board_id", boardId);
 
@@ -93,6 +92,7 @@ const EventManager: React.FC<EventManagerProps> = ({
             id: event.id,
             name: event.name,
             transaction: event.transaction,
+            tel: event.tel,
             user_id: event.user_id,
             username: userMap?.[event.user_id] || "Unknown",
           };
@@ -111,9 +111,17 @@ const EventManager: React.FC<EventManagerProps> = ({
   const handleEventSubmit = async (
     time: string,
     name: string,
-    transaction: string
+    transaction: string,
+    tel: string
   ) => {
-    if (!name.trim() || !transaction.trim() || !userId || !boardId) return;
+    if (
+      !name.trim() ||
+      !transaction.trim() ||
+      !tel.trim() ||
+      !userId ||
+      !boardId
+    )
+      return;
 
     try {
       const date = selectedDate.toLocaleDateString("sv-SE");
@@ -122,6 +130,7 @@ const EventManager: React.FC<EventManagerProps> = ({
         name,
         date,
         time,
+        tel,
         transaction,
         user_id: userId,
         board_id: boardId, // Add board_id when inserting
@@ -131,12 +140,12 @@ const EventManager: React.FC<EventManagerProps> = ({
 
       setEvents((prevEvents: any) => ({
         ...prevEvents,
-        [time]: { name, transaction, user_id: userId },
+        [time]: { name, transaction, tel, user_id: userId },
       }));
 
       setEventTexts((prevTexts: any) => ({
         ...prevTexts,
-        [time]: { name: "", transaction: "" },
+        [time]: { name: "", transaction: "", tel: "" },
       }));
 
       setShowModal(false);
@@ -289,22 +298,23 @@ const EventManager: React.FC<EventManagerProps> = ({
           <div className="flex-grow flex flex-col gap-3">
             {hasEvent ? (
               <>
-                <div className="text-xl font-semibold">
-                  {events[time]?.name}
+                <div className="flex justify-between">
+                  <div className="text-xl font-semibold">
+                    {events[time]?.name}
+                  </div>
+                  <div className="text-sm text-gray-500">
+                    Tel: {events[time]?.tel}
+                  </div>
                 </div>
                 <div className="text-lg">: {events[time]?.transaction}</div>
-                <div className="flex justify-between">
-                  <div className="text-sm text-gray-500">
-                    เพิ่มโดย: {events[time]?.username}
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    วันที่: {events[time]?.date}
-                  </div>
+
+                <div className="text-sm text-gray-500">
+                  เพิ่มโดย: {events[time]?.username}
                 </div>
 
                 <button
                   onClick={() => handleDeleteEvent(time)}
-                  className="absolute top-3 right-3 text-red-400 hover:text-red-600 transition-colors duration-200"
+                  className="absolute bottom-3 right-3 text-red-400 hover:text-red-600 transition-colors duration-200"
                   aria-label="Delete Event"
                 >
                   <i className="fa-solid fa-trash"></i>
@@ -384,6 +394,21 @@ const EventManager: React.FC<EventManagerProps> = ({
                     })
                   }
                 />
+                <input
+                  type="text"
+                  placeholder="กรอกเบอร์โทร"
+                  className="border border-text rounded-md p-2 w-full bg-bg text-xl"
+                  value={eventTexts[selectedTime]?.tel || ""}
+                  onChange={(e) =>
+                    setEventTexts({
+                      ...eventTexts,
+                      [selectedTime]: {
+                        ...eventTexts[selectedTime],
+                        tel: e.target.value,
+                      },
+                    })
+                  }
+                />
               </div>
               <div className="modal-action">
                 <button
@@ -397,7 +422,8 @@ const EventManager: React.FC<EventManagerProps> = ({
                     handleEventSubmit(
                       selectedTime,
                       eventTexts[selectedTime]?.name || "",
-                      eventTexts[selectedTime]?.transaction || ""
+                      eventTexts[selectedTime]?.transaction || "",
+                      eventTexts[selectedTime]?.tel || ""
                     )
                   }
                   className="btn bg-pain text-bg border-bg hover:bg-purple-900"
