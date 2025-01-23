@@ -20,7 +20,7 @@ export default function Navbar() {
   const isSupabaseConnected = canInitSupabaseClient();
 
   return (
-    <div className="fixed left-0 w-full flex items-center justify-center ">
+    <div className="fixed z-50 left-0 w-full flex items-center justify-center ">
       <nav className="w-full bg-bg text-text drop-shadow-xl items-center flex justify-between px-5 py-1">
         <div className="">
           <Link href="/">
