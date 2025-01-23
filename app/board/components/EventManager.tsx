@@ -302,7 +302,7 @@ const EventManager: React.FC<EventManagerProps> = ({
                   <div className="text-xl font-semibold">
                     {events[time]?.name}
                   </div>
-                  <div className="text-sm text-gray-500">
+                  <div className="text-xl font-semibold text-gray-600">
                     Tel: {events[time]?.tel}
                   </div>
                 </div>
