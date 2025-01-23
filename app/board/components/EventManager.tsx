@@ -366,7 +366,7 @@ const EventManager: React.FC<EventManagerProps> = ({
               <div className="flex flex-col gap-5">
                 <input
                   type="text"
-                  placeholder="กรอกชื่ออีเว้นท์..."
+                  placeholder="รายชื่อ..."
                   className="border border-text rounded-md p-2 w-full bg-bg text-xl"
                   value={eventTexts[selectedTime]?.name || ""}
                   onChange={(e) =>
@@ -381,7 +381,7 @@ const EventManager: React.FC<EventManagerProps> = ({
                 />
                 <input
                   type="text"
-                  placeholder="กรอกรายละเอียด..."
+                  placeholder="รายละเอียด..."
                   className="border border-text rounded-md p-2 w-full bg-bg text-xl"
                   value={eventTexts[selectedTime]?.transaction || ""}
                   onChange={(e) =>
@@ -396,7 +396,7 @@ const EventManager: React.FC<EventManagerProps> = ({
                 />
                 <input
                   type="text"
-                  placeholder="กรอกเบอร์โทร"
+                  placeholder="เบอร์โทร... (ถ้าไม่มีให้ใส่ - )"
                   className="border border-text rounded-md p-2 w-full bg-bg text-xl"
                   value={eventTexts[selectedTime]?.tel || ""}
                   onChange={(e) =>
