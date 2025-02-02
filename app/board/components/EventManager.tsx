@@ -278,6 +278,7 @@ const EventManager: React.FC<EventManagerProps> = ({
       "16:00",
       "16:30",
       "17:00",
+      "17:30"
     ];
 
     return times.map((time) => {
