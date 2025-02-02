@@ -1,7 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import ConnectSupabaseSteps from "@/components/tutorial/connect-supabase-steps";
 import Header from "@/components/hero";
-import UserProfile from "./User/User_Profile/page";
+import UserProfile from "./(User)/User_Profile/page";
 
 export default async function Index() {
   const canInitSupabaseClient = () => {
