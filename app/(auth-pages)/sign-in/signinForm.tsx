@@ -1,134 +1,145 @@
 "use client";
-
 import { createClient } from "@/utils/supabase/client";
+import { signIn } from "./action";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState, useCallback } from "react";
+import React from "react";
 import { SubmitButton } from "@/components/submit-button";
 
 // Helper function to get redirect URL
-const getURL = () => {
+function getURL() {
   let url =
-    process.env.NEXT_PUBLIC_SITE_URL ??
-    process.env.NEXT_PUBLIC_VERCEL_URL ??
+    process?.env?.NEXT_PUBLIC_SITE_URL ?? // Set this to your site URL in production env.
+    process?.env?.NEXT_PUBLIC_VERCEL_URL ?? // Automatically set by Vercel.
     "http://localhost:3000/";
-  return url.startsWith("http") ? url : `https://${url}`;
-};
+  url = url.startsWith("http") ? url : `https://${url}`;
+  url = url.endsWith("/") ? url : `${url}/`;
+  return url;
+}
 
-const SignInForm = () => {
-  const supabase = createClient();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const signInWithGoogle = useCallback(async () => {
+const SignInForm = ({
+  searchParams,
+}: {
+  searchParams: { message: string };
+}) => {
+  const signInWithGoogle = async () => {
     const supabase = createClient();
-    const isLocalEnv = process.env.NODE_ENV === "development";
-    const redirectTo = isLocalEnv
-      ? "http://localhost:3000/auth/callback"
-      : "https://appointment-dental.vercel.app/auth/callback";
-
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo },
+      options: {
+        redirectTo: `${getURL()}User_Profile`,
+        queryParams: {
+          access_type: "offline",
+          prompt: "consent",
+        },
+      },
     });
 
     if (error) {
-      console.log("Error during sign-in with Google:", error);
-    }
-  }, []);
-
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMessage("");
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (error) {
-      setErrorMessage("อีเมลหรือรหัสผ่านไม่ถูกต้อง");
+      console.error(error);
     }
   };
 
   return (
     <div className="Page w-full">
-      <div className="flex justify-center w-3/6 max-lg:w-5/6 bg-white rounded-3xl py-16 px-10 shadow-lg mx-auto">
+      <div className="flex justify-center w-5/6 grow bg-white backdrop-blur-sm rounded-3xl py-16 px-10 shadow-lg mx-auto">
+        {/* Back to Sign-Up Link */}
+
+        {/* Sign-In Form Container */}
         <div className="flex flex-col items-center w-full">
-          <h2 className="text-3xl font-bold text-text mb-6 text-center">
+          <h2 className="text-3xl font-bold text-text mb-10 text-center">
             เข้าสู่ระบบ
           </h2>
 
-          {errorMessage && (
-            <p className="text-red-500 text-sm mb-4">{errorMessage}</p>
-          )}
-
-          <form className="flex flex-col gap-6 w-full" onSubmit={handleSubmit}>
-            <label>
-              <span>อีเมล</span>
-              <input
-                type="email"
-                className="w-full py-2 px-4 border rounded-md"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+          <form className="flex flex-col gap-6 text-text w-full">
+            {/* Email */}
+            <label className="block w-full">
+              <span className="text-gray-700">อีเมล</span>
+              <div className="mt-1 flex items-center text-text border border-light rounded-md overflow-hidden focus-within:border-pain focus-within:text-pain focus-within:shadow-sm focus-within:shadow-pain">
+                <i className="fa-solid fa-envelope px-3"></i>
+                <input
+                  type="email"
+                  name="email"
+                  className="w-full py-2 px-4 bg-transparent outline-none placeholder:text-light"
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
             </label>
 
-            <label>
-              <span>รหัสผ่าน</span>
-              <input
-                type="password"
-                className="w-full py-2 px-4 border rounded-md"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+            {/* Password */}
+            <label className="block w-full">
+              <span className="text-gray-700">รหัสผ่าน</span>
+              <div className="mt-1 flex items-center text-text border border-light rounded-md overflow-hidden focus-within:border-pain focus-within:text-pain focus-within:shadow-sm focus-within:shadow-pain">
+                <i className="fa-solid fa-lock px-3 "></i>
+                <input
+                  type="password"
+                  name="password"
+                  className="w-full py-2 px-4 bg-transparent outline-none placeholder:text-light"
+                  placeholder="Enter your password"
+                  required
+                />
+              </div>
             </label>
 
-            <Link
-              href="/forgot-password"
-              className="text-sm text-blue-600 hover:underline"
-            >
-              ลืมรหัสผ่าน?
-            </Link>
+            {/* Error Message (if any) */}
+            {searchParams?.message && (
+              <p className="text-red-500 text-xs px-2 pt-2">
+                {searchParams.message}
+              </p>
+            )}
 
-            <SubmitButton
-              onClick={handleSubmit}
-              pendingText="Signing In..."
-              className="w-full"
-            >
-              เข้าสู่ระบบ
-            </SubmitButton>
+            {/* Forgot Password & Submit Button */}
+            <div className="flex flex-col gap-5">
+              <Link
+                href="/forgot-password"
+                className="text-sm text-blue-600 hover:underline"
+              >
+                ลืมรหัสผ่าน?
+              </Link>
+              <SubmitButton
+                formAction={signIn}
+                pendingText="Signing In..."
+                className="w-full mt-4"
+              >
+                เข้าสู่ระบบ
+              </SubmitButton>
+            </div>
           </form>
 
-          <Link
-            href="/sign-up"
-            className="text-sm text-text font-bold hover:underline mt-4"
-          >
-            สมัครสมาชิก
-          </Link>
+          {/* Create Account */}
+          <div className="">
+            <Link
+              href="/sign-up"
+              className="text-sm text-text font-bold hover:underline"
+            >
+              สมัครสมาชิก <i className="fa-solid fa-arrow-right ml-1"></i>
+            </Link>
+          </div>
 
-          <div className="py-2 text-third">หรือ</div>
+          {/* Divider */}
+          <div className="flex flex-col py-2 items-center">
+            <span className="mx-4 text-light">หรือ</span>
+          </div>
 
-          <button
-            onClick={signInWithGoogle}
-            className="flex items-center gap-3 px-6 py-3 border rounded-full shadow-sm hover:bg-gray-200 transition"
-          >
-            <div className="relative w-7 h-7 rounded-full">
-              <Image
-                className="rounded-full"
-                src="/google.png"
-                alt="Avatar"
-                layout="fill"
-                objectFit="cover"
-              />
-            </div>
-            <span className="font-semibold text-sm">Sign in with Google</span>
-          </button>
+          {/* Google Sign-In */}
+          <div className="flex justify-center">
+            <button
+              onClick={signInWithGoogle}
+              className="flex items-center text-text gap-3 px-6 py-3 bg-white border rounded-full shadow-sm hover:bg-gray-100 transition"
+            >
+              <div className="relative w-7 h-7 rounded-full">
+                <Image
+                  className="rounded-full"
+                  src="/google.png"
+                  alt="Avatar"
+                  layout="fill"
+                  objectFit="cover"
+                />
+              </div>
+              <span className="font-semibold text-sm">Sign in with Google</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
