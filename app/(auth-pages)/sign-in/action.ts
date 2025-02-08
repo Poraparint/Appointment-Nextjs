@@ -14,5 +14,5 @@ export const signIn = async (formData: FormData) => {
     return redirect("/sign-in?message=Could not authenticate user");
   }
 
-  return redirect("/protected");
+  return redirect("/User_Profile");
 };
