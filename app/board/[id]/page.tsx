@@ -218,7 +218,7 @@ const AppointmentBoard = ({ params }: PageProps) => {
                   {dates.map(({ day, date }, index) => (
                     <div
                       key={index}
-                      className={`p-3 w-5 h-5 text-center text-2xl rounded-full cursor-pointer transition-all border-2 text-text max-sm:text-lg ${
+                      className={`p-3 text-center text-2xl rounded-full cursor-pointer transition-all border-2 text-text max-sm:text-lg ${
                         day === -1 // Check for -1
                           ? "border-transparent cursor-default" // If day is -1, disable clicking and hide content
                           : date?.toDateString() === today?.toDateString()
