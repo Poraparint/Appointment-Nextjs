@@ -205,7 +205,7 @@ const AppointmentBoard = ({ params }: PageProps) => {
                   </div>
                 </div>
                 <hr className="m-2 border-light" />
-                <div className="grid grid-cols-7 gap-2 max-sm:gap-0 text-center text-2xl font-medium max-sm:text-lg">
+                <div className="grid grid-cols-7 gap-2 max-sm:gap-0 text-center p-3 text-2xl font-medium max-sm:text-lg">
                   {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
                     (day, index) => (
                       <div key={index} className=" flex items-center justify-center">
@@ -214,7 +214,7 @@ const AppointmentBoard = ({ params }: PageProps) => {
                     )
                   )}
                 </div>
-                <div className="grid grid-cols-7 gap-2 pb-7 max-sm:gap-0 text-center justify-center">
+                <div className="grid grid-cols-7 gap-2 p-3 max-sm:gap-0 text-center justify-center">
                   {dates.map(({ day, date }, index) => (
                     <div
                       key={index}
