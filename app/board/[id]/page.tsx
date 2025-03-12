@@ -180,22 +180,11 @@ const AppointmentBoard = ({ params }: PageProps) => {
   return (
     <div className="w-full">
       <div className="appointment-board px-10 max-sm:px-3 flex flex-col gap-5 w-full">
-        <div className="text-text bg-bg rounded-md p-8 shadow-md">
-          <h1 className="text-4xl font-bold mb-2">{boardData.board_name}</h1>
-          {boardData?.description ? (
-            <p className="text-gray-500 text-lg flex text-center max-sm:text-sm">
-              {boardData.description}
-            </p>
-          ) : (
-            <p className="text-gray-500 text-lg flex text-center max-sm:text-sm"></p>
-          )}
-        </div>
-
         {/* Calendar and Event Management */}
         <div className="calendar-container flex flex-col items-center">
           <div className="w-full text-text flex gap-5 max-xl:flex-col">
-            <div className=" w-8/12 max-xl:w-full">
-              <div className="bg-bg shadow-md rounded-md">
+            <div className=" xl:w-8/12 w-full relative">
+              <div className="bg-bg shadow-md rounded-md xl:sticky ">
                 <div className="calendar-header flex justify-between items-center p-8 text-2xl ">
                   <span className="text-2xl max-sm:text-xl font-semibold">
                     {displayMonth}
@@ -229,11 +218,11 @@ const AppointmentBoard = ({ params }: PageProps) => {
                   {dates.map(({ day, date }, index) => (
                     <div
                       key={index}
-                      className={`px-1 py-4 text-center text-2xl rounded-lg cursor-pointer transition-all border-2 text-text max-sm:text-lg ${
+                      className={`p-3 w-5 h-5 text-center text-2xl rounded-full cursor-pointer transition-all border-2 text-text max-sm:text-lg ${
                         day === -1 // Check for -1
                           ? "border-transparent cursor-default" // If day is -1, disable clicking and hide content
                           : date?.toDateString() === today?.toDateString()
-                            ? "border-text"
+                            ? "border-text bg-text "
                             : selectedDate?.toDateString() ===
                                 date?.toDateString()
                               ? "bg-pain text-white border-pain"
