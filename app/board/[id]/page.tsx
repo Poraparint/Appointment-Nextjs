@@ -183,7 +183,7 @@ const AppointmentBoard = ({ params }: PageProps) => {
         {/* Calendar and Event Management */}
         <div className="calendar-container flex flex-col items-center">
           <div className="w-full text-text flex gap-5 max-xl:flex-col">
-            <div className="xl:w-8/12 w-full relative xl:border">
+            <div className="xl:w-8/12 w-full xl:border">
               <div className="bg-bg shadow-md rounded-md xl:sticky flex flex-col">
                 <div className="calendar-header flex justify-between items-center p-8 text-2xl ">
                   <span className="text-2xl max-sm:text-xl font-semibold">
@@ -208,7 +208,7 @@ const AppointmentBoard = ({ params }: PageProps) => {
                 <div className="grid grid-cols-7 gap-2 p-3 max-sm:gap-0 text-center text-2xl font-medium max-sm:text-lg">
                   {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
                     (day, index) => (
-                      <div key={index} className="text-center flex">
+                      <div key={index} className="text-center flex items-center">
                         {day}
                       </div>
                     )
@@ -218,7 +218,7 @@ const AppointmentBoard = ({ params }: PageProps) => {
                   {dates.map(({ day, date }, index) => (
                     <div
                       key={index}
-                      className={`p-3 w-24 h-24 text-center flex text-2xl rounded-full cursor-pointer transition-all border-2 text-text max-sm:text-lg ${
+                      className={`p-3 w-24 h-24 text-center items-center flex text-2xl rounded-full cursor-pointer transition-all border-2 text-text max-sm:text-lg ${
                         day === -1 // Check for -1
                           ? "border-transparent cursor-default" // If day is -1, disable clicking and hide content
                           : date?.toDateString() === today?.toDateString()
