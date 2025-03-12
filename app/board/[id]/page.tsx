@@ -214,11 +214,11 @@ const AppointmentBoard = ({ params }: PageProps) => {
                     )
                   )}
                 </div>
-                <div className="grid grid-cols-7 gap-2 pb-7 max-sm:gap-0 text-center border justify-center">
+                <div className="grid grid-cols-7 gap-2 pb-7 max-sm:gap-0 text-center justify-center">
                   {dates.map(({ day, date }, index) => (
                     <div
                       key={index}
-                      className={`p-3 w-24 h-24 justify-center items-center flex text-2xl rounded-full cursor-pointer transition-all border-2 text-text max-sm:text-lg ${
+                      className={`p-7 justify-center items-center flex text-2xl rounded-full cursor-pointer transition-all border-2 text-text max-sm:text-lg ${
                         day === -1 // Check for -1
                           ? "border-transparent cursor-default" // If day is -1, disable clicking and hide content
                           : date?.toDateString() === today?.toDateString()
