@@ -183,8 +183,8 @@ const AppointmentBoard = ({ params }: PageProps) => {
         {/* Calendar and Event Management */}
         <div className="calendar-container flex flex-col items-center">
           <div className="w-full text-text flex gap-5 max-xl:flex-col">
-            <div className="xl:w-8/12 w-full xl:border">
-              <div className="bg-bg shadow-md rounded-md xl:sticky top-2 flex flex-col">
+            <div className="xl:w-8/12 w-full">
+              <div className="bg-bg shadow-md rounded-md xl:sticky top-20 flex flex-col">
                 <div className="calendar-header flex justify-between items-center p-8 text-2xl ">
                   <span className="text-2xl max-sm:text-xl font-semibold">
                     {displayMonth}
