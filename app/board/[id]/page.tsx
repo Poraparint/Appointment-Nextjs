@@ -214,7 +214,7 @@ const AppointmentBoard = ({ params }: PageProps) => {
                     )
                   )}
                 </div>
-                <div className="grid grid-cols-7 gap-2 px-3 pb-9 max-sm:gap-0 text-center">
+                <div className="grid grid-cols-7 gap-2 px-3 pb-9 max-sm:gap-0 text-center border justify-center">
                   {dates.map(({ day, date }, index) => (
                     <div
                       key={index}
