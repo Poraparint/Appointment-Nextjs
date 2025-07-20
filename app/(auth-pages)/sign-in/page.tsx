@@ -1,14 +1,13 @@
-import React from 'react';
-import SignInForm from './signinForm';
+// page.tsx
+import {SignInForm} from "./signinForm";
+import { Suspense } from "react";
 
-const SignIn = () => {
+const SignInPage = () => {
   return (
-    <SignInForm
-      searchParams={{
-        message: "",
-      }}
-    />
+    <Suspense fallback={<div>Loading...</div>}>
+      <SignInForm />
+    </Suspense>
   );
-}
+};
 
-export default SignIn;
+export default SignInPage;

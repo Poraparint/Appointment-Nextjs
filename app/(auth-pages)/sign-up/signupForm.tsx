@@ -19,7 +19,7 @@ function formReducer(state: FormState, action: Partial<FormState>): FormState {
   return { ...state, ...action };
 }
 
-export default function SignupForm() {
+export const SignupForm = () => {
   const [state, dispatch] = useReducer(formReducer, initialState);
   const [password, setPassword] = useState<string>("");
   const [confirm, setConfirm] = useState<string>("");

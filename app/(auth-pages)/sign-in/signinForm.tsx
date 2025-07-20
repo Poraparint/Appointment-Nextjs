@@ -28,11 +28,7 @@ function getURL(): string {
   return "http://localhost:3000/";
 }
 
-interface SignInFormProps {
-  searchParams: { message?: string; error?: string };
-}
-
-const SignInForm: React.FC<SignInFormProps> = ({ searchParams }) => {
+export const SignInForm = () => {
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const router = useRouter();
   const urlSearchParams = useSearchParams();
@@ -137,17 +133,7 @@ const SignInForm: React.FC<SignInFormProps> = ({ searchParams }) => {
               </div>
             </label>
 
-            {/* Error Messages */}
-            {(searchParams?.message || searchParams?.error) && (
-              <div
-                className="text-red-500 text-xs px-2 pt-2"
-                role="alert"
-                aria-live="polite"
-              >
-                {searchParams.message || searchParams.error}
-              </div>
-            )}
-
+            
             {/* Forgot Password & Submit Button */}
             <div className="flex flex-col gap-5">
               <Link
@@ -222,5 +208,3 @@ const SignInForm: React.FC<SignInFormProps> = ({ searchParams }) => {
     </div>
   );
 };
-
-export default SignInForm;
