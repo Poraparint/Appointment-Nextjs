@@ -1,43 +1,35 @@
-import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: Request) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const code = searchParams.get("code");
-    const next = searchParams.get("next") ?? "/User_Profile";
+export async function GET(request: NextRequest) {
+  const requestUrl = new URL(request.url);
+  const code = requestUrl.searchParams.get("code");
+  const origin = requestUrl.origin;
 
-    if (!code) {
-      return NextResponse.json(
-        { message: "Authorization code is missing" },
-        { status: 400 }
-      );
-    }
-
+  if (code) {
     const supabase = await createClient();
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
 
-    if (error) {
-      return NextResponse.json(
-        { message: "Failed to exchange code for session", error },
-        { status: 500 }
-      );
+    try {
+      const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+
+      if (error) {
+        console.error("OAuth callback error:", error);
+        // Redirect to error page with error message
+        return NextResponse.redirect(
+          `${origin}/sign-in?error=${encodeURIComponent(error.message)}`
+        );
+      }
+
+      if (data.session) {
+        // Successful login - redirect to intended page
+        return NextResponse.redirect(`${origin}/User_Profile`);
+      }
+    } catch (err) {
+      console.error("Unexpected error in OAuth callback:", err);
+      return NextResponse.redirect(`${origin}/sign-in?error=unexpected_error`);
     }
-
-    // กำหนด URL สำหรับ redirect ตาม environment
-    const isLocalEnv = process.env.NODE_ENV === "development";
-    const redirectUrl = isLocalEnv
-      ? `http://localhost:3000${next}`
-      : `https://appointment-dental.vercel.app${next}`;
-
-    return NextResponse.redirect(redirectUrl);
-  } catch (error) {
-    return NextResponse.json(
-      {
-        message: "Unexpected server error",
-        error: error instanceof Error ? error.message : error,
-      },
-      { status: 500 }
-    );
   }
+
+  // Fallback redirect
+  return NextResponse.redirect(`${origin}/sign-in?error=no_code`);
 }

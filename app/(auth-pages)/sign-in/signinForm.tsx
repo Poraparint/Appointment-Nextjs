@@ -3,77 +3,102 @@ import { createClient } from "@/utils/supabase/client";
 import { signIn } from "./action";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { SubmitButton } from "@/components/submit-button";
+import { useRouter, useSearchParams } from "next/navigation";
 
-// Helper function to get redirect URL with better production handling
+// Helper function with better production URL handling
 function getURL(): string {
-  // For production, prioritize NEXT_PUBLIC_SITE_URL
+  // For Vercel deployment
+  if (typeof window !== "undefined") {
+    return window.location.origin + "/";
+  }
+
+  // Server-side fallback
   if (process.env.NEXT_PUBLIC_SITE_URL) {
     return process.env.NEXT_PUBLIC_SITE_URL.endsWith("/")
       ? process.env.NEXT_PUBLIC_SITE_URL
       : `${process.env.NEXT_PUBLIC_SITE_URL}/`;
   }
 
-  // For Vercel deployments
   if (process.env.NEXT_PUBLIC_VERCEL_URL) {
     return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/`;
   }
 
-  // Fallback for development
   return "http://localhost:3000/";
 }
 
 interface SignInFormProps {
-  searchParams: { message?: string };
+  searchParams: { message?: string; error?: string };
 }
 
 const SignInForm: React.FC<SignInFormProps> = ({ searchParams }) => {
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const router = useRouter();
+  const urlSearchParams = useSearchParams();
 
-  // Memoize redirect URL to avoid recalculation
-  const redirectURL = useMemo(() => `${getURL()}User_Profile`, []);
+  // Handle OAuth errors from URL params
+  useEffect(() => {
+    const error = urlSearchParams?.get("error");
+    if (error) {
+      console.error("OAuth Error:", error);
+      // You can show a toast notification here
+    }
+  }, [urlSearchParams]);
+
+  // Check for existing session on component mount
+  useEffect(() => {
+    const checkSession = async () => {
+      const supabase = createClient();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (session) {
+        // User is already logged in, redirect
+        router.push("/User_Profile");
+      }
+    };
+
+    checkSession();
+  }, [router]);
 
   const signInWithGoogle = useCallback(async () => {
-    if (isGoogleLoading) return; // Prevent double clicks
+    if (isGoogleLoading) return;
 
     setIsGoogleLoading(true);
 
     try {
       const supabase = createClient();
 
-      // More robust OAuth configuration for production
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: redirectURL,
+          // CRITICAL: ต้องชี้ไปที่ callback route ที่เราสร้าง
+          redirectTo: `${getURL()}auth/callback`,
           queryParams: {
             access_type: "offline",
-            prompt: "select_account", // Changed from "consent" for better UX
+            prompt: "select_account",
           },
-          // Add skipBrowserRedirect for better control in some cases
-          skipBrowserRedirect: false,
         },
       });
 
       if (error) {
         console.error("Google sign-in error:", error.message);
-        // You might want to show user-friendly error message here
+        setIsGoogleLoading(false);
       }
 
-      // Note: successful OAuth will redirect, so this won't execute
+      // If successful, user will be redirected to Google
+      // Then back to our callback URL
     } catch (err) {
       console.error("Unexpected error during Google sign-in:", err);
-    } finally {
-      // Reset loading state (though this might not execute due to redirect)
       setIsGoogleLoading(false);
     }
-  }, [redirectURL, isGoogleLoading]);
+  }, [isGoogleLoading]);
 
   return (
     <div className="Page w-full">
       <div className="flex justify-center w-5/6 grow bg-white backdrop-blur-sm rounded-3xl py-16 px-10 shadow-lg mx-auto">
-        {/* Sign-In Form Container */}
         <div className="flex flex-col items-center w-full">
           <h2 className="text-3xl font-bold text-text mb-10 text-center">
             เข้าสู่ระบบ
@@ -112,14 +137,14 @@ const SignInForm: React.FC<SignInFormProps> = ({ searchParams }) => {
               </div>
             </label>
 
-            {/* Error Message (if any) */}
-            {searchParams?.message && (
+            {/* Error Messages */}
+            {(searchParams?.message || searchParams?.error) && (
               <div
                 className="text-red-500 text-xs px-2 pt-2"
                 role="alert"
                 aria-live="polite"
               >
-                {searchParams.message}
+                {searchParams.message || searchParams.error}
               </div>
             )}
 
@@ -185,7 +210,6 @@ const SignInForm: React.FC<SignInFormProps> = ({ searchParams }) => {
                   fill
                   sizes="28px"
                   style={{ objectFit: "cover" }}
-                  priority={false} // Not critical for initial load
                 />
               </div>
               <span className="font-semibold text-sm">
@@ -199,4 +223,4 @@ const SignInForm: React.FC<SignInFormProps> = ({ searchParams }) => {
   );
 };
 
-export default React.memo(SignInForm);
+export default SignInForm;
